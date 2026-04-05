@@ -1,86 +1,83 @@
-import React from 'react';
-import { Brain, Sparkles, BrainCircuit, Activity, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Brain, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import Footer from '../components/Footer';
+import IntelligenceScene from '../components/animations/IntelligenceScene';
 
 const AIIntelligencePage = () => {
   return (
-    <div className="pt-32 pb-24 bg-white animate-in fade-in duration-700">
-      <div className="container mx-auto px-6 max-w-7xl">
-        <div className="flex flex-col lg:flex-row items-center gap-20 mb-32">
-          <div className="flex-1 flex flex-col gap-10">
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100/50 w-fit text-blue-600 text-[10px] font-black uppercase tracking-widest">
-              Neural Network Architecture
+    <div className="font-sans bg-[#EEF7EE] min-h-screen pt-24 overflow-x-hidden">
+      {/* Full Width Dark Hero */}
+      <section style={{
+        position: 'relative',
+        overflow: 'hidden',
+        width: '100%',
+        background: 'linear-gradient(135deg, #050d08 0%, #0a1f0f 40%, #061a10 100%)',
+        minHeight: '620px',
+        display: 'flex',
+        alignItems: 'center',
+        boxShadow: '0 25px 50px -12px rgba(22, 163, 74, 0.25)'
+      }}>
+        <IntelligenceScene />
+        
+        <div className="container mx-auto px-6 max-w-[1240px] relative z-20">
+          <div style={{ padding: '80px 0', maxWidth: '55%' }}>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} 
+              className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#16A34A]/25 border border-[#22C55E]/40 text-[#86EFAC] font-mono text-[10px] uppercase font-black tracking-widest mb-8"
+            >
+              Neural Infrastructure
             </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-6xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.05]">
-              Built with Advanced <br /> <span className="text-blue-600">AI Intelligence</span>
+            <motion.h1 
+               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.8 }} 
+               className="text-6xl md:text-[92px] font-display font-black text-white tracking-tight leading-none uppercase mb-8"
+            >
+              Operational <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#4ADE80] to-[#22C55E] italic" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Intelligence</span>
             </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-2xl text-slate-500 font-medium leading-relaxed">
-              Our proprietary model doesn't just store data; it understands context, intent, and severity in real-time.
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} 
+              className="text-2xl text-white/70 font-sans font-normal leading-relaxed max-w-xl opacity-90"
+            >
+              High-precision grievance logic that understands context, intent, and priority in real-time.
             </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col gap-6 mt-4">
+          </div>
+        </div>
+      </section>
+      
+      <div className="container mx-auto px-6 max-w-[1240px] py-40 relative z-10">
+        <div className="flex flex-col lg:flex-row items-center gap-20">
+          <div className="flex-1 flex flex-col gap-10">
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col gap-5 mt-4">
               {[
-                { title: 'Natural Language Processing', desc: 'Understands vernacular phrasing and colloquial terminology out-of-the-box in multiple languages.' },
-                { title: 'Real-Time Data Processing', desc: 'Instantly identifies critical issues within citizen statements using semantic analysis.' },
-                { title: 'Smart Decision Making', desc: 'Assists staff with intelligent recommendations for rapid complaint routing based on historical data.' }
+                { title: 'Vernacular Translation', desc: 'Detects and translates 20+ dialects to standardized English instantly.' },
+                { title: 'Semantic Triage', desc: 'Goes beyond keywords to understand the actual severity of incidents.' },
+                { title: 'Intent Mapping', desc: 'Correctively routes grievances even when citizen terminology is unclear.' }
               ].map((item, i) => (
-                <div key={i} className="flex items-start gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300">
-                  <div className="mt-1 bg-blue-50 p-2 rounded-xl text-blue-600">
-                    <CheckCircle2 size={24} />
+                <div key={i} className="flex gap-6 p-8 bg-white border border-[rgba(0,0,0,0.07)] border-l-[3px] border-l-[#16A34A] rounded-2xl shadow-sm hover:shadow-md transition-shadow group">
+                  <div className="w-12 h-12 bg-[#DCFCE7] rounded-xl flex items-center justify-center text-[#16A34A] group-hover:bg-[#16A34A] group-hover:text-white transition-colors">
+                    <Brain size={20} />
                   </div>
-                  <div className="flex flex-col">
-                    <h4 className="text-xl font-bold text-slate-900 mb-1">{item.title}</h4>
-                    <p className="text-slate-500 font-medium">{item.desc}</p>
+                  <div className="flex flex-col gap-2">
+                    <h4 className="text-lg font-display font-bold text-[#0F1C12] uppercase tracking-tight">{item.title}</h4>
+                    <p className="text-sm text-[#374151] opacity-70 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
             </motion.div>
           </div>
-          <div className="flex-1 w-full max-w-2xl">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-violet-100 to-blue-50 rounded-[4rem] transform -rotate-3 scale-105 -z-10 shadow-lg transition-transform duration-500 group-hover:rotate-0" />
-              <img 
-                src="/images/ai_report_transformation_1774207849035.png" 
-                alt="AI Intelligence transforming data" 
-                className="w-full h-auto object-cover rounded-[4rem] shadow-2xl border border-white/60 bg-white relative z-10"
-              />
-              
-              <div className="absolute -bottom-8 -right-8 bg-white p-8 rounded-3xl shadow-2xl shadow-blue-900/10 border border-slate-100 flex flex-col gap-4 z-20 animate-bounce delay-150 max-w-xs">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
-                    <Brain size={28} />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-lg font-black text-slate-900 tracking-tight">NLP Engine</span>
-                    <span className="text-sm text-slate-500 font-bold uppercase tracking-widest">Active Processing</span>
-                  </div>
-                </div>
-                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: '85%' }}
-                    transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-                    className="h-full bg-blue-600 rounded-full"
-                  />
-                </div>
-              </div>
+
+          <div className="flex-1 w-full bg-white border border-[rgba(22,163,74,0.15)] rounded-3xl p-10 lg:p-16 relative overflow-hidden shadow-sm">
+            <div className="flex flex-col gap-10 relative z-10">
+               <h3 className="text-4xl font-display font-black text-[#0F1C12] tracking-tighter uppercase leading-none">The Brain <br /> <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#16A34A] to-[#22C55E] italic" style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}> Behind The Portal</span></h3>
+               <p className="text-[#374151] font-sans leading-relaxed opacity-80">Our proprietary neural framework doesn't just store grievances—it reasons through them. By analyzing sentiment, historical context, and legislative requirements, it transforms raw data into actionable intelligence for every civic officer.</p>
+               <div className="flex flex-col gap-6">
+                 <div className="flex items-center gap-4 text-sm font-bold text-[#16A34A] uppercase tracking-widest"><div className="w-10 h-[2px] bg-[#16A34A]" /> Context Aware Reasoning</div>
+                 <div className="flex items-center gap-4 text-sm font-bold text-[#16A34A] uppercase tracking-widest"><div className="w-10 h-[2px] bg-[#16A34A]" /> Multi-dialect understanding</div>
+                 <div className="flex items-center gap-4 text-sm font-bold text-[#16A34A] uppercase tracking-widest"><div className="w-10 h-[2px] bg-[#16A34A]" /> Bias-free prioritization</div>
+               </div>
             </div>
           </div>
         </div>
-
-        <div className="py-24 bg-slate-50 rounded-[4rem] border border-slate-200/50 flex flex-col items-center text-center gap-10">
-           <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Trust the data.</h2>
-           <p className="text-xl text-slate-500 font-medium max-w-2xl px-6">Our AI is built on private, secure infrastructure to ensure citizen confidentiality and legal integrity.</p>
-           <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full justify-center px-6">
-              <Link to="/register" className="w-full sm:w-auto px-10 py-5 bg-slate-900 text-white rounded-2xl font-black text-lg shadow-2xl shadow-slate-900/20 hover:bg-blue-600 hover:shadow-blue-600/30 transition-all duration-300">
-                Create Secure Account
-              </Link>
-              <Link to="/login" className="w-full sm:w-auto px-10 py-5 bg-white text-slate-700 border border-slate-200 rounded-2xl font-black text-lg hover:bg-slate-50 transition-all duration-300">
-                Log in to Portal
-              </Link>
-           </div>
-        </div>
       </div>
+      <Footer />
     </div>
   );
 };
