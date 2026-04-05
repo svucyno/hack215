@@ -4,14 +4,14 @@ const Complaint = require('./models/Complaint');
 const Department = require('./models/Department');
 
 async function checkData() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/citizen_grievance_portal');
+  await mongoose.connect('mongodb://127.0.0.1:27017/user_grievance_portal');
   
   const userCount = await User.countDocuments();
-  const officerCount = await User.countDocuments({ role: 'OFFICER' });
+  const officerCount = await User.countDocuments({ role: 'STAFF' });
   const complaintCount = await Complaint.countDocuments();
   const departmentCount = await Department.countDocuments();
   
-  const officers = await User.find({ role: 'OFFICER' });
+  const officers = await User.find({ role: 'STAFF' });
   const officersList = officers.map(o => o.name);
 
   console.log('--- DATABASE STATS ---');

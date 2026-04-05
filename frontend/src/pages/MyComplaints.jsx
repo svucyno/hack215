@@ -20,8 +20,10 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ComplaintDetailsModal from '../components/ComplaintDetailsModal';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const MyComplaints = ({ user }) => {
+  const { t } = useCitizenLang();
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -69,14 +71,24 @@ const MyComplaints = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">My Complaints: Tracking History</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">{t('mc_header_subtitle')}</span>
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter leading-none uppercase">Complaints History</h1>
-          <p className="text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">Review and track your previously submitted grievances.</p>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                {t('mc_header_title')}
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                {t('mc_header_desc')}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3 relative z-10">
-          <span className="flex items-center gap-1.5 px-6 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10 shadow-xl backdrop-blur-md">
-            <Archive size={12} className="text-primary-400" /> Total Complaints: {complaints.length}
+          <span className="flex items-center gap-1.5 px-6 py-3 bg-white/5 text-[#0F1C12] rounded-full text-[10px] font-black uppercase tracking-widest border border-green-600/15 shadow-xl backdrop-blur-md">
+            <Archive size={12} className="text-primary-400" /> {t('mc_total')}: {complaints.length}
           </span>
         </div>
       </header>
@@ -87,22 +99,27 @@ const MyComplaints = ({ user }) => {
           <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={16} />
           <input 
             type="text" 
-            placeholder="SEARCH BY COMPLAINT ID OR CATEGORY..."
+            placeholder={t('mc_search_ph')}
             className="w-full pl-13 pr-5 py-4 bg-white border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <div className="flex items-center gap-2 bg-slate-50 border border-slate-100 p-1.5 rounded-[1.5rem] w-full lg:w-max">
-           {['All', 'Under Review', 'In Progress', 'Resolved'].map((tab) => (
+           {[
+             {key: 'All', label: t('mc_filter_all')}, 
+             {key: 'Under Review', label: t('mc_filter_review')}, 
+             {key: 'In Progress', label: t('mc_filter_progress')}, 
+             {key: 'Resolved', label: t('mc_filter_resolved')}
+           ].map((tab) => (
              <button
-               key={tab}
-               onClick={() => setFilter(tab)}
+               key={tab.key}
+               onClick={() => setFilter(tab.key)}
                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95
-                 ${filter === tab ? 'bg-slate-900 text-white shadow-xl shadow-slate-200' : 'text-slate-400 hover:text-slate-900'}
+                 ${filter === tab.key ? 'bg-[#F8FBF8] text-[#0F1C12] shadow-xl shadow-slate-200' : 'text-slate-400 hover:text-slate-900'}
                `}
              >
-               {tab}
+               {tab.label}
              </button>
            ))}
         </div>
@@ -117,42 +134,43 @@ const MyComplaints = ({ user }) => {
                 <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 opacity-50">
                     <Activity size={40} className="text-slate-300" />
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-black text-slate-900 uppercase tracking-widest leading-none">Status: No Complaints Found</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">No grievances matching your filters were found.</span>
+                 <div className="flex flex-col">
+                  <span className="text-xs font-black text-slate-900 uppercase tracking-widest leading-none">{t('mc_no_complaints')}</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">{t('mc_no_complaints_desc')}</span>
                 </div>
              </div>
           ) : (
             <table className="w-full text-left uppercase">
-              <thead className="bg-slate-900 text-white">
+              <thead className="bg-[#DCFCE7] text-[#064E3B] border-b border-green-200/50">
                 <tr>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Complaint ID</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Category</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Current Status</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Date Submitted</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('mc_col_id')}</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('mc_col_cat')}</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('mc_col_status')}</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('mc_col_date')}</th>
                   <th className="px-8 py-5 text-right"></th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-green-50/50">
                 {filteredComplaints.map((c, idx) => (
                   <motion.tr 
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
+                    key={c._id}
+                    onClick={() => setSelectedComplaint(c)}
+                    className="hover:bg-[#BBF7D0]/30 transition-all cursor-pointer group"
                     transition={{ delay: idx * 0.03 }}
-                    key={c._id} 
-                    className="hover:bg-slate-50/80 transition-all group"
                   >
                     <td className="px-8 py-6">
                        <span className="text-[11px] font-black text-slate-900 font-mono tracking-widest">{c.complaintId}</span>
                     </td>
                     <td className="px-8 py-6">
                        <div className="flex items-center gap-4">
-                         <div className="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
+                         <div className="p-3 bg-white border border-slate-100 rounded-xl shadow-sm text-slate-400 group-hover:bg-[#F8FBF8] group-hover:text-[#0F1C12] transition-all duration-300">
                            <Layers size={14} />
                          </div>
                          <div className="flex flex-col">
                             <span className="text-xs font-black text-slate-800 tracking-tight">{c.category}</span>
-                            <span className="text-[9px] font-bold text-slate-400 tracking-widest">Issue Type</span>
+                            <span className="text-[9px] font-bold text-slate-400 tracking-widest">{t('mc_issue_type')}</span>
                          </div>
                        </div>
                     </td>
@@ -168,7 +186,7 @@ const MyComplaints = ({ user }) => {
                     <td className="px-8 py-6 text-right">
                        <button 
                          onClick={() => setSelectedComplaint(c)}
-                         className="p-3 bg-slate-900 text-white rounded-xl hover:bg-primary-600 transition-all opacity-0 group-hover:opacity-100 shadow-2xl shadow-primary-500/20 active:scale-90"
+                         className="p-3 bg-[#F8FBF8] text-[#0F1C12] rounded-xl hover:bg-primary-600 transition-all opacity-0 group-hover:opacity-100 shadow-2xl shadow-primary-500/20 active:scale-90"
                        >
                          <ArrowUpRight size={18} />
                        </button>

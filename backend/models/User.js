@@ -28,16 +28,11 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['CITIZEN', 'OFFICER', 'ADMIN'],
-    default: 'CITIZEN'
+    enum: ['USER', 'STAFF', 'ADMIN'],
+    default: 'USER'
   },
   rank: {
     type: String,
-    enum: [
-      'DGP', 'ADGP', 'IG', 'DIG', 'SP', 'ASP', 'DSP', 
-      'Inspector', 'Sub-Inspector (SI)', 'Assistant Sub-Inspector (ASI)', 
-      'Head Constable', 'Constable'
-    ],
     default: null
   },
   active_cases_count: {
@@ -62,6 +57,11 @@ const userSchema = new mongoose.Schema({
   dob: {
     type: Date,
     required: [true, 'Please provide your date of birth']
+  },
+  status: {
+    type: String,
+    enum: ['Active', 'Inactive'],
+    default: 'Active'
   },
   createdAt: {
     type: Date,

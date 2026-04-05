@@ -23,7 +23,7 @@ async function run() {
     console.log("Analytics Officer Performance:");
     console.log(JSON.stringify(analytics.officerPerformance, null, 2));
 
-    const { data: officers } = await axios.get('http://localhost:5000/api/admin/officers', {
+    const { data: officers } = await axios.get('http://localhost:5000/api/admin/staffs', {
       headers: { Authorization: `Bearer ${token}` }
     });
     console.log("\nOfficers List:");

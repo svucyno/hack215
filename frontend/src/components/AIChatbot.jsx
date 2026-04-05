@@ -73,7 +73,7 @@ const AIChatbot = () => {
     <>
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 p-4 bg-slate-900 text-white rounded-full shadow-2xl shadow-slate-900/40 hover:scale-105 active:scale-95 transition-all z-40 group flex items-center justify-center border-4 border-white"
+        className="fixed bottom-6 right-6 p-4 bg-[#F8FBF8] text-[#0F1C12] rounded-full shadow-2xl shadow-slate-900/40 hover:scale-105 active:scale-95 transition-all z-40 group flex items-center justify-center border-4 border-white"
       >
         <Bot size={28} className="group-hover:text-primary-400 transition-colors" />
       </button>
@@ -88,7 +88,7 @@ const AIChatbot = () => {
             className="fixed bottom-24 right-6 w-[360px] h-[500px] bg-white rounded-[2rem] shadow-4xl border border-slate-100 flex flex-col z-50 overflow-hidden"
           >
             {/* Header */}
-            <div className="bg-slate-900 text-white p-5 flex items-center justify-between">
+            <div className="bg-[#F8FBF8] text-[#0F1C12] p-5 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/10 rounded-2xl flex items-center justify-center">
                   <Bot size={20} className="text-primary-400" />
@@ -98,7 +98,7 @@ const AIChatbot = () => {
                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-1.5"><div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></div> Online</span>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="p-2 bg-white/5 hover:bg-rose-500 hover:text-white rounded-xl transition-colors">
+              <button onClick={() => setIsOpen(false)} className="p-2 bg-white/5 hover:bg-rose-500 hover:text-[#0F1C12] rounded-xl transition-colors">
                 <X size={16} />
               </button>
             </div>
@@ -115,7 +115,7 @@ const AIChatbot = () => {
                   <div className={`p-4 rounded-2xl text-[13px] font-medium leading-relaxed
                     ${msg.isBot 
                       ? 'bg-white border border-slate-100 text-slate-700 shadow-sm rounded-tl-sm' 
-                      : 'bg-primary-600 text-white rounded-tr-sm shadow-md'}`}
+                      : 'bg-primary-600 text-[#0F1C12] rounded-tr-sm shadow-md'}`}
                   >
                     {msg.text.split('\n').map((line, j) => (
                       <span key={j} className={line.startsWith('- **') ? 'block mt-1' : ''}>
@@ -140,7 +140,7 @@ const AIChatbot = () => {
               <button 
                 type="submit"
                 disabled={!inputMessage.trim()}
-                className="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center hover:bg-primary-600 active:scale-95 transition-all disabled:opacity-50 disabled:bg-slate-300 shadow-xl shadow-slate-900/10"
+                className="w-12 h-12 bg-[#F8FBF8] text-[#0F1C12] rounded-2xl flex items-center justify-center hover:bg-primary-600 active:scale-95 transition-all disabled:opacity-50 disabled:bg-slate-300 shadow-xl shadow-slate-900/10"
               >
                 <Send size={16} className="-ml-0.5" />
               </button>

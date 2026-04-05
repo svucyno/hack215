@@ -144,7 +144,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                 <div className="flex items-center gap-2">
                   <button 
                     onClick={() => exportReport(complaint)}
-                    className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-900 text-white rounded-[1rem] hover:bg-primary-600 transition-all shadow-lg shadow-slate-900/10 text-[10px] font-black uppercase tracking-widest active:scale-95 border border-transparent"
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-[#F8FBF8] text-[#0F1C12] rounded-[1rem] hover:bg-primary-600 transition-all shadow-lg shadow-slate-900/10 text-[10px] font-black uppercase tracking-widest active:scale-95 border border-transparent"
                     title="Export Grievance to PDF"
                   >
                     <Download size={14} /> Export PDF
@@ -230,7 +230,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                                   key={status}
                                   onClick={() => setNewStatus(status)}
                                   className={`w-full p-3.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-left transition-all border-2
-                                    ${newStatus === status ? 'bg-slate-900 border-slate-900 text-white shadow-xl shadow-slate-200' : 'bg-white border-white text-slate-400 hover:border-slate-200'}
+                                    ${newStatus === status ? 'bg-[#F8FBF8] border-slate-900 text-[#0F1C12] shadow-xl shadow-slate-200' : 'bg-white border-white text-slate-400 hover:border-slate-200'}
                                   `}
                                 >
                                    {status}
@@ -276,7 +276,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                         <button 
                           onClick={handleUpdateStatus}
                           disabled={submitting || (newStatus === 'Completed' && verificationLoading)}
-                          className="w-full bg-primary-600 text-white py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-xl shadow-primary-500/20 hover:bg-slate-900 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2.5"
+                          className="w-full bg-primary-600 text-white py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-xl shadow-primary-500/20 hover:bg-[#F8FBF8] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2.5"
                         >
                           {submitting ? (
                              <div className="flex items-center gap-2">
@@ -322,7 +322,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                        <button 
                          onClick={handleRate}
                          disabled={submitting}
-                         className="w-full bg-slate-900 text-white py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-slate-900/10 hover:bg-primary-600 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2.5"
+                         className="w-full bg-[#F8FBF8] text-[#0F1C12] py-4 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.3em] shadow-2xl shadow-slate-900/10 hover:bg-primary-600 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2.5"
                        >
                          {submitting ? <div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></div> : <>Transmit Evaluation <Send size={14} /></>}
                        </button>

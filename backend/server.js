@@ -6,7 +6,7 @@ const path = require('path');
 const connectDB = require('./config/db');
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 // Connect to Database
 connectDB();
@@ -30,17 +30,26 @@ const adminRoutes = require('./routes/adminRoutes');
 const officerRoutes = require('./routes/officerRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const visionRoutes = require('./routes/visionRoutes');
-const firRoutes = require('./routes/firRoutes');
+const reportRoutes = require('./routes/reportRoutes');
 
 // Use Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/complaints', complaintRoutes);
 app.use('/api/departments', departmentRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/officers', officerRoutes);
+app.use('/api/staffs', officerRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/vision', visionRoutes);
-app.use('/api/fir', firRoutes);
+app.use('/api/report', reportRoutes);
+
+// Fix "Cannot GET /" and add Health Check
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "success", message: "🚀 Multilingual AI REPORT Backend is live" });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

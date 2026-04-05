@@ -37,7 +37,7 @@ const DepartmentModal = ({ isOpen, onClose, user, onUpdate }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#F8FBF8]/60 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="bg-white rounded-[2.5rem] shadow-2xl w-full max-w-md overflow-hidden relative border border-slate-100 animate-in zoom-in-95 duration-300">
         <button onClick={onClose} className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-full transition-all">
           <X size={20} />
@@ -90,7 +90,7 @@ const DepartmentModal = ({ isOpen, onClose, user, onUpdate }) => {
               <button 
                 type="submit" 
                 disabled={loading}
-                className="w-full py-4 bg-slate-900 text-white rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-[0.98] disabled:opacity-50"
+                className="w-full py-4 bg-[#F8FBF8] text-[#0F1C12] rounded-2xl font-black uppercase tracking-[0.2em] text-xs hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-[0.98] disabled:opacity-50"
               >
                 {loading ? 'Processing...' : 'Deploy Infrastructure'}
               </button>

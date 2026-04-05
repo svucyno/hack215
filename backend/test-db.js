@@ -6,7 +6,7 @@ const User = require('./models/User.js');
 
 const checkDb = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/citizen_grievance_portal');
+        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/user_grievance_portal');
         
         let output = 'Connected to DB\n';
         const users = await User.find({}).select('+password');

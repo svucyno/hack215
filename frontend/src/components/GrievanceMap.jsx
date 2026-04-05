@@ -72,14 +72,14 @@ const GrievanceMap = ({ latitude, longitude, onLocationChange, addressSearch, se
         <input
           type="text"
           placeholder="SEARCH ARCHIVE OR LOCALITY..."
-          className="w-full pl-13 pr-5 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/30 focus:border-primary-500 transition-all font-black text-[10px] text-slate-200 uppercase tracking-widest shadow-lg shadow-black/20"
+          className="w-full pl-13 pr-5 py-4 bg-white/5 border border-green-600/15 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/30 focus:border-primary-500 transition-all font-black text-[10px] text-slate-200 uppercase tracking-widest shadow-lg shadow-black/20"
           value={addressSearch}
           onChange={(e) => setAddressSearch(e.target.value)}
           onKeyDown={handleSearch}
         />
       </div>
 
-      <div className="flex-1 rounded-[2.5rem] overflow-hidden border border-white/10 glass-morphism relative min-h-[360px] z-10 shadow-2xl p-1">
+      <div className="flex-1 rounded-[2.5rem] overflow-hidden border border-green-600/15 glass-morphism relative min-h-[360px] z-10 shadow-2xl p-1">
         <div className="w-full h-full rounded-[2.25rem] overflow-hidden relative">
            <MapContainer
              center={[latitude, longitude]}
@@ -98,7 +98,7 @@ const GrievanceMap = ({ latitude, longitude, onLocationChange, addressSearch, se
            <div className="absolute inset-0 pointer-events-none rounded-[2.25rem] border border-white/5 shadow-[inset_0_0_20px_rgba(59,130,246,0.15)] z-[400]"></div>
         </div>
         
-        <div className="absolute bottom-6 left-6 right-6 bg-slate-900/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] border border-white/10 p-5 rounded-3xl flex items-center justify-between z-[500] transition-all hover:scale-[1.02]">
+        <div className="absolute bottom-6 left-6 right-6 bg-[#F8FBF8]/80 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] border border-green-600/15 p-5 rounded-3xl flex items-center justify-between z-[500] transition-all hover:scale-[1.02]">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2">
               <MapPin size={10} className="text-primary-400" />

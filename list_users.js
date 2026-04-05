@@ -5,7 +5,7 @@ dotenv.config({ path: './backend/.env' });
 
 const listUsers = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/citizen_grievance_portal';
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/user_grievance_portal';
     await mongoose.connect(mongoUri);
     const users = await User.find({}, 'name email role');
     console.log(JSON.stringify(users, null, 2));

@@ -23,7 +23,7 @@ const registerUser = async (req, res) => {
 
     // Generate a random ID if officer
     let officerId = undefined;
-    if (role.toUpperCase() === 'OFFICER') {
+    if (role.toUpperCase() === 'STAFF') {
       officerId = `OFF-${Math.floor(1000 + Math.random() * 9000)}`;
     }
 
@@ -35,7 +35,7 @@ const registerUser = async (req, res) => {
       role: role.toUpperCase(),
       officerId,
       dob,
-      rank: role.toUpperCase() === 'OFFICER' ? rank : null
+      rank: role.toUpperCase() === 'STAFF' ? (rank || 'Junior Staff') : null
     });
 
     if (user) {

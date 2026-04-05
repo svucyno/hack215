@@ -1,15 +1,16 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const User = require('./backend/models/User');
-const Department = require('./backend/models/Department');
-const Complaint = require('./backend/models/Complaint');
+const User = require('./models/User');
+const Department = require('./models/Department');
+const Complaint = require('./models/Complaint');
 const dotenv = require('dotenv');
+const path = require('path');
 
-dotenv.config({ path: './backend/.env' });
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const seedData = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/citizen_grievance_portal';
+    const mongoUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://localhost:27017/user_grievance_portal';
     await mongoose.connect(mongoUri);
     console.log('Seed: Connected to MongoDB');
 
@@ -46,7 +47,7 @@ const seedData = async () => {
       name: 'Alex Citizen',
       email: 'alex@gmail.com',
       password: 'password123',
-      role: 'CITIZEN',
+      role: 'USER',
       phone: '5554443332'
     });
 

@@ -161,7 +161,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+            className="absolute inset-0 bg-[#F8FBF8]/60 backdrop-blur-md"
           ></motion.div>
           
           <motion.div
@@ -234,7 +234,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                   <button 
                     onClick={() => handleAssignSuggest(suggestion)} 
                     disabled={submitting}
-                    className="w-full bg-slate-900 hover:bg-primary-600 text-white py-2.5 mt-0.5 rounded-lg text-[9px] font-black tracking-[0.2em] uppercase transition-colors active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full bg-[#F8FBF8] hover:bg-primary-600 text-[#0F1C12] py-2.5 mt-0.5 rounded-lg text-[9px] font-black tracking-[0.2em] uppercase transition-colors active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     <Zap size={12} /> Auto-Assign Suggested
                   </button>
@@ -288,7 +288,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                 <button
                   onClick={handleAssign}
                   disabled={submitting}
-                  className="bg-primary-600 text-white py-3.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary-500/20 hover:bg-slate-900 transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 w-full"
+                  className="bg-primary-600 text-white py-3.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary-500/20 hover:bg-[#F8FBF8] transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 w-full"
                 >
                   {submitting ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

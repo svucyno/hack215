@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { User, Mail, Shield, Bell, Key, LogOut, Camera, CheckCircle2, Phone, Fingerprint, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const Profile = ({ user }) => {
+  const { t } = useCitizenLang();
   const [activeTab, setActiveTab] = useState('Overview');
 
-  const tabs = ['Overview', 'Security', 'Preferences', 'Records'];
+  const tabs = [t('prof_tab_overview'), t('prof_tab_security'), t('prof_tab_preferences'), t('prof_tab_records')];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-10">
@@ -14,17 +16,24 @@ const Profile = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Identity Hub: Profile Oversight</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">{t('prof_header_subtitle')}</span>
           </div>
-          <div className="flex items-center gap-3">
-             <div className="status-pulse bg-primary-500" style={{ '--pulse-color': 'rgba(59, 130, 246, 0.5)' }}></div>
-             <h1 className="text-4xl font-black text-white tracking-tighter leading-none uppercase">{user?.name} Identity</h1>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                {user?.name} {t('prof_header_title')}
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                {t('prof_header_desc')}
+              </p>
+            </div>
           </div>
-          <p className="text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">Synthesizing personal credentials and security authorization metrics.</p>
         </div>
         <div className="flex items-center gap-2 relative z-10">
-          <span className="px-6 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-white/10 shadow-xl backdrop-blur-md">
-            Verified UID: {user?._id?.slice(-8).toUpperCase()}
+          <span className="px-6 py-3 bg-white/5 text-[#0F1C12] rounded-full text-[10px] font-black uppercase tracking-[0.2em] border border-green-600/15 shadow-xl backdrop-blur-md">
+            {t('prof_verified_uid')}: {user?._id?.slice(-8).toUpperCase()}
           </span>
         </div>
       </header>
@@ -36,7 +45,7 @@ const Profile = ({ user }) => {
              key={tab}
              onClick={() => setActiveTab(tab)}
              className={`px-8 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all active:scale-95
-               ${activeTab === tab ? 'bg-slate-900 text-white shadow-xl shadow-slate-200' : 'text-slate-400 hover:text-slate-900'}
+               ${activeTab === tab ? 'bg-[#F8FBF8] text-[#0F1C12] shadow-xl shadow-slate-200' : 'text-slate-400 hover:text-slate-900'}
              `}
            >
              {tab}
@@ -53,7 +62,7 @@ const Profile = ({ user }) => {
               <div className="relative mt-2">
                  <div className="w-40 h-40 rounded-[2.5rem] bg-slate-50 ring-1 ring-slate-100 shadow-inner flex items-center justify-center text-6xl font-black text-slate-900 overflow-hidden transform group-hover:rotate-2 transition-transform duration-500">
                     {user?.name?.charAt(0)}
-                    <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer backdrop-blur-sm">
+                    <div className="absolute inset-0 bg-[#F8FBF8]/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer backdrop-blur-sm">
                        <Camera size={28} className="text-white" />
                     </div>
                  </div>
@@ -73,10 +82,10 @@ const Profile = ({ user }) => {
                  </div>
                  <div className="flex items-center justify-center gap-2">
                     <span className="text-[9px] font-black text-primary-600 uppercase tracking-[0.3em] bg-primary-50 px-4 py-1.5 rounded-full border border-primary-100/50">
-                       {user?.role} AUTHORITY
+                       {user?.role} {t('prof_authority')}
                     </span>
                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] bg-slate-50 px-4 py-1.5 rounded-full border border-slate-100">
-                       LVL 14
+                       {t('prof_lvl')} 14
                     </span>
                  </div>
               </div>
@@ -85,14 +94,14 @@ const Profile = ({ user }) => {
 
               <div className="flex flex-col gap-5 w-full text-left">
                  <div className="flex items-center justify-between px-1">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Trust Index</span>
-                    <span className="text-[11px] font-black text-slate-900 tracking-widest uppercase">92.4% Optimal</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('prof_trust_index')}</span>
+                    <span className="text-[11px] font-black text-slate-900 tracking-widest uppercase">92.4% {t('prof_trust_optimal')}</span>
                  </div>
                  <div className="w-full h-3 bg-slate-50 rounded-full overflow-hidden p-0.5 border border-slate-100 shadow-inner">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: '92%' }}
-                      className="h-full bg-slate-900 rounded-full shadow-lg"
+                      className="h-full bg-[#F8FBF8] rounded-full shadow-lg"
                     ></motion.div>
                  </div>
               </div>
@@ -100,20 +109,20 @@ const Profile = ({ user }) => {
 
            <motion.div 
              whileHover={{ y: -5 }}
-             className="card p-8 bg-slate-900 text-white flex flex-col gap-5 relative overflow-hidden rounded-[3rem] border-none shadow-4xl shadow-slate-900/20"
+             className="card p-8 bg-[#F8FBF8] text-[#0F1C12] flex flex-col gap-5 relative overflow-hidden rounded-[3rem] border-none shadow-4xl shadow-slate-900/20"
            >
                 <Fingerprint size={80} className="text-primary-500 opacity-10 absolute -right-4 -top-4 rotate-12" />
                 <div className="flex items-center gap-4 relative z-10">
-                   <div className="w-10 h-10 bg-white/10 rounded-[1rem] flex items-center justify-center border border-white/10">
+                   <div className="w-10 h-10 bg-white/10 rounded-[1rem] flex items-center justify-center border border-green-600/15">
                       <Shield size={20} className="text-primary-400" />
                    </div>
-                   <span className="text-xs font-black uppercase tracking-[0.2em]">Security Protocol</span>
+                   <span className="text-xs font-black uppercase tracking-[0.2em]">{t('prof_security_protocol')}</span>
                 </div>
                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-relaxed relative z-10 opacity-70">
-                   Synthesizing biometric authentication layers for high-impact report authorization.
+                   {t('prof_security_desc')}
                 </p>
                 <button className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em] hover:text-white transition-all text-left relative z-10">
-                   INITIALIZE SYNC &rarr;
+                   {t('prof_init_sync')} &rarr;
                 </button>
            </motion.div>
         </div>
@@ -125,21 +134,21 @@ const Profile = ({ user }) => {
                  <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                        <div className="w-1.5 h-1.5 rounded-full bg-primary-500"></div>
-                       <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">{activeTab} Parameters</h3>
+                       <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">{activeTab} {t('prof_parameters')}</h3>
                     </div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] ml-3.5">System sector configuration node.</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em] ml-3.5">{t('prof_param_desc')}</p>
                  </div>
                  <button className="text-[10px] font-black text-rose-600 tracking-[0.3em] uppercase py-4 px-8 bg-rose-50 rounded-2xl hover:bg-rose-100 transition-all active:scale-95 shadow-lg shadow-rose-200/20 border border-rose-100">
-                    Lock Sector
+                    {t('prof_lock_sector')}
                  </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                  {[
-                   { icon: <User size={16} />, label: 'Legal Identifier', val: user?.name },
-                   { icon: <Mail size={16} />, label: 'Access Point', val: user?.email },
-                   { icon: <Phone size={16} />, label: 'Relay Protocol', val: '+91 990 234 xxxx' },
-                   { icon: <Shield size={16} />, label: 'Security Clearance', val: 'Level IV - Strategic Citizen' }
+                   { icon: <User size={16} />, label: t('prof_field_legal'), val: user?.name },
+                   { icon: <Mail size={16} />, label: t('prof_field_access'), val: user?.email },
+                   { icon: <Phone size={16} />, label: t('prof_field_relay'), val: '+91 990 234 xxxx' },
+                   { icon: <Shield size={16} />, label: t('prof_field_security'), val: t('prof_level_iv') }
                  ].map((field, i) => (
                    <div key={i} className="flex flex-col gap-3 group">
                       <div className="flex items-center gap-2 text-slate-400">
@@ -158,20 +167,20 @@ const Profile = ({ user }) => {
 
               <div className="flex flex-col gap-10 pt-10 border-t border-slate-50">
                  <div className="flex flex-col gap-1">
-                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">Operational Telemetry</h4>
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Active mission debrief and dispatch relays.</p>
+                    <h4 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">{t('prof_telemetry')}</h4>
+                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{t('prof_telemetry_desc')}</p>
                  </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {[
-                      { label: 'Deployment Relay', desc: 'Critical SMS dispatch notifications', active: true },
-                      { label: 'Archive Pulse', desc: 'Sector-wide infrastructure logs', active: false }
+                      { label: t('prof_pref_relay'), desc: t('prof_pref_relay_desc'), active: true },
+                      { label: t('prof_pref_archive'), desc: t('prof_pref_archive_desc'), active: false }
                     ].map((pref, i) => (
                       <div key={i} className="flex flex-col gap-4 p-8 bg-slate-50 rounded-[3rem] border border-slate-50 transition-all hover:bg-white hover:border-slate-100 group">
                          <div className="flex flex-col gap-1">
                             <span className="text-[11px] font-black text-slate-800 uppercase tracking-widest">{pref.label}</span>
                             <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider">{pref.desc}</span>
                          </div>
-                         <button className={`w-14 h-7 rounded-full relative transition-all shadow-inner border ${pref.active ? 'bg-slate-900 border-slate-900' : 'bg-slate-200 border-slate-300'}`}>
+                         <button className={`w-14 h-7 rounded-full relative transition-all shadow-inner border ${pref.active ? 'bg-[#F8FBF8] border-slate-900' : 'bg-slate-200 border-slate-300'}`}>
                             <div className={`absolute top-1 w-4.5 h-4.5 rounded-full bg-white shadow-xl transition-all ${pref.active ? 'left-8' : 'left-1'}`}></div>
                          </button>
                       </div>
@@ -180,8 +189,8 @@ const Profile = ({ user }) => {
               </div>
 
               <div className="flex items-center justify-end gap-8 pt-6">
-                 <button className="text-[11px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest transition-colors">Abort Changes</button>
-                 <button className="bg-slate-900 text-white py-6 px-16 rounded-[2.5rem] text-[12px] font-black uppercase tracking-[0.4em] hover:bg-primary-600 shadow-[0_20px_50px_rgba(2,6,23,0.1)] active:scale-95 transition-all">Commit Protocol</button>
+                 <button className="text-[11px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest transition-colors">{t('prof_abort')}</button>
+                 <button className="bg-[#F8FBF8] text-[#0F1C12] py-6 px-16 rounded-[2.5rem] text-[12px] font-black uppercase tracking-[0.4em] hover:bg-primary-600 shadow-[0_20px_50px_rgba(2,6,23,0.1)] active:scale-95 transition-all">{t('prof_commit')}</button>
               </div>
            </div>
 
@@ -195,8 +204,8 @@ const Profile = ({ user }) => {
                     <LogOut size={28} />
                  </div>
                  <div className="flex flex-col gap-1">
-                    <span className="text-xs font-black uppercase tracking-[0.2em] group-hover:text-white">Terminate Authentication</span>
-                    <span className="text-[9px] font-black text-rose-400 uppercase tracking-widest group-hover:text-white/70">Securely finalize session and cycle encryption keys</span>
+                    <span className="text-xs font-black uppercase tracking-[0.2em] group-hover:text-white">{t('prof_terminate')}</span>
+                    <span className="text-[9px] font-black text-rose-400 uppercase tracking-widest group-hover:text-white/70">{t('prof_terminate_desc')}</span>
                  </div>
               </div>
               <ArrowRight size={24} className="opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-300 relative z-10" />

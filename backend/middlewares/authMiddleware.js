@@ -47,7 +47,7 @@ const admin = (req, res, next) => {
 };
 
 const officer = (req, res, next) => {
-  if (req.user && (req.user.role === 'OFFICER' || req.user.role === 'ADMIN')) {
+  if (req.user && (req.user.role === 'STAFF' || req.user.role === 'ADMIN')) {
     return next();
   } else {
     return res.status(401).json({ message: 'Not authorized as an officer' });

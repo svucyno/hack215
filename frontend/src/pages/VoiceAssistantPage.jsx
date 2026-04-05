@@ -26,10 +26,13 @@ import {
 } from 'lucide-react';
 import InteractiveAIBot from '../components/InteractiveAIBot';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const VoiceAssistantPage = ({ user }) => {
   const navigate = useNavigate();
-  const [languageMode, setLanguageMode] = useState('en-IN');
+  const { t, language } = useCitizenLang();
+  // We handle voice language specifically for speech reconition
+  const [languageMode, setLanguageMode] = useState(language === 'te' ? 'te-IN' : 'en-IN');
   const isTelugu = languageMode === 'te-IN';
 
   const {
@@ -191,11 +194,18 @@ const VoiceAssistantPage = ({ user }) => {
                 <ArrowLeft size={20} />
               </Link>
               <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="text-primary-600 animate-pulse" size={14} />
-                  <span className="text-[10px] font-black text-primary-600 uppercase tracking-[0.4em]">Civic Support Assistant</span>
+              <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                <div className="relative z-10 flex flex-col gap-3">
+                  <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                    {t('va_header_title')}
+                  </h1>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                    {t('va_header_desc')}
+                  </p>
                 </div>
-                <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter leading-none uppercase mt-1">Grievance Portal</h1>
+              </div>
               </div>
             </div>
 
@@ -220,10 +230,10 @@ const VoiceAssistantPage = ({ user }) => {
                   <div className="absolute bottom-4 right-4 w-4 h-4 bg-emerald-500 border-4 border-white rounded-full shadow-sm z-30"></div>
                 </div>
                 <div className="flex flex-col">
-                  <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Live Support Active</h2>
+                  <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">{t('va_live_support')}</h2>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse shadow-sm"></span>
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Connected to Civic Hub</span>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t('va_connected')}</span>
                   </div>
                 </div>
               </div>
@@ -231,7 +241,7 @@ const VoiceAssistantPage = ({ user }) => {
               <div className="flex flex-col items-center gap-2">
                 <button
                   onClick={isListening ? stopMic : startMic}
-                  className={`group relative p-10 rounded-[2.5rem] transition-all duration-700 z-10 ${isListening ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/30' : 'bg-slate-900 text-white hover:bg-primary-600'}`}
+                  className={`group relative p-10 rounded-[2.5rem] transition-all duration-700 z-10 ${isListening ? 'bg-rose-500 text-white shadow-lg shadow-rose-500/30' : 'bg-[#F8FBF8] text-[#0F1C12] hover:bg-primary-600'}`}
                 >
                   {isListening ? <MicOff size={40} /> : <Mic size={40} />}
                 </button>
@@ -243,10 +253,10 @@ const VoiceAssistantPage = ({ user }) => {
               <AnimatePresence>
                 {chatHistory.map((msg, i) => (
                   <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`relative max-w-[85%] p-6 rounded-[2rem] text-[12px] font-bold shadow-sm ${msg.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'}`}>
+                    <div className={`relative max-w-[85%] p-6 rounded-[2rem] text-[12px] font-bold shadow-sm ${msg.role === 'user' ? 'bg-green-600 text-white rounded-br-none' : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'}`}>
                       <div className={`flex items-center gap-2 mb-2 ${msg.role === 'user' ? 'text-blue-100' : 'text-primary-600'}`}>
                         {msg.role === 'user' ? <UserIcon size={12} /> : <Cpu size={12} />}
-                        <span className="text-[9px] font-black uppercase tracking-widest">{msg.role === 'assistant' ? 'ASSISTANT' : 'YOU'}</span>
+                        <span className="text-[9px] font-black uppercase tracking-widest">{msg.role === 'assistant' ? t('va_assistant') : t('va_you')}</span>
                       </div>
                       <span>{msg.text}</span>
                     </div>
@@ -267,7 +277,7 @@ const VoiceAssistantPage = ({ user }) => {
               <input
                 disabled={isListening}
                 type="text"
-                placeholder="DESCRIBE YOUR ISSUE..."
+                placeholder={t('va_describe_ph')}
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 className="flex-1 bg-slate-50 border border-slate-200 rounded-[2rem] px-8 py-5 text-[10px] font-black uppercase tracking-widest outline-none focus:border-primary-500 transition-all shadow-sm"
@@ -285,7 +295,7 @@ const VoiceAssistantPage = ({ user }) => {
                     setTextInput('');
                   }
                 }}
-                className="bg-slate-900 text-white px-8 rounded-[2rem] hover:bg-primary-600 transition-all"
+                className="bg-[#F8FBF8] text-[#0F1C12] px-8 rounded-[2rem] hover:bg-primary-600 transition-all"
               >
                 <Send size={20} />
               </button>
@@ -312,19 +322,19 @@ const VoiceAssistantPage = ({ user }) => {
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText className="text-primary-600" size={18} />
-                  <span className="text-[11px] font-black uppercase tracking-[0.2em]">Complaint Details</span>
+                  <span className="text-[11px] font-black uppercase tracking-[0.2em]">{t('va_complaint_details')}</span>
                 </div>
                 <div className="space-y-4">
                   <div className="flex flex-col gap-1 border-b border-slate-50 pb-2">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Issue Type</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t('va_issue_type')}</span>
                     <span className="text-sm font-black text-primary-600 uppercase">{grievanceData.issueType}</span>
                   </div>
                   <div className="flex flex-col gap-1 border-b border-slate-50 pb-2">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Location</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t('va_loc')}</span>
                     <span className="text-xs font-bold text-slate-700">{grievanceData.location}</span>
                   </div>
                   <div className="flex flex-col gap-1">
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Severity</span>
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t('va_severity')}</span>
                     <span className={`text-xs font-black uppercase ${grievanceData.severity === 'High' ? 'text-rose-600' : 'text-amber-600'}`}>{grievanceData.severity}</span>
                   </div>
                 </div>
@@ -332,10 +342,10 @@ const VoiceAssistantPage = ({ user }) => {
               <button 
                 onClick={handleFinalSubmit} 
                 className={`w-full mt-6 py-5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all
-                  ${success ? 'bg-emerald-500 text-white' : 'bg-slate-900 text-white hover:bg-primary-600'}
+                  ${success ? 'bg-emerald-500 text-white' : 'bg-[#F8FBF8] text-[#0F1C12] hover:bg-primary-600'}
                 `}
               >
-                {submitting ? 'RECORDING...' : (success ? 'SUBMITTED' : (isTelugu ? 'సమర్పించండి' : 'Final Submission'))}
+                {submitting ? t('va_recording') : (success ? t('va_submitted') : (isTelugu ? 'సమర్పించండి' : t('va_final_sub')))}
               </button>
             </div>
 
@@ -343,17 +353,17 @@ const VoiceAssistantPage = ({ user }) => {
               <div className="flex items-center justify-between border-b border-slate-50 pb-4">
                 <div className="flex items-center gap-2">
                   <Zap className="text-primary-600" size={18} />
-                  <span className="text-[11px] font-black text-slate-900 uppercase tracking-widest">Assistant Progress</span>
+                  <span className="text-[11px] font-black text-slate-900 uppercase tracking-widest">{t('va_progress')}</span>
                 </div>
                 <div className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100">{grievanceData.completion_percentage}%</div>
               </div>
               <div className="flex flex-col gap-2">
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Step {grievanceData.current_step} of 5</span>
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t('va_step')} {grievanceData.current_step} {t('va_of')} 5</span>
                 <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                    <div className="h-full bg-primary-600 transition-all duration-500" style={{ width: `${grievanceData.completion_percentage}%` }}></div>
                 </div>
                 <p className="text-[9px] text-slate-400 mt-2 font-medium uppercase tracking-widest italic text-center">
-                  {grievanceData.completion_percentage === 100 ? 'Analysis Complete' : 'Awaiting Next Detail...'}
+                  {grievanceData.completion_percentage === 100 ? t('va_analysis_comp') : t('va_awaiting')}
                 </p>
               </div>
             </div>
@@ -366,8 +376,8 @@ const VoiceAssistantPage = ({ user }) => {
           <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} className="fixed bottom-10 right-10 bg-emerald-500 text-white px-8 py-5 rounded-[2rem] shadow-2xl flex items-center gap-4 z-[100]">
             <CheckCircle2 size={24} />
             <div className="flex flex-col">
-              <span className="text-sm font-black uppercase tracking-widest">Grievance Recorded</span>
-              <span className="text-[10px] font-bold opacity-90 uppercase">Successfully logged in civic database.</span>
+              <span className="text-sm font-black uppercase tracking-widest">{t('va_recorded')}</span>
+              <span className="text-[10px] font-bold opacity-90 uppercase">{t('va_recorded_desc')}</span>
             </div>
           </motion.div>
         )}

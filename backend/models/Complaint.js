@@ -61,7 +61,7 @@ const complaintSchema = new mongoose.Schema({
   },
   complaintType: {
     type: String,
-    enum: ['REGULAR', 'AI_FIR'],
+    enum: ['REGULAR', 'AI_REPORT'],
     default: 'REGULAR'
   },
   voiceTranscript: {
@@ -72,7 +72,7 @@ const complaintSchema = new mongoose.Schema({
     text: { type: String },
     timestamp: { type: Date, default: Date.now }
   }],
-  firData: {
+  reportData: {
     type: mongoose.Schema.Types.Mixed,
     default: {}
   },

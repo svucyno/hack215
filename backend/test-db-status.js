@@ -19,9 +19,9 @@ const testDb = async () => {
         console.log(`- Total Citizens/Officers in Node: ${userCount}`);
         console.log(`- Total Incident Dossiers: ${complaintCount}`);
 
-        // Check if we can find any AI_FIR complaints (new schema)
-        const aiFirCount = await Complaint.countDocuments({ complaintType: 'AI_FIR' });
-        console.log(`- AI-Powered FIRs: ${aiFirCount}`);
+        // Check if we can find any AI_REPORT complaints (new schema)
+        const aiFirCount = await Complaint.countDocuments({ complaintType: 'AI_REPORT' });
+        console.log(`- AI-Powered REPORTs: ${aiFirCount}`);
 
         console.log("\n✅ Database integrity check complete. All systems nominal.");
         process.exit(0);

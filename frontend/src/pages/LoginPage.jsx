@@ -38,18 +38,18 @@ const LoginPage = ({ setUser }) => {
       {/* Left Side: Login Form */}
       <div className="flex-1 flex flex-col justify-center items-center px-6 lg:px-20 py-12 relative overflow-hidden">
         {/* Background Gradients */}
-        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-50 opacity-50 blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute top-0 left-0 w-96 h-96 bg-green-50 opacity-50 blur-[100px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
         
         <motion.div 
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}
           className="w-full max-w-md relative z-10"
         >
           <div className="mb-12">
-            <Link to="/" className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-violet-600 text-white shadow-xl shadow-blue-500/30 mb-8 transform hover:scale-105 transition-all">
+            <Link to="/" className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-green-500 to-emerald-600 text-white shadow-xl shadow-green-500/30 mb-8 transform hover:scale-105 transition-all">
               <Shield size={28} className="stroke-[2.5]" />
             </Link>
             <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none">Welcome Back</h1>
-            <p className="text-slate-500 font-medium mt-3">Access the secure civic grievance portal.</p>
+            <p className="text-slate-500 font-medium mt-3 italic uppercase tracking-[0.1em] text-[10px]">Access the secure civic grievance portal.</p>
           </div>
 
           {error && (
@@ -66,11 +66,11 @@ const LoginPage = ({ setUser }) => {
             <div className="flex flex-col gap-2">
               <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Email Address</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-green-600 transition-colors" size={20} />
                 <input
                   type="email"
                   placeholder="your.email@example.com"
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400"
+                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-green-600/10 focus:border-green-600 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -81,14 +81,14 @@ const LoginPage = ({ setUser }) => {
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center px-1">
                 <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Password</label>
-                <Link to="#" className="text-[11px] font-black text-blue-600 hover:text-blue-700">Recovery</Link>
+                <Link to="#" className="text-[11px] font-black text-green-600 hover:text-green-700">Recovery</Link>
               </div>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-green-600 transition-colors" size={20} />
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400"
+                  className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-green-600/10 focus:border-green-600 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -99,7 +99,7 @@ const LoginPage = ({ setUser }) => {
             <button
               type="submit"
               disabled={loading}
-              className="mt-6 w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-lg shadow-2xl shadow-slate-900/20 hover:bg-blue-600 hover:shadow-blue-600/30 transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1 disabled:opacity-70"
+              className="mt-6 w-full py-5 bg-[#F8FBF8] text-[#0F1C12] rounded-2xl font-black text-lg shadow-2xl shadow-slate-900/20 hover:bg-green-600 hover:text-white transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1 disabled:opacity-70"
             >
               {loading ? (
                 <Loader size={24} className="animate-spin" />
@@ -114,7 +114,7 @@ const LoginPage = ({ setUser }) => {
 
           <p className="text-center mt-12 text-sm font-bold text-slate-500">
             Need an account?{' '}
-            <Link to="/register" className="text-blue-600 hover:text-blue-700 underline underline-offset-8">
+            <Link to="/register" className="text-green-600 hover:text-green-700 underline underline-offset-8">
               Register Here
             </Link>
           </p>
@@ -122,24 +122,24 @@ const LoginPage = ({ setUser }) => {
       </div>
 
       {/* Right Side: Features/Branding */}
-      <div className="hidden lg:flex flex-1 flex-col justify-between bg-slate-900 p-20 text-white relative overflow-hidden">
+      <div className="hidden lg:flex flex-1 flex-col justify-between bg-[#F8FBF8] p-20 text-[#0F1C12] relative overflow-hidden">
         {/* Background Graphics */}
         <img 
           src="/images/secure_auth_node_1774208437094.png" 
           alt="AI Security Node" 
-          className="absolute inset-0 w-full h-full object-cover opacity-40 pointer-events-none mix-blend-overlay" 
+          className="absolute inset-0 w-full h-full object-cover opacity-60 pointer-events-none mix-blend-overlay" 
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-900/40 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0A0C0F] via-[#0A0C0F] to-emerald-900/40 pointer-events-none" />
 
         <div className="relative z-10">
            <div className="flex items-center gap-3 mb-10">
-              <Shield size={32} className="text-blue-500" />
-              <span className="text-2xl font-black tracking-tight">Smart Grievance<span className="text-blue-500">.</span>AI</span>
+              <Shield size={32} className="text-emerald-500" />
+              <span className="text-2xl font-black tracking-tight text-white">Smart Grievance<span className="text-emerald-500">.</span>AI</span>
            </div>
            
-           <h2 className="text-5xl font-black leading-tight tracking-tight mb-8">
+           <h2 className="text-5xl font-black leading-tight tracking-tight mb-8 text-white">
              Simplifying Civic <br /> 
-             <span className="text-blue-500">Infrastructure.</span>
+             <span className="text-emerald-500">Infrastructure.</span>
            </h2>
            
            <div className="flex flex-col gap-6 max-w-md">
@@ -150,11 +150,11 @@ const LoginPage = ({ setUser }) => {
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
                    <div className="mt-1">
-                      <CheckCircle2 size={18} className="text-blue-500" />
+                      <CheckCircle2 size={18} className="text-emerald-500" />
                    </div>
                    <div className="flex flex-col gap-1">
-                      <span className="font-black text-sm uppercase tracking-widest text-slate-100">{item.title}</span>
-                      <p className="text-slate-400 font-medium text-sm leading-relaxed">{item.desc}</p>
+                      <span className="font-black text-sm uppercase tracking-widest text-[#F8FBF8]">{item.title}</span>
+                      <p className="text-emerald-100/70 font-medium text-sm leading-relaxed">{item.desc}</p>
                    </div>
                 </div>
               ))}

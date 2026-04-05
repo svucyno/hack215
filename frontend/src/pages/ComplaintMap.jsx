@@ -8,6 +8,7 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.heat';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const createDotIcon = (color, isBlinking) => L.divIcon({
   className: 'custom-dot-icon',
@@ -84,6 +85,7 @@ const HeatmapLayer = ({ points, visible }) => {
 };
 
 const ComplaintMap = ({ user }) => {
+  const { t } = useCitizenLang();
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('markers'); // markers | heatmap
@@ -109,7 +111,7 @@ const ComplaintMap = ({ user }) => {
     return (
       <div className="p-20 flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
-        <p className="text-sm font-medium text-slate-400 font-mono tracking-widest uppercase">Syncing Geospatial Node...</p>
+        <p className="text-sm font-medium text-slate-400 font-mono tracking-widest uppercase">{t('map_syncing')}</p>
       </div>
     );
   }
@@ -150,18 +152,28 @@ const ComplaintMap = ({ user }) => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-500 uppercase tracking-[0.3em]">Geospatial Node: Active Grid</span>
+            <span className="text-[10px] font-black text-primary-500 uppercase tracking-[0.3em]">{t('map_header_subtitle')}</span>
           </div>
-          <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none uppercase">Sector Intelligence</h2>
-          <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">Synthesizing localized grievance density for civic oversight.</p>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                {t('map_header_title')}
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                {t('map_header_desc')}
+              </p>
+            </div>
+          </div>
         </div>
         <button 
           onClick={() => setViewMode(viewMode === 'markers' ? 'heatmap' : 'markers')}
           className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-md ${
-            viewMode === 'heatmap' ? 'bg-primary-600 text-white shadow-primary-500/30' : 'bg-white text-slate-900 border border-slate-200 hover:bg-primary-500 hover:text-white hover:border-transparent'
+            viewMode === 'heatmap' ? 'bg-primary-600 text-white shadow-primary-500/30' : 'bg-white text-slate-900 border border-slate-200 hover:bg-primary-500 hover:text-[#0F1C12] hover:border-transparent'
           }`}
         >
-           <Layers size={14} /> {viewMode === 'heatmap' ? 'Deactivate Heatmap' : 'Activate Heatmap Layer'}
+           <Layers size={14} /> {viewMode === 'heatmap' ? t('map_deactivate_heat') : t('map_activate_heat')}
         </button>
       </div>
 
@@ -209,7 +221,7 @@ const ComplaintMap = ({ user }) => {
                           
                           <div className="pt-2 border-t border-slate-50">
                             <Link to="/user/my-complaints" className="flex items-center gap-1 text-[9px] font-black text-primary-600 hover:text-primary-800 uppercase tracking-[0.2em]">
-                               Detailed Intelligence <ArrowUpRight size={10} />
+                               {t('map_detailed_intel')} <ArrowUpRight size={10} />
                             </Link>
                           </div>
                         </div>
@@ -225,31 +237,31 @@ const ComplaintMap = ({ user }) => {
                <motion.div 
                  initial={{ opacity: 0, y: 20 }}
                  animate={{ opacity: 1, y: 0 }}
-                 className="bg-slate-900/90 backdrop-blur-2xl border border-white/10 p-6 rounded-[2rem] flex items-center justify-between text-white pointer-events-auto shadow-4xl"
+                 className="bg-[#F8FBF8]/90 backdrop-blur-2xl border border-green-600/15 p-6 rounded-[2rem] flex items-center justify-between text-[#0F1C12] pointer-events-auto shadow-4xl"
                >
                   <div className="flex items-center gap-10">
                      <div className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2">
                            <Target size={12} className="text-primary-400" />
-                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">Protocol Density</span>
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">{t('map_protocol_density')}</span>
                         </div>
-                        <span className="text-xl font-black tracking-tighter uppercase whitespace-nowrap">{complaints.filter(c => !['Resolved', 'Closed', 'Feedback Pending', 'Completed'].includes(c.status)).length} SECTOR FEEDS</span>
+                        <span className="text-xl font-black tracking-tighter uppercase whitespace-nowrap">{complaints.filter(c => !['Resolved', 'Closed', 'Feedback Pending', 'Completed'].includes(c.status)).length} {t('map_sector_feeds')}</span>
                      </div>
                      <div className="w-[1px] h-12 bg-white/10"></div>
                      <div className="flex flex-col gap-1.5">
                         <div className="flex items-center gap-2">
                            <ShieldAlert size={12} className="text-rose-400" />
-                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">Critical Alert</span>
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em]">{t('map_critical_alert')}</span>
                         </div>
                         <span className="text-xl font-black text-rose-400 tracking-tighter uppercase whitespace-nowrap">
-                          {complaints.filter(c => !['Resolved', 'Closed', 'Feedback Pending', 'Completed'].includes(c.status) && (c.priority === 'High' || c.priority === 'Critical')).length} HIGH SEVERITY
+                          {complaints.filter(c => !['Resolved', 'Closed', 'Feedback Pending', 'Completed'].includes(c.status) && (c.priority === 'High' || c.priority === 'Critical')).length} {t('map_high_severity')}
                         </span>
                      </div>
                   </div>
                   <div className="hidden lg:flex items-center gap-3">
                      <div className="flex flex-col items-end">
-                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.3em]">System Status</span>
-                        <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">Active Surveillance</span>
+                        <span className="text-[8px] font-black text-slate-500 uppercase tracking-[0.3em]">{t('map_system_status')}</span>
+                        <span className="text-[10px] font-black text-emerald-400 uppercase tracking-widest">{t('map_active_surveillance')}</span>
                      </div>
                      <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
                   </div>
@@ -262,16 +274,16 @@ const ComplaintMap = ({ user }) => {
            <div className="flex flex-col gap-1 px-2">
               <div className="flex items-center gap-2">
                  <Globe size={16} className="text-primary-500" />
-                 <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Geo Legend</h2>
+                 <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">{t('map_geo_legend')}</h2>
               </div>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Sector Protocol Identifiers</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{t('map_geo_legend_desc')}</p>
            </div>
 
            <div className="flex flex-col gap-4">
               {[
-                { label: 'Priority Intercept', color: '#ef4444', desc: 'Critical high-density protocols requiring immediate attention.' },
-                { label: 'Operational Feed', color: '#f59e0b', desc: 'Active protocols currently under administrative resolution.' },
-                { label: 'Verified Success', color: '#10b981', desc: 'Normalized sectors with verified grievance resolution.' }
+                { label: t('map_legend_priority'), color: '#ef4444', desc: t('map_legend_priority_desc') },
+                { label: t('map_legend_feed'), color: '#f59e0b', desc: t('map_legend_feed_desc') },
+                { label: t('map_legend_success'), color: '#10b981', desc: t('map_legend_success_desc') }
               ].map((item, i) => (
                 <motion.div 
                   initial={{ opacity: 0, x: 20 }}
@@ -291,16 +303,16 @@ const ComplaintMap = ({ user }) => {
 
            <motion.div 
              whileHover={{ y: -5 }}
-             className="card p-8 bg-slate-900 border-none shadow-3xl shadow-slate-900/10 rounded-[2.5rem] text-white relative overflow-hidden group"
+             className="card p-8 bg-[#F8FBF8] border-none shadow-3xl shadow-slate-900/10 rounded-[2.5rem] text-[#0F1C12] relative overflow-hidden group"
            >
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary-500/20 -mr-12 -mt-12 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
               <div className="relative z-10 flex flex-col gap-4">
-                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center border border-white/10 group-hover:bg-primary-600 transition-colors">
+                 <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center border border-green-600/15 group-hover:bg-primary-600 transition-colors">
                     <Zap size={20} className="text-primary-400 group-hover:text-white" />
                  </div>
                  <div className="flex flex-col gap-1">
-                    <h4 className="font-black text-xs uppercase tracking-widest">Command Insight</h4>
-                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em] leading-relaxed">Toggle density mapping to synthesize city-wide infrastructure decay patterns.</p>
+                    <h4 className="font-black text-xs uppercase tracking-widest">{t('map_insight')}</h4>
+                    <p className="text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em] leading-relaxed">{t('map_insight_desc')}</p>
                  </div>
               </div>
            </motion.div>

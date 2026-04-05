@@ -8,27 +8,27 @@ dotenv.config({ path: './.env' });
 
 const performReset = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/citizen_grievance_portal';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/smart_grievance_portal';
     await mongoose.connect(mongoUri);
-    console.log('--- POLICE SYSTEM INITIALIZATION START ---');
+    console.log('--- CIVIC PORTAL INITIALIZATION START ---');
 
-    console.log('1. Purging existing municipal complaints...');
+    console.log('1. Purging existing grievances...');
     await Complaint.deleteMany({});
 
-    console.log('2. Decommissioning municipal accounts (including stale admins/citizens)...');
+    console.log('2. Decommissioning municipal accounts...');
     await User.deleteMany({});
 
-    console.log('3. Decommissioning municipal departments...');
+    console.log('3. Decommissioning departments...');
     await Department.deleteMany({});
 
-    console.log('4. Initializing Police Division Structure...');
+    console.log('4. Initializing Municipal Division Structure...');
     const divisions = [
-      { name: 'Crime Division', categories: ['Theft', 'Assault', 'Missing Person'] },
-      { name: 'Cyber Crime Cell', categories: ['Online Fraud', 'Hacking', 'Identity Theft'] },
-      { name: 'Traffic Control Unit', categories: ['Accident', 'Traffic Violation', 'Speeding'] },
-      { name: 'Women & Child Safety Unit', categories: ['Harassment / Threat', 'Domestic Violence', 'Child Abuse'] },
-      { name: 'Intelligence & Surveillance Unit', categories: ['Suspicious Activity', 'Espionage'] },
-      { name: 'Patrol Unit', categories: ['Noise Complaint', 'Public Nuisance', 'Loitering'] }
+      { name: 'Sanitation & Waste', categories: ['Garbage Pickup', 'Drainage Blockage', 'Public Toilet Maintenance'] },
+      { name: 'Road & Infrastructure', categories: ['Potholes', 'Street Light Failure', 'Footpath Repair'] },
+      { name: 'Water Supply', categories: ['No Water Supply', 'Water Leakage', 'Contaminated Water'] },
+      { name: 'Electricity Department', categories: ['Frequent Power Cuts', 'Loose Wires', 'Meter Issues'] },
+      { name: 'Public Health', categories: ['Vector Control (Mosquitoes)', 'Stray Animal Control', 'Food Safety'] },
+      { name: 'Encroachment & Planning', categories: ['Illegal Construction', 'Hawker Menace', 'Park Maintenance'] }
     ];
 
     for (const div of divisions) {
@@ -39,14 +39,12 @@ const performReset = async () => {
       console.log(`Initialized Division: ${div.name}`);
     }
 
-    // Ensure Admin & Citizen (Alex) exist
+    // Ensure Admin & Citizen exist
     const usersToCreate = [
       { name: 'Super Admin', email: 'admin@city.gov', password: 'password123', role: 'ADMIN', phone: '1234567890', dob: new Date('1980-01-01') },
-      { name: 'Citizen Admin', email: 'admin@citizen.care', password: 'password123', role: 'ADMIN', phone: '1234567891', dob: new Date('1985-01-01') },
-      { name: 'Historical Admin', email: 'dd3340065@gmail.com', password: 'password123', role: 'ADMIN', phone: '1234567892', dob: new Date('1990-01-01') },
-      { name: 'Alex Citizen', email: 'alex@gmail.com', password: 'password123', role: 'CITIZEN', phone: '5554443332', dob: new Date('2000-01-01') },
-      { name: 'Historical Citizen', email: 'abhinaykamagonda@gmail.com', password: 'password123', role: 'CITIZEN', phone: '5554443333', dob: new Date('1995-01-01') },
-      { name: 'Mokshith Officer', email: 'mokshithkr@gmail.com', password: 'password123', role: 'OFFICER', phone: '9876543210', dob: new Date('1992-01-01'), officerId: 'OFF-1234', rank: 'Sub-Inspector (SI)' }
+      { name: 'Basheer Citizen', email: 'basheer@gmail.com', password: 'password123', role: 'USER', phone: '5554443332', dob: new Date('2000-01-01') },
+      { name: 'Dattu Citizen', email: 'dattu@gmail.com', password: 'password123', role: 'USER', phone: '5554443333', dob: new Date('1995-01-01') },
+      { name: 'Mokshith Staff', email: 'mokshithkr@gmail.com', password: 'password123', role: 'STAFF', phone: '9876543210', dob: new Date('1992-01-01'), officerId: 'OFF-1234', rank: 'Senior Staff' }
     ];
 
     for (const u of usersToCreate) {
@@ -58,7 +56,7 @@ const performReset = async () => {
       }
     }
 
-    console.log('--- POLICE SYSTEM INITIALIZATION COMPLETE ---');
+    console.log('--- CIVIC PORTAL INITIALIZATION COMPLETE ---');
     process.exit();
   } catch (error) {
     console.error('Reset: Error', error);

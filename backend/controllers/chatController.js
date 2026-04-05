@@ -5,7 +5,7 @@ const axios = require('axios');
 /**
  * AI Central Intelligence Assistant
  * - System Aware
- * - Real-time Data Access (Complaint, Officer, FIR, Stats, Search)
+ * - Real-time Data Access (Complaint, Officer, REPORT, Stats, Search)
  * - User-Specific Context (Authenticated)
  * - Dynamic Reasoning
  */
@@ -90,7 +90,7 @@ const handleChat = async (req, res) => {
 
         if (complaint) {
           dataFound = true;
-          systemData = `LIVE DOSSIER ${complaint.complaintId}: Status is ${complaint.status}, Priority ${complaint.priority}, Category ${complaint.category}. Assigned to Officer ${complaint.assignedOfficerUserId?.name || 'Unassigned'}. Description: ${complaint.description}. FIR Summary: ${complaint.firData?.summary || 'None'}.`;
+          systemData = `LIVE DOSSIER ${complaint.complaintId}: Status is ${complaint.status}, Priority ${complaint.priority}, Category ${complaint.category}. Assigned to Officer ${complaint.assignedOfficerUserId?.name || 'Unassigned'}. Description: ${complaint.description}. REPORT Summary: ${complaint.reportData?.summary || 'None'}.`;
         } else {
           systemData = `SEARCH ERROR: Complaint ID "${targetId}" not found. Inform user to verify.`;
         }
@@ -127,8 +127,8 @@ const handleChat = async (req, res) => {
       dataFound = true;
       systemData = `SYSTEM ANALYTICS: Total ${totalCount} cases, High-Risk cases: ${highRiskCount}. Distribution: ${stats.map(s => `${s._id}: ${s.count}`).join(', ')}`;
     } else if (intent.intent === 'SEARCH_OFFICER') {
-      const namePattern = intent.criteria?.entityName || message.replace(/officer/gi, '').trim();
-      const officers = await User.find({ role: 'OFFICER', name: new RegExp(namePattern, 'i') }).limit(3);
+      const namePattern = intent.criteria?.entityName || message.replace(/staff/gi, '').trim();
+      const officers = await User.find({ role: 'STAFF', name: new RegExp(namePattern, 'i') }).limit(3);
       if (officers.length > 0) {
         dataFound = true;
         systemData = `OFFICERS FOUND: ${officers.map(o => `${o.name} (${o.rank})`).join(', ')}`;
@@ -156,7 +156,7 @@ const handleChat = async (req, res) => {
     4. NEVER say "I don't have information" if the data above provides it.
     5. Be professional and authoritative.
 
-    User Persona: ${user ? user.name : 'Citizen'}`;
+    User Persona: ${user ? user.name : 'User'}`;
 
     const chatResponse = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
         model: 'llama-3.3-70b-versatile',

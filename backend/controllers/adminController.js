@@ -2,7 +2,7 @@ const Complaint = require('../models/Complaint');
 const User = require('../models/User');
 const Department = require('../models/Department');
 
-// @desc    Assign complaint to department/officer
+// @desc    Assign complaint to department/staff
 // @route   PUT /api/admin/assign/:id
 // @access  Private (Admin)
 const assignComplaint = async (req, res) => {
@@ -26,7 +26,7 @@ const assignComplaint = async (req, res) => {
     complaint.status = 'Assigned';
     complaint.statusHistory.push({
       status: 'Assigned',
-      remarks: 'Mission deployed to designated Tactical Personnel.'
+      remarks: 'Grievance assigned to departmental staff for resolution.'
     });
 
     await complaint.save();
@@ -94,7 +94,7 @@ const getDashboardAnalytics = async (req, res) => {
     ]);
 
     // Officer Performance
-    const officers = await User.find({ role: 'OFFICER' }).select('name rank');
+    const officers = await User.find({ role: 'STAFF' }).select('name rank');
     const officerPerformance = await Promise.all(officers.map(async (officer) => {
       const stats = await Complaint.aggregate([
         { $match: { assignedOfficerUserId: officer._id } },
@@ -117,10 +117,10 @@ const getDashboardAnalytics = async (req, res) => {
       return {
         _id: officer._id,
         name: officer.name,
-        rank: officer.rank || 'CONSTABLE',
+        rank: officer.rank || 'Junior Staff',
         assigned: (counts['Assigned'] || counts['Submitted'] || 0),
         resolved: (counts['Completed'] || 0) + (counts['Feedback Pending'] || 0) + (counts['Resolved'] || 0) + (counts['Closed'] || 0),
-        inProgress: (counts['Investigation Ongoing'] || 0) + (counts['Evidence Secured'] || 0),
+        inProgress: (counts['Under Review'] || 0) + (counts['Action Initiated'] || 0) + (counts['Investigation Ongoing'] || 0) + (counts['Evidence Secured'] || 0),
         avgRating: ratingData[0]?.avgRating ? Math.round(ratingData[0].avgRating * 10) / 10 : 0
       };
     }));
@@ -141,12 +141,12 @@ const getDashboardAnalytics = async (req, res) => {
 };
 
 // @desc    Get all officers
-// @route   GET /api/admin/officers
+// @route   GET /api/admin/staffs
 // @access  Private (Admin)
 const getOfficers = async (req, res) => {
   try {
-    const officers = await User.find({ role: 'OFFICER' })
-      .select('name email departmentId rank active_cases_count availability_status')
+    const officers = await User.find({ role: 'STAFF' })
+      .select('name email departmentId rank active_cases_count availability_status status')
       .populate('departmentId', 'name')
       .lean();
 
@@ -181,20 +181,23 @@ const getOfficers = async (req, res) => {
 };
 
 // @desc    Update officer department
-// @route   PUT /api/admin/officer/:id/department
+// @route   PUT /api/admin/staff/:id/department
 // @access  Private (Admin)
 const updateOfficerDepartment = async (req, res) => {
-  const { departmentId } = req.body;
+  const { departmentId, status } = req.body;
 
   try {
     const officer = await User.findById(req.params.id);
 
     if (!officer) return res.status(404).json({ message: 'Officer not found' });
-    if (officer.role !== 'OFFICER') return res.status(400).json({ message: 'User is not an officer' });
+    if (officer.role !== 'STAFF') return res.status(400).json({ message: 'User is not an officer' });
 
     // Update the officer's departmentId
     const oldDeptId = officer.departmentId;
-    officer.departmentId = departmentId;
+    
+    if (departmentId !== undefined) officer.departmentId = departmentId;
+    if (status !== undefined) officer.status = status;
+    
     await officer.save();
 
     // Update the Department collections' officer list
@@ -210,25 +213,25 @@ const updateOfficerDepartment = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// @desc    Attach AI-generated FIR to complaint
-// @route   PUT /api/admin/fir/:id
+// @desc    Attach AI-generated analysis to record
+// @route   PUT /api/admin/attach-analysis/:id
 // @access  Private (Admin)
-const attachFIR = async (req, res) => {
-  const { firData } = req.body;
+const attachAnalysis = async (req, res) => {
+  const { reportData } = req.body;
 
   try {
     const complaint = await Complaint.findById(req.params.id);
 
     if (!complaint) return res.status(404).json({ message: 'Complaint not found' });
 
-    complaint.firData = {
-      ...firData,
+    complaint.reportData = {
+      ...reportData,
       generatedAt: new Date()
     };
     
     complaint.statusHistory.push({
       status: complaint.status,
-      remarks: 'Automated AI Executive FIR generated and attached to case dossier.',
+      remarks: 'Automated AI Grievance analysis generated and attached to record.',
       updatedBy: req.user._id
     });
 
@@ -239,4 +242,4 @@ const attachFIR = async (req, res) => {
   }
 };
 
-module.exports = { assignComplaint, getDashboardAnalytics, getOfficers, updateOfficerDepartment, attachFIR };
+module.exports = { assignComplaint, getDashboardAnalytics, getOfficers, updateOfficerDepartment, attachAnalysis };

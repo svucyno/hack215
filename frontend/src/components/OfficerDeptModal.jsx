@@ -52,7 +52,7 @@ const OfficerDeptModal = ({ isOpen, onClose, officer, user, departments, onUpdat
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/60 backdrop-blur-md"
+            className="absolute inset-0 bg-[#F8FBF8]/60 backdrop-blur-md"
           ></motion.div>
           
           <motion.div

@@ -6,7 +6,7 @@ dotenv.config({ path: './.env' });
 
 const resetPassword = async () => {
     try {
-        const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/citizen_grievance_portal';
+        const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/user_grievance_portal';
         await mongoose.connect(mongoUri);
         const users = await User.find({});
         for (let user of users) {

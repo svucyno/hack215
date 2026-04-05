@@ -21,8 +21,10 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ComplaintDetailsModal from '../components/ComplaintDetailsModal';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const UserDashboard = ({ user }) => {
+  const { t } = useCitizenLang();
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -53,24 +55,35 @@ const UserDashboard = ({ user }) => {
     return (
       <div className="p-20 flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
-        <p className="text-sm font-medium text-slate-400">Authenticating access...</p>
+        <p className="text-sm font-medium text-slate-400">{t('dash_auth')}</p>
       </div>
     );
   }
 
   const stats = [
-    { label: 'Total Complaints', count: complaints.length, icon: <ClipboardList size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
-    { label: 'In Progress', count: complaints.filter(c => c.status === 'In Progress').length, icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
-    { label: 'Resolved', count: complaints.filter(c => c.status === 'Resolved').length, icon: <CheckCircle2 size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Action Required', count: complaints.filter(c => c.status === 'Under Review').length, icon: <AlertCircle size={20} />, color: 'text-rose-600', bg: 'bg-rose-50' }
+    { label: t('stat_totalComplaints'), count: complaints.length, icon: <ClipboardList size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
+    { label: t('stat_inProgress'), count: complaints.filter(c => c.status === 'In Progress').length, icon: <Clock size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: t('stat_resolved'), count: complaints.filter(c => c.status === 'Resolved').length, icon: <CheckCircle2 size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { label: t('stat_actionRequired'), count: complaints.filter(c => c.status === 'Under Review').length, icon: <AlertCircle size={20} />, color: 'text-rose-600', bg: 'bg-rose-50' }
   ];
+
+  const getStatusLabel = (status) => {
+    const map = {
+      'RESOLVED': t('status_resolved'),
+      'IN PROGRESS': t('status_inProgress'),
+      'PENDING': t('status_pending'),
+      'UNDER REVIEW': t('status_actionRequired'),
+      'ACTION REQUIRED': t('status_actionRequired'),
+    };
+    return map[status?.toUpperCase()] || status;
+  };
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case 'Resolved': return <span className="status-badge status-success border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">Resolved</span>;
-      case 'In Progress': return <span className="status-badge status-warning border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">In Progress</span>;
-      case 'Under Review': return <span className="status-badge status-info border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">Review</span>;
-      default: return <span className="status-badge bg-slate-100 text-slate-500 border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">{status}</span>;
+      case 'Resolved': return <span className="status-badge status-success border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">{getStatusLabel(status)}</span>;
+      case 'In Progress': return <span className="status-badge status-warning border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">{getStatusLabel(status)}</span>;
+      case 'Under Review': return <span className="status-badge status-info border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">{getStatusLabel(status)}</span>;
+      default: return <span className="status-badge bg-slate-100 text-slate-500 border-none shadow-sm px-3 py-1 text-[10px] font-black uppercase">{getStatusLabel(status)}</span>;
     }
   };
 
@@ -81,14 +94,24 @@ const UserDashboard = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Civic Grievance Dashboard</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">{t('dashboard_title')}</span>
           </div>
-          <h1 className="text-4xl font-black tracking-tighter leading-none uppercase">{user?.name} Profile</h1>
-          <p className="text-xs font-bold uppercase tracking-widest leading-relaxed">Tracking personal grievance reports and civic issues.</p>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                {user?.name} {t('profile_title')}
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed">
+                {t('profile_subtitle')}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3 relative z-10">
-          <Link to="/user/submit-complaint" className="flex items-center gap-2.5 px-8 py-4 bg-white text-slate-900 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white hover:shadow-2xl hover:shadow-primary-500/40 transition-all active:scale-95 shadow-xl shadow-white/5">
-            <PlusCircle size={14} /> New Complaint
+          <Link to="/user/submit-complaint" className="flex items-center gap-2.5 px-8 py-4 bg-white text-slate-900 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-[#0F1C12] hover:shadow-2xl hover:shadow-primary-500/40 transition-all active:scale-95 shadow-xl shadow-white/5">
+            <PlusCircle size={14} /> {t('btn_newComplaint')}
           </Link>
         </div>
       </header>
@@ -101,16 +124,16 @@ const UserDashboard = ({ user }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={i} 
-            className="card p-8 flex flex-col gap-6 group hover:shadow-3xl hover:shadow-slate-200/50 transition-all duration-500 rounded-[2.5rem] border-none bg-white relative overflow-hidden"
+            className="bg-gradient-to-r from-white to-[#BBF7D0] p-8 flex flex-col gap-6 group hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 rounded-[2.5rem] border border-green-200/60 relative overflow-hidden"
           >
             <div className={`absolute top-0 right-0 w-24 h-24 ${stat.bg.replace('bg-', 'bg-').split('-')[0]}-500/5 -mr-12 -mt-12 rounded-full group-hover:scale-150 transition-transform duration-700`}></div>
             
             <div className="flex items-center justify-between relative z-10">
-              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl transition-all duration-500 group-hover:bg-slate-900 group-hover:text-white shadow-sm`}>
+              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl transition-all duration-500 group-hover:bg-[#F8FBF8] group-hover:text-[#0F1C12] shadow-sm`}>
                 {stat.icon}
               </div>
               <span className={`text-[10px] font-black px-3 py-1.5 rounded-full tracking-widest bg-slate-50 text-slate-500 border border-slate-100`}>
-                ACTIVE FEED
+                {t('stat_activeFeed')}
               </span>
             </div>
             
@@ -127,15 +150,18 @@ const UserDashboard = ({ user }) => {
         <div className="lg:col-span-2 flex flex-col gap-6">
           <div className="flex items-center justify-between px-2">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Recent Activity</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Tracking {complaints.length} active complaints</p>
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">{t('activity_title')}</h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">
+                {t('activity_subtitle_prefix')} {complaints.length} {t('activity_subtitle_suffix')}
+              </p>
             </div>
             <Link to="/user/my-complaints" className="group flex items-center gap-2 text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 px-4 py-2 rounded-full hover:bg-primary-600 hover:text-white transition-all">
-              View History <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              {t('btn_viewHistory')} <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
 
-          <div className="card overflow-hidden border-none shadow-2xl shadow-slate-200/50 bg-white/80 backdrop-blur-md rounded-[2.5rem]">
+          <div className="bg-gradient-to-r from-white to-[#BBF7D0] overflow-hidden border border-green-200/60 shadow-2xl shadow-green-900/10 hover:shadow-green-900/20 transition-all duration-500 rounded-[2.5rem] relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-green-500 opacity-[0.02] -mr-32 -mt-32 rounded-full"></div>
             {loading ? (
               <div className="p-20 flex justify-center"><div className="w-8 h-8 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div></div>
             ) : complaints.length === 0 ? (
@@ -144,21 +170,21 @@ const UserDashboard = ({ user }) => {
                     <Activity size={32} className="text-slate-300" />
                  </div>
                   <div className="flex flex-col">
-                    <span className="text-xs font-black text-slate-900 uppercase tracking-widest">No Active Feeds</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">No active grievances reported in your area.</span>
+                    <span className="text-xs font-black text-slate-900 uppercase tracking-widest">{t('dash_no_feeds')}</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{t('dash_no_feeds_desc')}</span>
                   </div>
               </div>
             ) : (
               <table className="w-full text-left uppercase">
-                <thead className="bg-slate-900 text-white">
+                <thead className="bg-[#DCFCE7] text-[#064E3B] border-b border-green-200/50">
                   <tr>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Complaint ID</th>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Category</th>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Status</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('table_complaintId')}</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('table_category')}</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">{t('table_status')}</th>
                     <th className="px-8 py-5 text-right"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-green-50/50">
                   {complaints.map((c, idx) => (
                     <motion.tr 
                       initial={{ opacity: 0, x: -10 }}
@@ -166,7 +192,7 @@ const UserDashboard = ({ user }) => {
                       transition={{ delay: idx * 0.05 }}
                       key={c._id} 
                       onClick={() => setSelectedComplaint(c)}
-                      className="group cursor-default hover:bg-slate-50/80 transition-all"
+                      className="group cursor-default hover:bg-[#BBF7D0]/30 transition-all uppercase"
                     >
                       <td className="px-8 py-6">
                         <span className="text-[11px] font-black text-slate-900 font-mono tracking-widest">{c.complaintId}</span>
@@ -174,12 +200,12 @@ const UserDashboard = ({ user }) => {
                       <td className="px-8 py-6">
                         <div className="flex flex-col">
                           <span className="text-xs font-black text-slate-800 tracking-tight">{c.category}</span>
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Issue Type</span>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">{t('dash_issue_type')}</span>
                         </div>
                       </td>
                       <td className="px-8 py-6">{getStatusBadge(c.status)}</td>
                       <td className="px-8 py-6 text-right">
-                         <button className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-primary-600 transition-all opacity-0 group-hover:opacity-100 shadow-xl">
+                         <button className="p-2.5 bg-[#F8FBF8] text-[#0F1C12] rounded-xl hover:bg-primary-600 transition-all opacity-0 group-hover:opacity-100 shadow-xl">
                             <ArrowUpRight size={16} />
                          </button>
                       </td>
@@ -194,25 +220,25 @@ const UserDashboard = ({ user }) => {
         {/* Quick Action Side Card */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1 px-2">
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">New Grievances</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Quick Grievance Submission</p>
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">{t('newGrievances_title')}</h2>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">{t('newGrievances_subtitle')}</p>
           </div>
           
           <motion.div 
             whileHover={{ y: -8 }}
-            className="card p-10 bg-slate-900 border-none shadow-3xl shadow-slate-200/50 rounded-[3rem] text-white relative overflow-hidden group"
+            className="card p-10 bg-[#F8FBF8] border-none shadow-3xl shadow-slate-200/50 rounded-[3rem] text-[#0F1C12] relative overflow-hidden group"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary-500/20 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
             
             <div className="relative z-10 flex flex-col gap-8">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-2xl rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl group-hover:bg-primary-600 transition-colors duration-500">
+              <div className="w-16 h-16 bg-white/10 backdrop-blur-2xl rounded-2xl flex items-center justify-center border border-green-600/15 shadow-2xl group-hover:bg-primary-600 transition-colors duration-500">
                 <Zap size={32} className="text-primary-400 group-hover:text-white" />
               </div>
               
               <div className="flex flex-col gap-2">
-                <h3 className="text-2xl font-black tracking-tighter uppercase leading-none">New Complaint</h3>
+                <h3 className="text-2xl font-black tracking-tighter uppercase leading-none">{t('btn_newComplaintSection')}</h3>
                 <p className="text-xs text-slate-400 font-medium leading-relaxed opacity-80 uppercase tracking-wider">
-                  File a new grievance report regarding local infrastructure or services.
+                  {t('dash_file_desc')}
                 </p>
               </div>
               
@@ -220,13 +246,13 @@ const UserDashboard = ({ user }) => {
                 to="/user/submit-complaint" 
                 className="w-full bg-primary-600 text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-xs text-center hover:bg-white hover:text-slate-900 transition-all shadow-2xl shadow-primary-500/20 active:scale-[0.98]"
               >
-                File Now
+                {t('dash_file_now')}
               </Link>
             </div>
             
             <div className="absolute bottom-4 left-4 flex items-center gap-2 opacity-30">
                <ShieldCheck size={12} className="text-emerald-400" />
-               <span className="text-[8px] font-black uppercase tracking-[0.3em]">Secure Session</span>
+               <span className="text-[8px] font-black uppercase tracking-[0.3em]">{t('dash_secure_session')}</span>
             </div>
           </motion.div>
 
@@ -237,12 +263,12 @@ const UserDashboard = ({ user }) => {
                 </div>
                  <div className="flex flex-col">
                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">System Status</span>
-                   <span className="text-xs font-black text-slate-800 uppercase tracking-tight">User Feedback</span>
+                   <span className="text-xs font-black text-slate-800 uppercase tracking-tight">{t('dash_user_feedback')}</span>
                 </div>
              </div>
-             <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed">Ensure your grievances are resolved at high-quality levels.</p>
+             <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed">{t('dash_feedback_desc')}</p>
              <Link to="/user/feedback" className="text-[10px] font-black text-primary-600 uppercase tracking-widest flex items-center gap-1.5 hover:translate-x-1 transition-transform">
-                Submit Your Feedback <ChevronRight size={12} />
+                {t('dash_submit_feedback')} <ChevronRight size={12} />
              </Link>
           </div>
         </div>

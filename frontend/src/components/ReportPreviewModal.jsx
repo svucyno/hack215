@@ -67,7 +67,7 @@ const GrievanceReportModal = ({ isOpen, onClose, complaint, user, onAssignClick 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#F8FBF8]/80 backdrop-blur-sm"
           ></motion.div>
           
           <motion.div
@@ -77,10 +77,10 @@ const GrievanceReportModal = ({ isOpen, onClose, complaint, user, onAssignClick 
             className="relative bg-white w-full max-w-3xl rounded-[2rem] shadow-4xl flex flex-col max-h-[90vh] overflow-hidden"
           >
             {/* Header */}
-            <div className="flex justify-between items-start p-6 md:p-8 bg-slate-900 text-white z-10">
+            <div className="flex justify-between items-start p-6 md:p-8 bg-[#F8FBF8] text-[#0F1C12] z-10">
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-3">
-                  <FileText className="text-blue-400" size={24} />
+                  <FileText className="text-green-500" size={24} />
                   <h2 className="text-2xl font-black tracking-tighter uppercase leading-none">Grievance Report Preview</h2>
                 </div>
                 <div className="flex items-center gap-3 mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -187,7 +187,7 @@ const GrievanceReportModal = ({ isOpen, onClose, complaint, user, onAssignClick 
                        onClose();
                        onAssignClick(complaint);
                      }}
-                     className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 text-white rounded-xl hover:bg-slate-900 text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-500/20 active:scale-95 transition-all"
+                     className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 text-white rounded-xl hover:bg-[#F8FBF8] text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-500/20 active:scale-95 transition-all"
                    >
                      <UserPlus size={14} /> Assign Staff
                    </button>

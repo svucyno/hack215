@@ -94,7 +94,7 @@ const InteractiveAIBot = () => {
                         opacity: [0.15, 0.3, 0.15] 
                     }}
                     transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-8 w-32 h-6 bg-black rounded-full z-0 blur-xl"
+                    className="absolute -bottom-8 w-32 h-6 bg-white rounded-full z-0 blur-xl"
                 />
             </motion.div>
         </div>

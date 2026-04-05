@@ -19,6 +19,7 @@ import FeaturesPage from './pages/FeaturesPage';
 import HowItWorksPage from './pages/HowItWorksPage';
 import AIIntelligencePage from './pages/AIIntelligencePage';
 import AIChatbot from './components/AIChatbot';
+import { CitizenLanguageProvider } from './context/CitizenLanguageContext';
 import './adaptive.css';
 
 const App = () => {
@@ -28,7 +29,7 @@ const App = () => {
   });
 
   return (
-    <div className={`min-h-screen bg-slate-50 ${user?.age > 50 ? 'adaptive-active' : ''}`}>
+    <div className={`min-h-screen bg-[#F8FBF8] ${user?.age > 50 ? 'adaptive-active' : ''}`}>
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={
@@ -81,7 +82,7 @@ const App = () => {
         } />
 
         {/* Role-based Dashboards */}
-        <Route path="/user" element={<PrivateRoute role="USER"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>
+        <Route path="/user" element={<PrivateRoute role="USER"><CitizenLanguageProvider><DashboardLayout user={user} setUser={setUser} /></CitizenLanguageProvider></PrivateRoute>}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<UserDashboard user={user} />} />
           <Route path="submit-complaint" element={<SubmitComplaint user={user} />} />

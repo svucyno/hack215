@@ -4,7 +4,7 @@ require('dotenv').config({ path: './.env' });
 
 const testCreation = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/citizen_grievance_portal');
+        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/user_grievance_portal');
         
         // Clean up first
         await User.deleteOne({ email: 'test_hash@example.com' });
@@ -14,7 +14,7 @@ const testCreation = async () => {
             email: 'test_hash@example.com',
             phone: '1231231234',
             password: 'password123', // plain password text
-            role: 'CITIZEN'
+            role: 'USER'
         });
 
         // Test login

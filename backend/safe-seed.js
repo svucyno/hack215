@@ -9,7 +9,7 @@ dotenv.config({ path: './.env' });
 
 const seedData = async () => {
   try {
-    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/citizen_grievance_portal';
+    const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/user_grievance_portal';
     await mongoose.connect(mongoUri);
     console.log('Seed: Connected to MongoDB');
 
@@ -51,7 +51,7 @@ const seedData = async () => {
         name: 'Alex Citizen',
         email: 'alex@gmail.com',
         password: 'password123',
-        role: 'CITIZEN',
+        role: 'USER',
         phone: '5554443332',
         dob: '1995-05-15'
       });

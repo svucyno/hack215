@@ -92,8 +92,18 @@ const StaffDashboard = ({ user }) => {
               OPERATIONAL
             </span>
           </div>
-          <h1 className="text-3xl font-black tracking-tighter leading-none uppercase">Grievance Overview</h1>
-          <p className="text-xs font-medium">Active grievances assigned to <span className="text-primary-400 font-bold">{profile?.department || 'General Department'}</span>.</p>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                Grievance Overview
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                Synthesizing multi-sector grievance data for optimized municipal response.
+              </p>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -103,9 +113,9 @@ const StaffDashboard = ({ user }) => {
           <motion.div 
             key={i} 
             whileHover={{ y: -5, scale: 1.02 }}
-            className="card p-8 flex items-center justify-between group rounded-[2.5rem] border-none shadow-2xl shadow-slate-200/40 bg-white relative overflow-hidden"
+            className="bg-gradient-to-r from-white to-[#BBF7D0] p-8 flex items-center justify-between group rounded-[2.5rem] border border-green-200/60 hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 relative overflow-hidden"
           >
-            <div className={`absolute top-0 left-0 w-1 h-full ${stat.color.replace('text', 'bg')}`}></div>
+            <div className={`absolute top-0 right-0 w-32 h-32 bg-green-500 opacity-[0.05] -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-700`}></div>
             <div className="flex flex-col gap-2 relative z-10">
               <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{stat.label}</span>
               <span className="text-4xl font-black text-slate-900 tracking-tighter">{stat.count}</span>
@@ -143,21 +153,21 @@ const StaffDashboard = ({ user }) => {
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="bg-slate-50/50 border-b border-slate-100">
-                    <th className="px-8 py-6 text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase">Case ID</th>
-                    <th className="px-8 py-6 text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase">Priority</th>
-                    <th className="px-8 py-6 text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase">Category</th>
+                  <tr className="bg-[#DCFCE7] text-[#064E3B] border-b border-green-200/50">
+                    <th className="px-8 py-6 text-[10px] font-black tracking-[0.2em] uppercase">Case ID</th>
+                    <th className="px-8 py-6 text-[10px] font-black tracking-[0.2em] uppercase">Priority</th>
+                    <th className="px-8 py-6 text-[10px] font-black tracking-[0.2em] uppercase">Category</th>
                     <th className="px-8 py-6 text-right"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-50">
+                <tbody className="divide-y divide-green-50/50">
                   {complaints.slice(0, 5).map((c, idx) => (
                     <motion.tr 
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
                       key={c._id} 
-                      className="hover:bg-primary-50/30 transition-all duration-300 group cursor-pointer"
+                      className="hover:bg-[#BBF7D0]/30 transition-all duration-300 group cursor-pointer"
                       onClick={() => setSelectedComplaint(c)}
                     >
                       <td className="px-8 py-6">
@@ -206,22 +216,22 @@ const StaffDashboard = ({ user }) => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left">
                     <thead>
-                      <tr className="bg-slate-900 text-white">
-                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.3em] uppercase opacity-60">Case Ref</th>
-                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-60">Classification</th>
-                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-60">Priority</th>
-                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-60">Grievance Status</th>
-                        <th className="px-10 py-7 text-right text-[10px] font-black tracking-[0.3em] uppercase opacity-60">Actions</th>
+                      <tr className="bg-[#DCFCE7] text-[#064E3B] border-b border-green-200/50">
+                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.3em] uppercase opacity-80">Case Ref</th>
+                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-80">Classification</th>
+                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-80">Priority</th>
+                        <th className="px-10 py-7 text-[10px] font-black tracking-[0.2em] uppercase opacity-80">Grievance Status</th>
+                        <th className="px-10 py-7 text-right text-[10px] font-black tracking-[0.3em] uppercase opacity-80">Actions</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-50">
+                    <tbody className="divide-y divide-green-50/50">
                       {complaints.map((c, idx) => (
                         <motion.tr 
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: idx * 0.03 }}
                           key={c._id} 
-                          className="hover:bg-slate-50/80 transition-all cursor-pointer group" 
+                          className="hover:bg-[#BBF7D0]/30 transition-all cursor-pointer group" 
                           onClick={() => setSelectedComplaint(c)}
                         >
                           <td className="px-10 py-7">
@@ -247,12 +257,12 @@ const StaffDashboard = ({ user }) => {
                           <td className="px-10 py-7 text-right flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                              <button 
                                onClick={(e) => { e.stopPropagation(); exportReport(c); }}
-                               className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm flex items-center justify-center"
+                               className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-green-600 hover:text-white transition-all shadow-sm flex items-center justify-center"
                                title="Download PDF Summary"
                              >
                                <FileText size={16} />
                              </button>
-                             <button className="px-6 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-600 hover:shadow-xl hover:shadow-primary-500/20 transition-all active:scale-95">
+                             <button className="px-6 py-2.5 bg-[#F8FBF8] text-[#0F1C12] text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-primary-600 hover:shadow-xl hover:shadow-primary-500/20 transition-all active:scale-95">
                                View Details
                              </button>
                           </td>
@@ -266,23 +276,24 @@ const StaffDashboard = ({ user }) => {
         } />
         <Route path="workload" element={
           <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary-500 animate-pulse shadow-[0_0_8px_rgba(59,130,246,0.8)]"></div>
-                  <span className="text-[10px] font-black text-primary-500 uppercase tracking-[0.3em]">Operational Analytics</span>
-                  <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 uppercase tracking-widest">
-                    <Activity size={10} className="animate-pulse" /> Live
-                  </span>
+              <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                <div className="relative z-10 flex flex-col gap-3">
+                  <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                    Performance Ledger
+                  </h1>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                    Strategic evaluation of mission resolution velocity and Departmental Competency.
+                  </p>
                 </div>
-                <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none uppercase">Performance Ledger</h2>
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">Strategic evaluation of mission resolution velocity and Departmental Competency.</p>
               </div>
 
-             {/* service Metrics Grid */}
-             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
+              {/* Service Metrics Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="xl:col-span-2 card p-10 flex flex-col justify-between bg-slate-900 border-none shadow-3xl shadow-slate-900/20 rounded-[3.5rem] relative overflow-hidden text-white min-h-[220px]"
+                  className="xl:col-span-2 bg-gradient-to-r from-white to-[#BBF7D0] p-10 flex flex-col justify-between border border-green-200/60 hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 rounded-[3.5rem] relative overflow-hidden text-[#0F1C12] min-h-[220px]"
                 >
                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary-600/20 blur-[100px] -mr-32 -mt-32"></div>
                    <div className="flex items-center justify-between relative z-10">
@@ -309,7 +320,7 @@ const StaffDashboard = ({ user }) => {
 
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="card p-10 flex flex-col justify-between border-none shadow-2xl shadow-slate-200/50 rounded-[3.5rem] bg-white group"
+                  className="bg-gradient-to-r from-white to-[#BBF7D0] p-10 flex flex-col justify-between border border-green-200/60 hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 rounded-[3.5rem] relative overflow-hidden group"
                 >
                    <div className="w-16 h-16 bg-amber-50 text-amber-600 rounded-3xl flex items-center justify-center group-hover:bg-amber-100 transition-colors duration-500">
                       <ShieldCheck size={28} />
@@ -324,7 +335,7 @@ const StaffDashboard = ({ user }) => {
 
                 <motion.div 
                   whileHover={{ y: -5, scale: 1.02 }}
-                  className="card p-10 flex flex-col justify-between border-none shadow-2xl shadow-slate-200/50 rounded-[3.5rem] bg-white group"
+                  className="bg-gradient-to-r from-white to-[#BBF7D0] p-10 flex flex-col justify-between border border-green-200/60 hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 rounded-[3.5rem] relative overflow-hidden group"
                 >
                    <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-3xl flex items-center justify-center group-hover:bg-emerald-100 transition-colors duration-500">
                       <Zap size={28} />
@@ -451,10 +462,17 @@ const StaffDashboard = ({ user }) => {
         } />
         <Route path="profile" element={
           <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-8 duration-700 max-w-4xl">
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.3em]">Personnel Records Office</span>
-                <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none uppercase">Service Profile</h2>
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">Authenticated municipal personnel and departmental credentials.</p>
+              <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                <div className="relative z-10 flex flex-col gap-3">
+                  <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                    Service Profile
+                  </h1>
+                  <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                    Authenticated municipal personnel and departmental credentials.
+                  </p>
+                </div>
               </div>
 
              <motion.div 
@@ -466,7 +484,7 @@ const StaffDashboard = ({ user }) => {
                 <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 blur-[80px] -ml-24 -mb-24 rounded-full"></div>
 
                 <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
-                   <div className="w-40 h-40 rounded-[3.5rem] bg-slate-900 flex items-center justify-center text-white text-5xl font-black shadow-2xl relative group">
+                   <div className="w-40 h-40 rounded-[3.5rem] bg-[#F8FBF8] flex items-center justify-center text-[#0F1C12] text-5xl font-black shadow-2xl relative group">
                       <div className="absolute inset-0 bg-primary-600 rounded-[3.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       <span className="relative z-10 uppercase">{profile?.name?.charAt(0)}</span>
                       <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-xl border-4 border-white">

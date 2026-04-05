@@ -208,7 +208,7 @@ const AdminDashboard = ({ user }) => {
     labels: Object.keys(categoricalSplit),
     datasets: [{
       data: Object.values(categoricalSplit),
-      backgroundColor: ['#2563EB', '#14B8A6', '#F59E0B', '#EF4444', '#64748B', '#8B5CF6', '#EC4899'],
+      backgroundColor: ['#16A34A', '#14B8A6', '#F59E0B', '#EF4444', '#64748B', '#16A34A', '#EC4899'],
       borderWidth: 0,
       hoverOffset: 15
     }]
@@ -219,13 +219,13 @@ const AdminDashboard = ({ user }) => {
     datasets: [{
       label: 'Incoming Reports',
       data: data.analytics?.activityData || [0, 0, 0, 0, 0, 0, 0],
-      borderColor: '#2563EB',
+      borderColor: '#16A34A',
       backgroundColor: 'rgba(37, 99, 235, 0.05)',
       tension: 0.4,
       fill: true,
       pointRadius: 4,
       pointBackgroundColor: '#fff',
-      pointBorderColor: '#2563EB',
+      pointBorderColor: '#16A34A',
       pointBorderWidth: 2
     }]
   };
@@ -248,7 +248,7 @@ const AdminDashboard = ({ user }) => {
       {
         label: 'Assigned',
         data: data.analytics?.officerPerformance?.map(o => o.assigned) || [],
-        backgroundColor: '#6366F1',
+        backgroundColor: '#16A34A',
         borderRadius: 8,
       }
     ]
@@ -256,6 +256,38 @@ const AdminDashboard = ({ user }) => {
 
   const SummaryView = () => (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-10">
+      <header className="header-box flex flex-col md:flex-row md:items-end justify-between gap-5 relative group">
+        <div className="absolute top-0 right-0 w-48 h-48 bg-primary-600/10 -mr-16 -mt-16 blur-[80px] rounded-full group-hover:bg-primary-500/20 transition-all duration-1000"></div>
+        <div className="flex flex-col gap-1.5 relative z-10">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.7)]"></div>
+            <span className="text-[9px] font-black text-rose-400 uppercase tracking-[0.3em]">Command Hierarchy: Portal Administrator</span>
+          </div>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                Admin Management Console
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                Aggregating grievance data for efficient public service management.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 relative z-10">
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 px-5 py-3.5 bg-white text-slate-00 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-[#0F1C12] transition-all shadow-xl shadow-white/5 active:scale-95"
+          >
+            <Download size={13} className="text-primary-600 group-hover:text-white" /> Export Summary
+          </button>
+          <button className="flex items-center gap-2 px-5 py-3.5 bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95 border border-white/5">
+            <Terminal size={13} /> System Protocols
+          </button>
+        </div>
+      </header>
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, i) => (
@@ -264,12 +296,12 @@ const AdminDashboard = ({ user }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={i} 
-            className="card-premium p-8 flex flex-col gap-6 group hover-glow relative"
+            className="bg-gradient-to-r from-white to-[#BBF7D0] p-8 flex flex-col gap-6 group hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 relative overflow-hidden rounded-[2.5rem] border border-green-200/60"
           >
-            <div className={`absolute top-0 right-0 w-24 h-24 bg-current opacity-[0.03] -mr-12 -mt-12 rounded-full group-hover:scale-150 transition-transform duration-700`}></div>
+            <div className={`absolute top-0 right-0 w-32 h-32 bg-green-500 opacity-[0.05] -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-700`}></div>
             
             <div className="flex items-center justify-between relative z-10">
-              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl transition-all duration-500 group-hover:bg-slate-900 group-hover:text-white shadow-sm border border-current/10`}>
+              <div className={`${stat.bg} ${stat.color} p-4 rounded-2xl transition-all duration-500 group-hover:bg-[#F8FBF8] group-hover:text-[#0F1C12] shadow-sm border border-current/10`}>
                 {stat.icon}
               </div>
               <span className={`text-[10px] font-black px-3 py-1.5 rounded-full tracking-widest ${
@@ -381,7 +413,8 @@ const AdminDashboard = ({ user }) => {
              <span className="text-[9px] font-black text-slate-600 uppercase tracking-[0.2em]">Operational Analysis</span>
           </div>
         </div>
-        <div className="card-premium p-12 h-[500px] bg-white hover-glow">
+        <div className="bg-gradient-to-r from-white to-[#BBF7D0] p-12 h-[570px] border border-green-200/60 hover:shadow-2xl hover:shadow-green-900/10 transition-all duration-500 rounded-[3.5rem] relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-green-500 opacity-[0.02] -mr-48 -mt-48 rounded-full"></div>
            <Bar 
              data={officerBarData}
              options={{
@@ -448,7 +481,7 @@ const AdminDashboard = ({ user }) => {
           </Link>
         </div>
         <div className="card-premium p-0 overflow-hidden relative group h-[400px]">
-           <div className="absolute inset-0 bg-slate-900 flex items-center justify-center pointer-events-none">
+           <div className="absolute inset-0 bg-[#F8FBF8] flex items-center justify-center pointer-events-none">
               <div className="absolute inset-0 opacity-30 grayscale contrast-125 pointer-events-none z-0">
                  <MapContainer style={{ width: '100%', height: '100%' }} center={[28.6139, 77.2090]} zoom={11} zoomControl={false} dragging={false} scrollWheelZoom={false} doubleClickZoom={false}>
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -456,8 +489,8 @@ const AdminDashboard = ({ user }) => {
               </div>
               <div className="absolute inset-0 bg-gradient-to-b from-slate-950/60 via-transparent to-slate-950/90 z-10 pointer-events-none"></div>
               <div className="relative z-20 flex flex-col items-center gap-6 text-center p-12 pointer-events-auto">
-                <div className="w-20 h-20 bg-white/5 backdrop-blur-2xl rounded-[2.25rem] flex items-center justify-center border border-white/10 shadow-2xl group-hover:scale-110 group-hover:bg-white/10 transition-all duration-700">
-                  <MapIcon size={40} className="text-blue-400" />
+                <div className="w-20 h-20 bg-white/5 backdrop-blur-2xl rounded-[2.25rem] flex items-center justify-center border border-green-600/15 shadow-2xl group-hover:scale-110 group-hover:bg-white/10 transition-all duration-700">
+                  <MapIcon size={40} className="text-green-500" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <h3 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Regional Monitoring</h3>
@@ -486,19 +519,19 @@ const AdminDashboard = ({ user }) => {
           </div>
           <div className="card-premium overflow-hidden bg-white">
             <table className="w-full text-left uppercase">
-              <thead className="bg-slate-50/50 text-slate-400 border-b border-slate-100">
+              <thead className="bg-[#DCFCE7] text-[#064E3B] border-b border-green-200/50">
                 <tr>
                   <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Personnel</th>
                   <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Assignment Division</th>
                   <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em] text-right">Integrity</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50">
+              <tbody className="divide-y divide-green-50/50">
                 {data.officers.slice(0, 4).map((o, idx) => (
-                  <tr key={o._id} className="hover:bg-blue-50/30 transition-all group">
+                  <tr key={o._id} className="hover:bg-[#BBF7D0]/30 transition-all group">
                     <td className="px-8 py-5">
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-2xl bg-slate-900 flex items-center justify-center text-[10px] font-black text-white shadow-lg shadow-slate-200/60 group-hover:rotate-6 transition-all">
+                        <div className="w-10 h-10 rounded-2xl bg-[#F8FBF8] flex items-center justify-center text-[10px] font-black text-[#0F1C12] shadow-lg shadow-slate-200/60 group-hover:rotate-6 transition-all">
                           {o.name.charAt(0)}
                         </div>
                         <span className="text-xs font-black text-slate-800">{o.name}</span>
@@ -539,7 +572,7 @@ const AdminDashboard = ({ user }) => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
                   key={c._id} 
-                  className="card-premium p-6 flex items-center justify-between hover:border-rose-200 transition-all group relative overflow-hidden underline-offset-8 bg-white"
+                  className="bg-gradient-to-r from-white to-[#BBF7D0] p-6 flex items-center justify-between border border-green-200/60 hover:shadow-2xl transition-all group relative overflow-hidden underline-offset-8"
                 >
                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-rose-500 rounded-r-full group-hover:h-full transition-all duration-300"></div>
                    <div className="flex items-center gap-5 relative z-10">
@@ -575,28 +608,6 @@ const AdminDashboard = ({ user }) => {
 
   return (
     <div className="flex flex-col gap-8 animate-in fade-in duration-700">
-      <header className="header-box flex flex-col md:flex-row md:items-end justify-between gap-5 relative group">
-        <div className="absolute top-0 right-0 w-48 h-48 bg-primary-600/10 -mr-16 -mt-16 blur-[80px] rounded-full group-hover:bg-primary-500/20 transition-all duration-1000"></div>
-        <div className="flex flex-col gap-1.5 relative z-10">
-          <div className="flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.7)]"></div>
-            <span className="text-[9px] font-black text-rose-400 uppercase tracking-[0.3em]">Command Hierarchy: Portal Administrator</span>
-          </div>
-          <h1 className="text-3xl font-black tracking-tighter leading-none uppercase">Admin Management Console</h1>
-          <p className="text-[11px] font-bold uppercase tracking-widest opacity-70">Aggregating grievance data for efficient public service management.</p>
-        </div>
-        <div className="flex items-center gap-3 relative z-10">
-          <button 
-            onClick={handleExport}
-            className="flex items-center gap-2 px-5 py-3.5 bg-white text-slate-00 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white transition-all shadow-xl shadow-white/5 active:scale-95"
-          >
-            <Download size={13} className="text-primary-600 group-hover:text-white" /> Export Summary
-          </button>
-          <button className="flex items-center gap-2 px-5 py-3.5 bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95 border border-white/5">
-            <Terminal size={13} /> System Protocols
-          </button>
-        </div>
-      </header>
 
       {loading ? (
         <div className="p-20 flex justify-center"><div className="w-8 h-8 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div></div>
@@ -606,10 +617,18 @@ const AdminDashboard = ({ user }) => {
           <Route path="complaints" element={
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-8">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Grievance Ledger</h2>
-                    <p className="text-xs text-slate-500 font-medium">Monitoring {data.complaints.length} active grievance records across sectors.</p>
+                <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                      Grievance Ledger
+                    </h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                      Monitoring {data.complaints.length} active grievance records across sectors.
+                    </p>
                   </div>
+                </div>
                   <div className="relative group">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={16} />
                     <input type="text" placeholder="Search records..." className="pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all w-80 shadow-sm" />
@@ -618,7 +637,7 @@ const AdminDashboard = ({ user }) => {
 
                 <div className="card-premium overflow-hidden bg-white/90 backdrop-blur-xl border-slate-100 hover-glow">
                   <table className="w-full text-left uppercase">
-                    <thead className="bg-slate-900 text-white">
+                    <thead className="bg-[#F8FBF8] text-[#0F1C12]">
                       <tr>
                         <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">CASE ID</th>
                         <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">TYPE / CATEGORY</th>
@@ -680,14 +699,14 @@ const AdminDashboard = ({ user }) => {
                              </button>
                              <button 
                                onClick={() => exportReport(c)}
-                               className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                               className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-green-600 hover:text-white transition-all shadow-sm"
                                title="Download PDF Dossier"
                              >
                                 <FileText size={16} />
                              </button>
                              <button 
                                onClick={() => setDetailsModal({ isOpen: true, complaint: c })}
-                               className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-primary-600 transition-all shadow-xl"
+                               className="p-2.5 bg-[#F8FBF8] text-[#0F1C12] rounded-xl hover:bg-primary-600 transition-all shadow-xl"
                                title="View Record"
                              >
                                 <Eye size={16} />
@@ -704,13 +723,21 @@ const AdminDashboard = ({ user }) => {
           <Route path="departments" element={
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col gap-10">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Service Departments</h2>
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-widest opacity-80 leading-none mt-1">Managing {(data.analytics?.departments?.length || 0)} specialized Public Service units.</p>
+                <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                      Service Departments
+                    </h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                      Managing {(data.analytics?.departments?.length || 0)} specialized Public Service units.
+                    </p>
                   </div>
+                </div>
                   <button 
                     onClick={() => setIsDeptModalOpen(true)} 
-                    className="group flex items-center gap-3 px-6 py-3.5 bg-slate-900 text-white rounded-[1.5rem] text-xs font-black uppercase tracking-[0.2em] hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95"
+                    className="group flex items-center gap-3 px-6 py-3.5 bg-[#F8FBF8] text-[#0F1C12] rounded-[1.5rem] text-xs font-black uppercase tracking-[0.2em] hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95"
                   >
                     <Building size={16} /> Add Department
                   </button>
@@ -726,7 +753,7 @@ const AdminDashboard = ({ user }) => {
                        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500 opacity-[0.03] -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-700"></div>
                        
                        <div className="flex items-center justify-between relative z-10">
-                          <div className="w-14 h-14 bg-slate-50 text-slate-900 rounded-[1.25rem] flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 border border-slate-100">
+                          <div className="w-14 h-14 bg-slate-50 text-slate-900 rounded-[1.25rem] flex items-center justify-center group-hover:bg-[#F8FBF8] group-hover:text-[#0F1C12] transition-all duration-500 border border-slate-100">
                              <Building size={24} />
                           </div>
                           <div className="flex flex-col items-end">
@@ -747,7 +774,7 @@ const AdminDashboard = ({ user }) => {
                        <div className="pt-6 border-t border-slate-100 flex items-center justify-between relative z-10">
                           <div className="flex -space-x-2.5">
                              {[...Array(Math.min(3, d.officerCount))].map((_, idx) => (
-                               <div key={idx} className="w-9 h-9 rounded-xl border-2 border-white bg-slate-900 flex items-center justify-center text-[10px] font-black text-white shadow-lg">
+                               <div key={idx} className="w-9 h-9 rounded-xl border-2 border-white bg-[#F8FBF8] flex items-center justify-center text-[10px] font-black text-[#0F1C12] shadow-lg">
                                  {idx === 0 ? 'A' : idx === 1 ? 'B' : 'C'}
                                </div>
                              ))}
@@ -765,7 +792,7 @@ const AdminDashboard = ({ user }) => {
                             >
                               <Trash2 size={18} />
                             </button>
-                            <button className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-slate-900 hover:text-white transition-all">
+                            <button className="w-10 h-10 rounded-xl bg-slate-50 text-slate-400 flex items-center justify-center hover:bg-[#F8FBF8] hover:text-[#0F1C12] transition-all">
                               <ArrowUpRight size={18} />
                             </button>
                           </div>
@@ -785,10 +812,18 @@ const AdminDashboard = ({ user }) => {
           <Route path="staffs" element={
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-10">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Staff Portal</h2>
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-[0.1em] opacity-70">Managing {data.officers.length} active service personnel across sectors.</p>
+                <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                      Staff Portal
+                    </h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                      Managing {data.officers.length} active service personnel across sectors.
+                    </p>
                   </div>
+                </div>
                   <div className="flex items-center gap-3">
                     <select 
                       className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500"
@@ -835,7 +870,7 @@ const AdminDashboard = ({ user }) => {
                          >
                            <td className="px-10 py-7">
                               <div className="flex items-center gap-5">
-                                 <div className="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-xs font-black text-white shadow-xl shadow-slate-900/10 group-hover:scale-110 group-hover:rotate-3 transition-all">
+                                 <div className="w-12 h-12 rounded-2xl bg-[#F8FBF8] flex items-center justify-center text-xs font-black text-[#0F1C12] shadow-xl shadow-slate-900/10 group-hover:scale-110 group-hover:rotate-3 transition-all">
                                     {o.name.charAt(0)}
                                  </div>
                                  <div className="flex flex-col">
@@ -869,7 +904,7 @@ const AdminDashboard = ({ user }) => {
                                     <span className="text-[10px] font-black text-slate-900">{displayScore}</span>
                                  </div>
                                  <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                                    <div className="h-full bg-slate-900 rounded-full group-hover:bg-blue-600 transition-all duration-500" style={{ width: barWidth }}></div>
+                                    <div className="h-full bg-[#F8FBF8] rounded-full group-hover:bg-green-600 transition-all duration-500" style={{ width: barWidth }}></div>
                                  </div>
                               </div>
                            </td>
@@ -877,11 +912,11 @@ const AdminDashboard = ({ user }) => {
                               <div className="flex items-center justify-center gap-3">
                                 <button 
                                   onClick={() => setOfficerDeptModal({ isOpen: true, officer: o })}
-                                  className="px-6 py-2.5 bg-slate-50 text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all shadow-sm border border-slate-200/50"
+                                  className="px-6 py-2.5 bg-slate-50 text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#F8FBF8] hover:text-[#0F1C12] transition-all shadow-sm border border-slate-200/50"
                                 >
                                   Reassign
                                 </button>
-                                <button className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all border border-slate-100 shadow-sm">
+                                <button className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-[#F8FBF8] hover:text-[#0F1C12] transition-all border border-slate-100 shadow-sm">
                                   <Activity size={16} />
                                 </button>
                               </div>
@@ -895,21 +930,28 @@ const AdminDashboard = ({ user }) => {
           } />
           <Route path="profile" element={
             <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-8 duration-1000 max-w-5xl">
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] font-black text-rose-500 uppercase tracking-[0.3em]">Executive Command Center</span>
-                <h2 className="text-2xl font-black text-slate-900 tracking-tighter leading-none uppercase">Authority Profile</h2>
-                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">Control Terminal Credentials for Administrative Level 5 Personnel.</p>
-              </div>
+                <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header flex-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+                  <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+                  <div className="relative z-10 flex flex-col gap-3">
+                    <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                      Authority Profile
+                    </h1>
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                      Control Terminal Credentials for Administrative Level 5 Personnel.
+                    </p>
+                  </div>
+                </div>
 
                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   {/* Personal ID Card */}
                   <div className="lg:col-span-2 flex flex-col gap-8">
-                      <div className="card-premium p-12 bg-white relative overflow-hidden group hover-glow">
+                      <div className="bg-gradient-to-r from-white to-[#BBF7D0] p-12 relative overflow-hidden group hover:shadow-2xl transition-all rounded-[3.5rem] border border-green-200/60">
                         <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500/5 blur-[100px] -mr-32 -mt-32 rounded-full group-hover:bg-primary-500/10 transition-colors duration-700"></div>
                         
                         <div className="flex flex-col md:flex-row items-center gap-12 relative z-10">
-                            <div className="w-44 h-44 rounded-[3.5rem] bg-slate-900 flex items-center justify-center text-white text-6xl font-black shadow-2xl relative group-hover:scale-105 transition-transform duration-500">
-                               <div className="absolute inset-0 bg-blue-600 rounded-[3.5rem] opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                            <div className="w-44 h-44 rounded-[3.5rem] bg-[#F8FBF8] flex items-center justify-center text-[#0F1C12] text-6xl font-black shadow-2xl relative group-hover:scale-105 transition-transform duration-500">
+                               <div className="absolute inset-0 bg-green-600 rounded-[3.5rem] opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
                                <span className="relative z-10 uppercase">{user?.name?.charAt(0)}</span>
                                <div className="absolute -bottom-2 -right-2 w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-xl border-4 border-white">
                                  <ShieldCheck size={28} className="text-white" />

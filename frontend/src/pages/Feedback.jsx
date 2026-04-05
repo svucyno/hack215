@@ -3,8 +3,10 @@ import { MessageSquare, Star, Send, ShieldCheck, CheckCircle2, ChevronRight, Zap
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import API_BASE from '../config/api';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const Feedback = ({ user }) => {
+  const { t } = useCitizenLang();
   // Platform Feedback State
   const [platformRating, setPlatformRating] = useState(0);
   const [selectedFactors, setSelectedFactors] = useState([]);
@@ -99,14 +101,14 @@ const Feedback = ({ user }) => {
   };
 
   const factorList = [
-    'Navigation Interface', 'Officer Communication', 
-    'Data Visualization', 'Resolution Speed', 
-    'Mobile Experience', 'System Reliability'
+    t('fb_factor_1'), t('fb_factor_2'), 
+    t('fb_factor_3'), t('fb_factor_4'), 
+    t('fb_factor_5'), t('fb_factor_6')
   ];
 
   const getRatingText = (r) => {
-    const labels = ['', 'Operational Failure', 'Sub-optimal', 'Satisfactory', 'High Grade', 'Elite Tier'];
-    return labels[r] || 'Initialize Rating';
+    const labels = ['', t('fb_rating_1'), t('fb_rating_2'), t('fb_rating_3'), t('fb_rating_4'), t('fb_rating_5')];
+    return labels[r] || t('fb_rating_0');
   };
 
   return (
@@ -116,14 +118,24 @@ const Feedback = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Assessment Terminal: Echo System</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">{t('fb_header_subtitle')}</span>
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter leading-none uppercase">Experience Intelligence</h1>
-          <p className="text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">Synthesizing platform engagement metrics for procedural optimization.</p>
+          <div className="bg-[#BBF7D0] py-6 px-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(74,222,128,0.1)] border border-green-200/50 relative overflow-hidden group/header">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#BBF7D0] to-[#4ADE80]"></div>
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/20 rounded-full blur-3xl group-hover/header:bg-white/40 transition-all duration-700"></div>
+            <div className="relative z-10 flex flex-col gap-3">
+              <h1 className="text-3xl md:text-4xl font-black tracking-tighter leading-none uppercase text-[#064E3B]">
+                {t('fb_header_title')}
+              </h1>
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#064E3B]/70 leading-relaxed max-w-xl">
+                {t('fb_header_desc')}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex items-center gap-3 relative z-10">
-          <span className="flex items-center gap-1.5 px-6 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10 shadow-xl backdrop-blur-md">
-             Active Assessment Protocol: FB-{new Date().getFullYear()}-PR
+          <span className="flex items-center gap-1.5 px-6 py-3 bg-white/5 text-[#0F1C12] rounded-full text-[10px] font-black uppercase tracking-widest border border-green-600/15 shadow-xl backdrop-blur-md">
+             {t('fb_active_protocol')}: FB-{new Date().getFullYear()}-PR
           </span>
         </div>
       </header>
@@ -144,14 +156,14 @@ const Feedback = ({ user }) => {
                   <div className="flex flex-col gap-3 px-1">
                      <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-primary-500"></div>
-                        <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Platform Diagnostics</h2>
+                        <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">{t('fb_platform_diag')}</h2>
                      </div>
-                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Quantify engagement metrics for the municipal portal.</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t('fb_platform_diag_desc')}</p>
                   </div>
 
                   <form className="flex flex-col gap-10" onSubmit={handlePlatformSubmit}>
                     <div className="flex flex-col gap-5">
-                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-1">Satisfaction Vector</label>
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-1">{t('fb_satisfaction')}</label>
                       <div className="flex items-center gap-3">
                         {[1, 2, 3, 4, 5].map((s) => (
                           <button 
@@ -171,7 +183,7 @@ const Feedback = ({ user }) => {
                           </button>
                         ))}
                         <div className="ml-6 flex flex-col">
-                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</span>
+                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">{t('fb_status')}</span>
                            <span className="text-xs font-black text-primary-600 uppercase tracking-tight">
                              {getRatingText(hoverRating || platformRating)}
                            </span>
@@ -180,7 +192,7 @@ const Feedback = ({ user }) => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">service Factors</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">{t('fb_service_factors')}</label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {factorList.map((f, i) => (
                           <button 
@@ -201,10 +213,10 @@ const Feedback = ({ user }) => {
                     </div>
 
                     <div className="flex flex-col gap-5">
-                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-1">Detailed Analysis</label>
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] px-1">{t('fb_detailed_analysis')}</label>
                       <textarea 
                         className="w-full p-8 bg-slate-50 border border-slate-100 rounded-[2.5rem] text-xs font-bold uppercase tracking-widest focus:ring-4 focus:ring-primary-500/5 focus:border-primary-300 outline-none min-h-[160px] transition-all placeholder:text-slate-300 shadow-inner"
-                        placeholder="ENTER ENCRYPTED ASSESSMENT DATA..."
+                        placeholder={t('fb_placeholder_analysis')}
                         value={remarks}
                         onChange={(e) => setRemarks(e.target.value)}
                         required
@@ -214,10 +226,10 @@ const Feedback = ({ user }) => {
                     <button 
                       type="submit" 
                       disabled={platformRating === 0 || remarks.trim() === '' || submittingPlatform}
-                      className="w-full bg-slate-900 text-white py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] flex items-center justify-center gap-4 hover:bg-primary-600 hover:shadow-3xl hover:shadow-primary-500/30 transition-all active:scale-95 disabled:opacity-50 shadow-2xl shadow-slate-200"
+                      className="w-full bg-[#F8FBF8] text-[#0F1C12] py-6 rounded-[2.5rem] text-[11px] font-black uppercase tracking-[0.4em] flex items-center justify-center gap-4 hover:bg-primary-600 hover:shadow-3xl hover:shadow-primary-500/30 transition-all active:scale-95 disabled:opacity-50 shadow-2xl shadow-slate-200"
                     >
                       {submittingPlatform ? <div className="w-6 h-6 border-4 border-white/20 border-t-white rounded-full animate-spin"></div> : (
-                        <>Commit Assessment <Send size={18} /></>
+                        <>{t('fb_commit_assessment')} <Send size={18} /></>
                       )}
                     </button>
                   </form>
@@ -233,10 +245,10 @@ const Feedback = ({ user }) => {
                     <CheckCircle2 size={48} />
                   </div>
                   <div className="flex flex-col gap-2">
-                    <h2 className="text-3xl font-black text-slate-900">Analysis Logs Encrypted</h2>
-                    <p className="text-sm text-slate-500 font-medium">Your platform metrics have been integrated into the central engineering queue.</p>
+                    <h2 className="text-3xl font-black text-slate-900">{t('fb_analysis_encrypted')}</h2>
+                    <p className="text-sm text-slate-500 font-medium">{t('fb_analysis_desc')}</p>
                   </div>
-                  <button onClick={() => setPlatformDone(false)} className="text-xs font-black text-primary-600 uppercase tracking-widest hover:underline">Revise Metrics</button>
+                  <button onClick={() => setPlatformDone(false)} className="text-xs font-black text-primary-600 uppercase tracking-widest hover:underline">{t('fb_revise_metrics')}</button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -245,7 +257,7 @@ const Feedback = ({ user }) => {
           <div className="flex flex-col gap-6 px-4 auto-rows-max">
             <div className="flex items-center gap-3">
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
-               <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em]">Live Assessment Pulse</h3>
+               <h3 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em]">{t('fb_live_pulse')}</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {loadingGlobal ? (
@@ -261,12 +273,12 @@ const Feedback = ({ user }) => {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-[10px] font-black text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-[10px] font-black text-slate-400 group-hover:bg-[#F8FBF8] group-hover:text-[#0F1C12] transition-colors">
                           {f.userId?.name?.charAt(0) || 'U'}
                         </div>
                         <div className="flex flex-col">
-                           <span className="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{f.userId?.name || 'Anonymous User'}</span>
-                           <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Verified Citizen</span>
+                           <span className="text-[10px] font-black text-slate-900 uppercase tracking-tighter">{f.userId?.name || t('fb_anon_user')}</span>
+                           <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{t('fb_verified_citizen')}</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-0.5">
@@ -284,7 +296,7 @@ const Feedback = ({ user }) => {
                   </motion.div>
                 ))
               ) : (
-                <div className="col-span-2 py-10 text-center text-slate-400 font-bold text-xs uppercase tracking-widest border-2 border-dashed border-slate-50 rounded-[2rem]">No recent pulse reflections found.</div>
+                <div className="col-span-2 py-10 text-center text-slate-400 font-bold text-xs uppercase tracking-widest border-2 border-dashed border-slate-50 rounded-[2rem]">{t('fb_no_pulse')}</div>
               )}
             </div>
           </div>
@@ -299,8 +311,8 @@ const Feedback = ({ user }) => {
                 <ShieldCheck size={32} />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none">Officer Duty Audit</h3>
-                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] bg-emerald-50 px-3 py-1 rounded-full mt-2 w-max">Mission Closure Hub</span>
+                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none">{t('fb_officer_audit')}</h3>
+                <span className="text-[10px] font-black text-emerald-600 uppercase tracking-[0.2em] bg-emerald-50 px-3 py-1 rounded-full mt-2 w-max">{t('fb_mission_hub')}</span>
               </div>
             </div>
 
@@ -310,7 +322,10 @@ const Feedback = ({ user }) => {
               <div className="flex flex-col gap-6">
                 {!selectedComp ? (
                   <div className="flex flex-col gap-4">
-                    <p className="text-[11px] text-slate-500 font-black uppercase tracking-widest px-1">Detected <span className="text-emerald-600">{resolvedComplaints.length} pending</span> duty audits.</p>
+                    <p className="text-[11px] text-slate-500 font-black uppercase tracking-widest px-1">
+                      <span className="text-emerald-600">{resolvedComplaints.length} </span>
+                      {t('fb_detected_pending')}
+                    </p>
                     {resolvedComplaints.map(c => (
                       <button 
                         key={c._id}
@@ -319,7 +334,7 @@ const Feedback = ({ user }) => {
                       >
                         <div className="flex flex-col items-start gap-1">
                           <span className="text-xs font-black font-mono text-slate-900 tracking-widest">{c.complaintId}</span>
-                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{c.category} PROTOCOL</span>
+                          <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{c.category} {t('fb_protocol')}</span>
                         </div>
                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-slate-300 group-hover:text-emerald-500 group-hover:rotate-45 transition-all">
                            <ArrowUpRight size={20} />
@@ -331,11 +346,11 @@ const Feedback = ({ user }) => {
                   <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col gap-6 bg-slate-50 p-6 rounded-[2rem] border-2 border-emerald-100">
                     <div className="flex items-center justify-between border-b border-emerald-100 pb-4">
                       <span className="text-xs font-black font-mono text-slate-900">{selectedComp.complaintId}</span>
-                      <button onClick={() => setSelectedComp(null)} className="text-[10px] font-bold uppercase text-slate-400 hover:text-rose-500">Cancel</button>
+                      <button onClick={() => setSelectedComp(null)} className="text-[10px] font-bold uppercase text-slate-400 hover:text-rose-500">{t('fb_cancel')}</button>
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Officer Conduct Score</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">{t('fb_conduct_score')}</label>
                       <div className="flex items-center gap-2">
                         {[1, 2, 3, 4, 5].map(s => (
                           <button 
@@ -350,10 +365,10 @@ const Feedback = ({ user }) => {
                     </div>
 
                     <div className="flex flex-col gap-3">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Mission debrief</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">{t('fb_mission_debrief')}</label>
                       <textarea 
                         className="w-full p-4 bg-white border border-emerald-50 rounded-2xl text-[11px] font-medium focus:ring-4 focus:ring-emerald-500/10 outline-none transition-all placeholder:italic"
-                        placeholder="How was the resolution speed?"
+                        placeholder={t('fb_debrief_placeholder')}
                         value={officerFeedback}
                         onChange={(e) => setOfficerFeedback(e.target.value)}
                       />
@@ -364,7 +379,7 @@ const Feedback = ({ user }) => {
                       disabled={submittingOfficer || officerRating === 0}
                       className="w-full py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase text-xs tracking-[0.2em] shadow-xl shadow-emerald-200 hover:bg-emerald-700 active:scale-95 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
                     >
-                      {submittingOfficer ? <div className="w-5 h-5 border-3 border-white/20 border-t-white rounded-full animate-spin"></div> : 'Log Duty Audit'}
+                      {submittingOfficer ? <div className="w-5 h-5 border-3 border-white/20 border-t-white rounded-full animate-spin"></div> : t('fb_log_audit')}
                     </button>
                   </motion.div>
                 )}
@@ -372,7 +387,7 @@ const Feedback = ({ user }) => {
             ) : (
               <div className="flex flex-col items-center py-10 text-center gap-4 border-2 border-dashed border-slate-100 rounded-[2rem]">
                 <Zap size={32} className="text-slate-200" />
-                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Awaiting resolutions to review.</p>
+                <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">{t('fb_awaiting_resolutions')}</p>
               </div>
             )}
           </div>
@@ -383,15 +398,15 @@ const Feedback = ({ user }) => {
                 <Users size={32} />
               </div>
               <div className="flex flex-col">
-                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none">Support Cadre</h3>
-                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] bg-indigo-50 px-3 py-1 rounded-full mt-2 w-max">Priority Alpha</span>
+                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none">{t('fb_support_cadre')}</h3>
+                <span className="text-[10px] font-black text-indigo-600 uppercase tracking-[0.2em] bg-indigo-50 px-3 py-1 rounded-full mt-2 w-max">{t('fb_priority_alpha')}</span>
               </div>
             </div>
             <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest leading-relaxed">
-              Facing critical downtime or authorization issues? Bypass the feedback terminal and sync with our technical rapid-response cadres.
+              {t('fb_support_desc')}
             </p>
-            <button className="w-full py-5 bg-slate-900 text-white hover:bg-indigo-600 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.3em] transition-all shadow-2xl shadow-indigo-200/20 active:scale-95">
-              Initialize Ops Console
+            <button className="w-full py-5 bg-[#F8FBF8] text-[#0F1C12] hover:bg-indigo-600 rounded-[2rem] font-black uppercase text-[11px] tracking-[0.3em] transition-all shadow-2xl shadow-indigo-200/20 active:scale-95">
+              {t('fb_init_console')}
             </button>
           </div>
         </div>

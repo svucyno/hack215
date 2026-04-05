@@ -5,10 +5,12 @@ import GrievanceMap from './GrievanceMap';
 import useSpeechRecognition from '../hooks/useSpeechRecognition';
 import { Image, MapPin, Send, AlertCircle, CheckCircle2, Search, Mic, MicOff, RotateCcw, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useCitizenLang } from '../context/CitizenLanguageContext';
 
 const center = { lat: 28.6139, lng: 77.2090 };
 
 const ComplaintForm = ({ user, onSuccess }) => {
+  const { t } = useCitizenLang();
   const [formData, setFormData] = useState({
     category: 'Potholes',
     description: '',
@@ -209,43 +211,43 @@ const ComplaintForm = ({ user, onSuccess }) => {
           <div className="flex flex-col gap-2 px-1">
              <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(37,99,235,0.4)]"></div>
-                <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Grievance Intelligence</h2>
+                <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">{t('cf_intel')}</h2>
              </div>
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Categorize and describe the localized incident.</p>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t('cf_intel_desc')}</p>
           </div>
 
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-3">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">Case Type</label>
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('cf_case_type')}</label>
               <select
                 className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-black text-[11px] text-slate-800 uppercase tracking-widest shadow-sm appearance-none cursor-pointer"
                 value={formData.category}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               >
-                <option value="Theft">Theft</option>
-                <option value="Missing Person">Missing Person</option>
-                <option value="Cyber Crime">Cyber Crime</option>
-                <option value="Harassment">Harassment / Threat</option>
-                <option value="Accident">Accident</option>
-                <option value="Suspicious Activity">Suspicious Activity</option>
+                <option value="Theft">{t('cf_cat_theft')}</option>
+                <option value="Missing Person">{t('cf_cat_missing')}</option>
+                <option value="Cyber Crime">{t('cf_cat_cyber')}</option>
+                <option value="Harassment">{t('cf_cat_harass')}</option>
+                <option value="Accident">{t('cf_cat_accident')}</option>
+                <option value="Suspicious Activity">{t('cf_cat_suspicious')}</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-3">
               <div className="flex items-center justify-between px-1">
-                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Incident Parameters</label>
+                 <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">{t('cf_params')}</label>
                  <button
                    type="button"
                    onClick={isListening ? stopMic : startMic}
                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all shadow-sm ${isListening ? 'bg-rose-500 text-white animate-pulse shadow-rose-500/20' : 'bg-slate-100 text-primary-500 hover:bg-primary-500 hover:text-white'}`}
                  >
                    {isListening ? <MicOff size={12} /> : <Mic size={12} />}
-                   {isListening ? 'Recording Intel...' : 'Neural Voice Input'}
+                   {isListening ? t('cf_mic_rec') : t('cf_mic_voice')}
                  </button>
               </div>
               <textarea
                 className="w-full px-5 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all font-bold text-xs text-slate-700 min-h-[160px] resize-none leading-relaxed placeholder:text-slate-300 shadow-sm"
-                placeholder="Enter your complaint in Telugu / Hindi / English..."
+                placeholder={t('cf_desc_ph')}
                 required
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -255,18 +257,18 @@ const ComplaintForm = ({ user, onSuccess }) => {
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col gap-4 p-5 bg-slate-900 rounded-2xl border border-white/5 shadow-2xl overflow-hidden mt-4"
+                className="flex flex-col gap-4 p-5 bg-[#F8FBF8] rounded-2xl border border-white/5 shadow-2xl overflow-hidden mt-4"
               >
                 <div className="flex items-center justify-between">
                    <div className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full bg-primary-400 animate-pulse"></div>
-                      <span className="text-[9px] font-black text-primary-400 uppercase tracking-widest text-white/90">AI Analysis Intelligence</span>
+                      <span className="text-[9px] font-black text-primary-400 uppercase tracking-widest text-white/90">{t('cf_ai_intel')}</span>
                    </div>
                    <button
                      type="button"
                      disabled={aiAnalysis.loading || !formData.description}
                      onClick={() => analyzeText(formData.description)}
-                     className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-all disabled:opacity-30"
+                     className="p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-[#0F1C12] transition-all disabled:opacity-30"
                      title="Refresh Analysis"
                    >
                      <RotateCcw size={12} className={aiAnalysis.loading ? 'animate-spin' : ''} />
@@ -275,34 +277,34 @@ const ComplaintForm = ({ user, onSuccess }) => {
 
                 <div className="grid grid-cols-2 gap-4">
                    <div className="flex flex-col gap-1">
-                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">Detected Language</span>
-                      <span className="text-xs font-black text-white uppercase tracking-widest">{aiAnalysis.loading ? 'Analyzing...' : aiAnalysis.detected_language || 'Awaiting Input'}</span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">{t('cf_lang_detect')}</span>
+                      <span className="text-xs font-black text-white uppercase tracking-widest">{aiAnalysis.loading ? t('cf_analyzing') : aiAnalysis.detected_language || t('cf_awaiting')}</span>
                    </div>
                    <div className="flex flex-col gap-1">
-                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">Case Sentiment</span>
-                      <span className="text-xs font-black text-emerald-400 uppercase tracking-widest">Calculated</span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">{t('cf_sentiment')}</span>
+                      <span className="text-xs font-black text-emerald-400 uppercase tracking-widest">{t('cf_calculated')}</span>
                    </div>
                    <div className="flex flex-col gap-1">
-                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">AI Predicted Category</span>
-                      <span className="text-xs font-black text-primary-400 uppercase tracking-widest">{aiAnalysis.loading ? 'Classifying...' : aiAnalysis.case_type || 'TBD'}</span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">{t('cf_predicted')}</span>
+                      <span className="text-xs font-black text-primary-400 uppercase tracking-widest">{aiAnalysis.loading ? t('cf_classifying') : aiAnalysis.case_type || t('cf_tbd')}</span>
                    </div>
                    <div className="flex flex-col gap-1">
-                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">Priority Level</span>
-                      <span className="text-xs font-black text-rose-400 uppercase tracking-widest">{aiAnalysis.loading ? 'Triaging...' : aiAnalysis.priority || 'TBD'}</span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">{t('cf_priority_lvl')}</span>
+                      <span className="text-xs font-black text-rose-400 uppercase tracking-widest">{aiAnalysis.loading ? t('cf_triaging') : aiAnalysis.priority || t('cf_tbd')}</span>
                    </div>
                 </div>
 
                 <div className="flex flex-col gap-1 border-t border-white/5 pt-3">
-                   <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">Translated English Script</span>
+                   <span className="text-[8px] font-bold text-slate-500 uppercase tracking-tighter">{t('cf_english_script')}</span>
                    <p className="text-[11px] font-bold text-slate-300 leading-relaxed italic">
-                     {aiAnalysis.loading ? 'Generating semantic English version...' : aiAnalysis.translated_text || 'Enter parameters to begin translation...'}
+                     {aiAnalysis.loading ? t('cf_generating') : aiAnalysis.translated_text || t('cf_enter_params')}
                    </p>
                 </div>
               </motion.div>
             </div>
 
             <div className="flex flex-col gap-3">
-              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">Priority Vector</label>
+              <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest px-1">{t('cf_priority_vector')}</label>
               <div className="grid grid-cols-3 gap-4">
                 {['low', 'medium', 'high'].map((level) => (
                   <button
@@ -311,7 +313,7 @@ const ComplaintForm = ({ user, onSuccess }) => {
                     onClick={() => setFormData({ ...formData, severity: level })}
                     className={`py-3.5 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border transition-all active:scale-95 shadow-sm
                       ${formData.severity === level 
-                        ? 'bg-slate-900 text-white border-slate-900 shadow-xl shadow-slate-200' 
+                        ? 'bg-[#F8FBF8] text-[#0F1C12] border-slate-900 shadow-xl shadow-slate-200' 
                         : 'bg-white text-slate-400 border-slate-100 hover:border-slate-300'
                       }`}
                   >
@@ -322,7 +324,7 @@ const ComplaintForm = ({ user, onSuccess }) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-semibold text-slate-600 px-1">Evidence (Optional)</label>
+              <label className="text-xs font-semibold text-slate-600 px-1">{t('cf_evidence')}</label>
               <div 
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
@@ -333,9 +335,9 @@ const ComplaintForm = ({ user, onSuccess }) => {
                   <div className={`flex flex-col items-center gap-2 transition-colors ${isDragging ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600'}`}>
                     <Image size={24} className={isDragging ? 'animate-bounce' : ''} />
                     <span className="text-xs font-black uppercase tracking-widest text-center">
-                      {isDragging ? 'Drop Protocol Files' : 'Drag & Drop or Click to Upload'}
+                      {isDragging ? t('cf_drop') : t('cf_drag')}
                     </span>
-                    <span className="text-[10px] font-medium opacity-60 uppercase tracking-tighter">Support for JPEG, PNG, WEBP</span>
+                    <span className="text-[10px] font-medium opacity-60 uppercase tracking-tighter">{t('cf_support')}</span>
                   </div>
                   <input 
                     type="file" 
@@ -382,9 +384,9 @@ const ComplaintForm = ({ user, onSuccess }) => {
           <div className="flex flex-col gap-2 px-1">
              <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></div>
-                <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">Geospatial Locality</h2>
+                <h2 className="text-sm font-black text-slate-900 uppercase tracking-[0.2em]">{t('cf_geo_loc')}</h2>
              </div>
-             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">Synchronize precise deployment coordinates.</p>
+             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none">{t('cf_sync')}</p>
           </div>
 
           <div className="flex flex-col gap-5 h-full relative z-0">
@@ -407,13 +409,13 @@ const ComplaintForm = ({ user, onSuccess }) => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-slate-900 text-white py-5 text-xs font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 rounded-3xl hover:bg-primary-600 hover:shadow-3xl hover:shadow-primary-500/30 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xl shadow-slate-200"
+              className="w-full bg-[#F8FBF8] text-[#0F1C12] py-5 text-xs font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 rounded-3xl hover:bg-primary-600 hover:shadow-3xl hover:shadow-primary-500/30 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed group shadow-2xl shadow-slate-200"
             >
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
               ) : (
                 <>
-                  <span>Commit Grievance Protocol</span>
+                  <span>{t('cf_commit')}</span>
                   <div className="p-1.5 bg-white/10 rounded-lg group-hover:bg-white group-hover:text-primary-600 transition-colors">
                     <Send size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>

@@ -2,7 +2,7 @@
 
 # 🚔 Multilingual AI-powered Central Grievance Management Portal (CGMP)
 
-<p><strong>Transforming citizen complaints into structured, actionable police intelligence — instantly, accurately, and at scale.</strong></p>
+<p><strong>Transforming citizen complaints into structured, actionable authority intelligence — instantly, accurately, and at scale.</strong></p>
 
 <br/>
 
@@ -51,7 +51,7 @@ Current policing and grievance portals suffer from critical systemic bottlenecks
 - 🏮 **Language Exclusivity**: Portals are often limited to English/Hindi, alienating 60% of regional speakers.
 - 📉 **Manual Intake**: Officers spend 40% of their time manually sorting and documenting unstructured complaints.
 - ⌛ **Deadlocks**: Critical life-safety issues get buried under routine administrative complaints without smart prioritization.
-- 🏚️ **Verification Gaps**: False reports waste police resources; resolved cases lack objective proof of work.
+- 🏚️ **Verification Gaps**: False reports waste authority resources; resolved cases lack objective proof of work.
 - 🗺️ **Data Silos**: No way to visualize crime patterns or geospatial clusters in real-time.
 
 ---
@@ -63,7 +63,7 @@ CGMP replaces manual workflows with an **Intelligence Pipeline**:
 1. **Intake**: Multi-lingual text or voice input.
 2. **Translation**: Real-time high-fidelity translation to English.
 3. **Analysis**: AI-driven categorization, priority detection, and sentiment analysis.
-4. **Drafting**: Automated generation of structured FIR drafts.
+4. **Drafting**: Automated generation of structured REPORT drafts.
 5. **Logic**: Smart load-balanced assignment to the right department and officer.
 6. **Vision**: AI-powered verification of evidence and resolution proof.
 
@@ -79,7 +79,7 @@ CGMP replaces manual workflows with an **Intelligence Pipeline**:
 ### 🤖 AI-Powered Intelligence
 - **Automated Categorization**: Gemini AI identifies crime types (Theft, Cybercrime, Assault, etc.).
 - **Priority Detection**: Categorizes urgency from `Low` to `Critical` based on content analysis.
-- **FIR Draft Generation**: Submits a professional, structured FIR draft immediately upon intake.
+- **REPORT Draft Generation**: Submits a professional, structured REPORT draft immediately upon intake.
 - **AI Case Assistant**: A context-aware chatbot for officers to query the entire case database using natural language.
 
 ### 👁️ AI Vision Verification (New)
@@ -105,7 +105,7 @@ graph TD
     B --> C{AI Core}
     C -->|Gemini API| D[Translation & Intent]
     C -->|Llama 3.2 Vision| E[Evidence Verification]
-    D --> F[Automated FIR Generation]
+    D --> F[Automated REPORT Generation]
     F --> G[Smart Routing Engine]
     G --> H[Officer Assignment]
     H --> I[Officer/Admin Dashboards]
@@ -119,17 +119,17 @@ graph TD
 <table width="100%">
   <tr>
     <td width="50%">
-      <img src="frontend/public/images/citizen_ai_reporting_1774207794930.png" width="100%" alt="Citizen AI Reporting" /><br/>
+      <img src="frontend/public/images/user_ai_reporting_1774207794930.png" width="100%" alt="Citizen AI Reporting" /><br/>
       <sub><b>AI Reporting Interface</b>: Adaptive input with voice support.</sub>
     </td>
     <td width="50%">
-      <img src="frontend/public/images/officer_ai_dashboard_1774207821043.png" width="100%" alt="Officer AI Dashboard" /><br/>
+      <img src="frontend/public/images/staff_ai_dashboard_1774207821043.png" width="100%" alt="Officer AI Dashboard" /><br/>
       <sub><b>Officer Dashboard</b>: Prioritized case management and AI assistance.</sub>
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <img src="frontend/public/images/citizen_network_induction_1774208467342.png" width="100%" alt="Case Tracking" /><br/>
+      <img src="frontend/public/images/user_network_induction_1774208467342.png" width="100%" alt="Case Tracking" /><br/>
       <sub><b>Network Overview</b>: Visualizing connections and status history.</sub>
     </td>
     <td width="50%">
@@ -187,7 +187,7 @@ cd frontend && npm install && npm run dev
 | **Response Time** | Reduced from **days to minutes** via auto-routing. |
 | **Accessibility** | **100% inclusion** for regional language speakers. |
 | **Integrity** | AI-verified resolution proof eliminates "paper-only" fixes. |
-| **Police Workload** | Automated documentation saves **~15 hours/week per officer**. |
+| **Authority Workload** | Automated documentation saves **~15 hours/week per officer**. |
 
 ---
 

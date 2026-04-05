@@ -1,7 +1,7 @@
 const Complaint = require('../models/Complaint');
 
 // @desc    Get dashboard metrics for an officer
-// @route   GET /api/officers/dashboard-stats
+// @route   GET /api/staffs/dashboard-stats
 // @access  Private (Officer)
 const getDashboardStats = async (req, res) => {
   try {

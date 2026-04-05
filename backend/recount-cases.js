@@ -8,7 +8,7 @@ const Complaint = require('./models/Complaint');
 const run = async () => {
   await connectDB();
   
-  const officers = await User.find({ role: 'OFFICER' });
+  const officers = await User.find({ role: 'STAFF' });
   console.log(`Found ${officers.length} officers. Resyncing active_cases_count...`);
 
   for (let officer of officers) {

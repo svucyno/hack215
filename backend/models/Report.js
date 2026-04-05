@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const firSchema = new mongoose.Schema({
   complaintId: { type: mongoose.Schema.Types.ObjectId, ref: 'Complaint', required: true, unique: true },
   systemGeneratedId: { type: String, required: true, unique: true },
-  documentType: { type: String, default: 'FIR' },
-  status: { type: String, enum: ['Generated', 'Assigned', 'Closed'], default: 'Generated' },
+  documentType: { type: String, default: 'REPORT' },
+  status: { type: String, default: 'Generated' },
   
   header: {
-    departmentName: { type: String, default: 'Central Intelligence Police Department' },
+    departmentName: { type: String, default: 'Central Intelligence Authority Department' },
     date: { type: Date, default: Date.now }
   },
   
@@ -36,4 +36,4 @@ const firSchema = new mongoose.Schema({
   assignedOfficerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
-module.exports = mongoose.model('FIR', firSchema);
+module.exports = mongoose.model('REPORT', firSchema);
