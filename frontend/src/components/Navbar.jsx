@@ -27,7 +27,7 @@ const Navbar = ({ user, setUser }) => {
     { name: 'Home', path: '/' },
     { name: 'Features', path: '/features' },
     { name: 'How it Works', path: '/how-it-works' },
-    { name: 'AI Intelligence', path: '/ai-intelligence' },
+    { name: 'AI Capabilities', path: '/ai-intelligence' },
   ];
 
   return (
@@ -39,7 +39,7 @@ const Navbar = ({ user, setUser }) => {
           <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-violet-600 text-white shadow-lg shadow-blue-500/30 group-hover:shadow-blue-500/50 transition-all duration-300 transform group-hover:-translate-y-0.5">
             <Shield size={22} className="stroke-[2.5]" />
           </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Citizen Care<span className="text-blue-600 font-extrabold text-2xl leading-none">.</span>AI</span>
+          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Smart Grievance<span className="text-blue-600 font-extrabold text-2xl leading-none">.</span>AI</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -57,31 +57,12 @@ const Navbar = ({ user, setUser }) => {
 
         {/* Right Actions */}
         <div className="hidden md:flex items-center gap-5">
-          {user ? (
-            <div className="flex items-center gap-4">
-               <button 
-                 onClick={() => navigate(user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'OFFICER' ? '/officer/dashboard' : '/citizen/dashboard')}
-                 className="flex items-center gap-2 text-sm font-semibold text-slate-700 hover:text-blue-600 transition-colors group"
-               >
-                 <UserCircle size={18} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
-                 Dashboard
-               </button>
-               <div className="h-5 w-px bg-slate-200"></div>
-               <button
-                 onClick={handleLogout}
-                 className="text-sm font-semibold text-slate-500 hover:text-red-500 transition-colors"
-               >
-                 Logout
-               </button>
-            </div>
-          ) : (
             <div className="flex items-center gap-3">
               <Link to="/login" className="text-[14px] font-semibold text-slate-600 hover:text-blue-600 transition-colors px-4 py-2">Login</Link>
               <Link to="/register" className="flex items-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-full text-[13.5px] font-semibold hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-600/25 transition-all duration-300 transform hover:-translate-y-0.5">
                 Register <ArrowRight size={16} />
               </Link>
             </div>
-          )}
         </div>
 
         {/* Mobile Toggle */}
@@ -113,45 +94,22 @@ const Navbar = ({ user, setUser }) => {
               </Link>
             ))}
             
-            {!user ? (
-               <div className="flex flex-col gap-4 mt-4">
-                 <Link 
-                   to="/login" 
-                   className="w-full text-center py-4 rounded-xl border border-slate-200 text-lg font-semibold text-slate-700"
-                   onClick={() => setMobileMenuOpen(false)}
-                 >
-                   Login
-                 </Link>
-                 <Link 
-                   to="/register" 
-                   className="w-full text-center py-4 rounded-xl bg-blue-600 text-white text-lg font-semibold shadow-xl shadow-blue-500/20"
-                   onClick={() => setMobileMenuOpen(false)}
-                 >
-                   Register
-                 </Link>
-               </div>
-            ) : (
-               <div className="flex flex-col gap-4 mt-4">
-                 <button 
-                   onClick={() => {
-                     setMobileMenuOpen(false);
-                     navigate(user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'OFFICER' ? '/officer/dashboard' : '/citizen/dashboard');
-                   }}
-                   className="w-full text-center py-4 rounded-xl bg-blue-600 text-white text-lg font-semibold shadow-xl shadow-blue-500/20"
-                 >
-                   Go to Dashboard
-                 </button>
-                 <button 
-                   onClick={() => {
-                     setMobileMenuOpen(false);
-                     handleLogout();
-                   }}
-                   className="w-full text-center py-4 rounded-xl border border-slate-200 text-lg font-semibold text-red-500"
-                 >
-                   Logout
-                 </button>
-               </div>
-            )}
+            <div className="flex flex-col gap-4 mt-4">
+              <Link 
+                to="/login" 
+                className="w-full text-center py-4 rounded-xl border border-slate-200 text-lg font-semibold text-slate-700"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link 
+                to="/register" 
+                className="w-full text-center py-4 rounded-xl bg-blue-600 text-white text-lg font-semibold shadow-xl shadow-blue-500/20"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Register
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

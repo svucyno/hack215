@@ -7,7 +7,7 @@ import API_BASE from '../config/api';
 const AIChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { text: "Hello! I'm the Citizen Care AI Assistant. How can I help you today?", isBot: true }
+    { text: "Hello! I'm the Smart Grievance AI Assistant. How can I help you today?", isBot: true }
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const messagesEndRef = useRef(null);

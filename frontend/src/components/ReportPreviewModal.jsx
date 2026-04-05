@@ -4,8 +4,8 @@ import API_BASE from '../config/api';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Download, UserPlus, Server, FileText, CheckCircle2 } from 'lucide-react';
 
-const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) => {
-  const [firData, setFirData] = useState(null);
+const GrievanceReportModal = ({ isOpen, onClose, complaint, user, onAssignClick }) => {
+  const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [downloading, setDownloading] = useState(false);
@@ -13,19 +13,19 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
 
   useEffect(() => {
     if (isOpen && complaint) {
-      fetchOrGenerateFIR();
+      fetchOrGenerateReport();
     }
   }, [isOpen, complaint]);
 
-  const fetchOrGenerateFIR = async () => {
+  const fetchOrGenerateReport = async () => {
     setLoading(true);
     setError('');
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      const res = await axios.post(`${API_BASE}/api/fir/generate/${complaint._id}`, {}, config);
-      setFirData(res.data);
+      const res = await axios.post(`${API_BASE}/api/report/generate/${complaint._id}`, {}, config);
+      setReportData(res.data);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to retrieve FIR Document.');
+      setError(err.response?.data?.message || 'Failed to retrieve REPORT Document.');
     } finally {
       setLoading(false);
     }
@@ -35,12 +35,12 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
     setDownloading(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` }, responseType: 'blob' };
-      const res = await axios.get(`${API_BASE}/api/fir/download/${complaint._id}`, config);
+      const res = await axios.get(`${API_BASE}/api/report/download/${complaint._id}`, config);
       
       const url = window.URL.createObjectURL(new Blob([res.data]));
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${firData?.systemGeneratedId || 'FIR_Document'}.pdf`);
+      link.setAttribute('download', `${reportData?.systemGeneratedId || 'Grievance_Report'}.pdf`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -81,14 +81,14 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center gap-3">
                   <FileText className="text-blue-400" size={24} />
-                  <h2 className="text-2xl font-black tracking-tighter uppercase leading-none">Official FIR Preview</h2>
+                  <h2 className="text-2xl font-black tracking-tighter uppercase leading-none">Grievance Report Preview</h2>
                 </div>
                 <div className="flex items-center gap-3 mt-1 text-[10px] font-black uppercase tracking-widest text-slate-400">
                    <div className="flex items-center gap-1.5">
-                      <div className={`w-2 h-2 rounded-full ${firData?.status === 'Assigned' ? 'bg-emerald-500' : 'bg-primary-500 animate-pulse'}`}></div>
-                      Status: {firData?.status || 'Processing'}
+                      <div className={`w-2 h-2 rounded-full ${reportData?.status === 'Assigned' ? 'bg-emerald-500' : 'bg-primary-500 animate-pulse'}`}></div>
+                      Status: {reportData?.status || 'Processing'}
                    </div>
-                   {firData && <span>• REF: <span className="text-white">{firData.systemGeneratedId}</span></span>}
+                   {reportData && <span>• REF: <span className="text-white">{reportData.systemGeneratedId}</span></span>}
                 </div>
               </div>
               <button onClick={onClose} className="p-2 bg-slate-800 text-slate-400 hover:text-white rounded-xl transition-colors">
@@ -101,53 +101,53 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
               {loading ? (
                 <div className="flex flex-col items-center justify-center h-48 gap-4 text-slate-400">
                    <Server className="animate-pulse" size={32} />
-                   <span className="text-[10px] font-black uppercase tracking-widest">Synthesizing Neural FIR Format...</span>
+                   <span className="text-[10px] font-black uppercase tracking-widest">Generating Grievance Summary...</span>
                 </div>
               ) : error ? (
                 <div className="bg-rose-50 text-rose-600 p-6 rounded-2xl text-sm font-bold border border-rose-100 uppercase tracking-widest text-center">
                   {error}
                 </div>
-              ) : firData ? (
+              ) : reportData ? (
                 <div className="bg-white border text-sm border-slate-200 shadow-sm p-8 max-w-2xl mx-auto flex flex-col gap-6">
                    <div className="text-center flex flex-col gap-1 border-b-2 border-slate-900 pb-4 mb-2">
-                      <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">First Information Report</h3>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">{firData.header.departmentName}</p>
+                      <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Official Civic Grievance Report</h3>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-[0.2em]">{reportData.header.departmentName}</p>
                    </div>
                    
                    <div className="flex justify-between text-[11px] font-bold text-slate-400 uppercase tracking-widest">
-                      <span>Ref ID: <span className="text-slate-900">{firData.systemGeneratedId}</span></span>
-                      <span>Date: <span className="text-slate-900">{new Date(firData.generatedAt).toLocaleString()}</span></span>
+                      <span>Ref ID: <span className="text-slate-900">{reportData.systemGeneratedId}</span></span>
+                      <span>Date: <span className="text-slate-900">{new Date(reportData.generatedAt).toLocaleString()}</span></span>
                    </div>
 
                    <div className="flex flex-col gap-2">
                       <h4 className="text-[10px] font-black text-slate-900 bg-slate-100 px-3 py-1 uppercase tracking-widest w-fit">1. Complainant Details</h4>
                       <p className="text-[11px] font-bold text-slate-600 px-3">
-                         Name: {firData.complainantDetails.name} <br/>
-                         Contact: {firData.complainantDetails.contactInfo}
+                         Name: {reportData.complainantDetails.name} <br/>
+                         Contact: {reportData.complainantDetails.contactInfo}
                       </p>
                    </div>
 
                    <div className="flex flex-col gap-2">
                       <h4 className="text-[10px] font-black text-slate-900 bg-slate-100 px-3 py-1 uppercase tracking-widest w-fit">2. Incident Details</h4>
                       <div className="grid grid-cols-2 gap-4 text-[11px] font-bold text-slate-600 px-3">
-                          <div><span className="text-slate-400">Type:</span> {firData.incidentDetails.incidentType}</div>
-                          <div><span className="text-slate-400">Priority:</span> {firData.priorityLevel}</div>
-                          <div className="col-span-2"><span className="text-slate-400">Time:</span> {firData.incidentDetails.dateAndTime}</div>
-                          <div className="col-span-2"><span className="text-slate-400">Location:</span> {firData.incidentDetails.location.address}</div>
+                          <div><span className="text-slate-400">Type:</span> {reportData.incidentDetails.incidentType}</div>
+                          <div><span className="text-slate-400">Priority:</span> {reportData.priorityLevel}</div>
+                          <div className="col-span-2"><span className="text-slate-400">Time:</span> {reportData.incidentDetails.dateAndTime}</div>
+                          <div className="col-span-2"><span className="text-slate-400">Location:</span> {reportData.incidentDetails.location.address}</div>
                       </div>
                    </div>
 
                    <div className="flex flex-col gap-2">
                       <h4 className="text-[10px] font-black text-slate-900 bg-slate-100 px-3 py-1 uppercase tracking-widest w-fit">3. Detailed Description</h4>
                       <p className="text-[11px] font-bold text-slate-700 leading-relaxed uppercase px-3 text-justify">
-                         {firData.incidentDetails.description}
+                         {reportData.incidentDetails.description}
                       </p>
                    </div>
                    
                    <div className="flex flex-col gap-2">
-                       <h4 className="text-[10px] font-black text-primary-900 bg-primary-50 px-3 py-1 uppercase tracking-widest w-fit border border-primary-100">AI Intelligence Core</h4>
+                       <h4 className="text-[10px] font-black text-primary-900 bg-primary-50 px-3 py-1 uppercase tracking-widest w-fit border border-primary-100">AI Grievance Analysis</h4>
                        <p className="text-[10px] font-bold text-slate-600 leading-relaxed uppercase px-3 italic border-l-2 border-primary-200 ml-3">
-                           {firData.aiSummary}
+                           {reportData.aiSummary}
                        </p>
                    </div>
 
@@ -174,7 +174,7 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
                <div className="flex items-center gap-3 w-full sm:w-auto">
                  <button 
                    onClick={handleDownload}
-                   disabled={!firData || downloading}
+                   disabled={!reportData || downloading}
                    className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-white border-2 border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
                  >
                    {downloading ? <div className="w-4 h-4 rounded-full border-2 border-slate-300 border-t-slate-700 animate-spin"></div> : <Download size={14} />}
@@ -189,7 +189,7 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
                      }}
                      className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-600 text-white rounded-xl hover:bg-slate-900 text-[10px] font-black uppercase tracking-widest shadow-xl shadow-primary-500/20 active:scale-95 transition-all"
                    >
-                     <UserPlus size={14} /> Assign Officer
+                     <UserPlus size={14} /> Assign Staff
                    </button>
                  )}
                </div>
@@ -202,4 +202,4 @@ const FIRPreviewModal = ({ isOpen, onClose, complaint, user, onAssignClick }) =>
   );
 };
 
-export default FIRPreviewModal;
+export default GrievanceReportModal;

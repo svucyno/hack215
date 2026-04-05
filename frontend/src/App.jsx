@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import CitizenDashboard from './pages/CitizenDashboard';
-import OfficerDashboard from './pages/OfficerDashboard';
+import UserDashboard from './pages/UserDashboard';
+import StaffDashboard from './pages/StaffDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
@@ -81,9 +81,9 @@ const App = () => {
         } />
 
         {/* Role-based Dashboards */}
-        <Route path="/citizen" element={<PrivateRoute role="CITIZEN"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>
+        <Route path="/user" element={<PrivateRoute role="USER"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>
           <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<CitizenDashboard user={user} />} />
+          <Route path="dashboard" element={<UserDashboard user={user} />} />
           <Route path="submit-complaint" element={<SubmitComplaint user={user} />} />
           <Route path="my-complaints" element={<MyComplaints user={user} />} />
           <Route path="complaint-map" element={<ComplaintMap user={user} />} />
@@ -92,8 +92,8 @@ const App = () => {
           <Route path="profile" element={<Profile user={user} />} />
         </Route>
 
-        <Route path="/officer/*" element={<PrivateRoute role="OFFICER"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>
-          <Route path="*" element={<OfficerDashboard user={user} />} />
+        <Route path="/staff/*" element={<PrivateRoute role="STAFF"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>
+          <Route path="*" element={<StaffDashboard user={user} />} />
         </Route>
 
         <Route path="/admin/*" element={<PrivateRoute role="ADMIN"><DashboardLayout user={user} setUser={setUser} /></PrivateRoute>}>

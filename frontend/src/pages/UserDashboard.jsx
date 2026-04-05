@@ -22,7 +22,7 @@ import {
 import { motion } from 'framer-motion';
 import ComplaintDetailsModal from '../components/ComplaintDetailsModal';
 
-const CitizenDashboard = ({ user }) => {
+const UserDashboard = ({ user }) => {
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -81,14 +81,14 @@ const CitizenDashboard = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Civic Portal: Authorized Personnel</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Civic Grievance Dashboard</span>
           </div>
-          <h1 className="text-4xl font-black tracking-tighter leading-none uppercase">{user?.name} Intelligence</h1>
-          <p className="text-xs font-bold uppercase tracking-widest leading-relaxed">Synthesizing personal grievance reports for municipal oversight.</p>
+          <h1 className="text-4xl font-black tracking-tighter leading-none uppercase">{user?.name} Profile</h1>
+          <p className="text-xs font-bold uppercase tracking-widest leading-relaxed">Tracking personal grievance reports and civic issues.</p>
         </div>
         <div className="flex items-center gap-3 relative z-10">
-          <Link to="/citizen/submit-complaint" className="flex items-center gap-2.5 px-8 py-4 bg-white text-slate-900 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white hover:shadow-2xl hover:shadow-primary-500/40 transition-all active:scale-95 shadow-xl shadow-white/5">
-            <PlusCircle size={14} /> Initialize Report
+          <Link to="/user/submit-complaint" className="flex items-center gap-2.5 px-8 py-4 bg-white text-slate-900 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white hover:shadow-2xl hover:shadow-primary-500/40 transition-all active:scale-95 shadow-xl shadow-white/5">
+            <PlusCircle size={14} /> New Complaint
           </Link>
         </div>
       </header>
@@ -128,10 +128,10 @@ const CitizenDashboard = ({ user }) => {
           <div className="flex items-center justify-between px-2">
             <div className="flex flex-col gap-1">
               <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Recent Activity</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Tracking {complaints.length} localized protocols</p>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Tracking {complaints.length} active complaints</p>
             </div>
-            <Link to="/citizen/my-complaints" className="group flex items-center gap-2 text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 px-4 py-2 rounded-full hover:bg-primary-600 hover:text-white transition-all">
-              Launch Archive Intelligence <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            <Link to="/user/my-complaints" className="group flex items-center gap-2 text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 px-4 py-2 rounded-full hover:bg-primary-600 hover:text-white transition-all">
+              View History <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -143,18 +143,18 @@ const CitizenDashboard = ({ user }) => {
                  <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center border border-slate-100 opacity-50">
                     <Activity size={32} className="text-slate-300" />
                  </div>
-                 <div className="flex flex-col">
+                  <div className="flex flex-col">
                     <span className="text-xs font-black text-slate-900 uppercase tracking-widest">No Active Feeds</span>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Localized infrastructure reported as nominal.</span>
-                 </div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">No active grievances reported in your area.</span>
+                  </div>
               </div>
             ) : (
               <table className="w-full text-left uppercase">
                 <thead className="bg-slate-900 text-white">
                   <tr>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Deployment ID</th>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Service Category</th>
-                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Protocol Status</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Complaint ID</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Category</th>
+                    <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Status</th>
                     <th className="px-8 py-5 text-right"></th>
                   </tr>
                 </thead>
@@ -174,7 +174,7 @@ const CitizenDashboard = ({ user }) => {
                       <td className="px-8 py-6">
                         <div className="flex flex-col">
                           <span className="text-xs font-black text-slate-800 tracking-tight">{c.category}</span>
-                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Sector Alert</span>
+                          <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Issue Type</span>
                         </div>
                       </td>
                       <td className="px-8 py-6">{getStatusBadge(c.status)}</td>
@@ -194,8 +194,8 @@ const CitizenDashboard = ({ user }) => {
         {/* Quick Action Side Card */}
         <div className="flex flex-col gap-6">
           <div className="flex flex-col gap-1 px-2">
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Active Protocols</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Instant Incident Reporting</p>
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">New Grievances</h2>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Quick Grievance Submission</p>
           </div>
           
           <motion.div 
@@ -210,23 +210,23 @@ const CitizenDashboard = ({ user }) => {
               </div>
               
               <div className="flex flex-col gap-2">
-                <h3 className="text-2xl font-black tracking-tighter uppercase leading-none">New Intelligence Feed</h3>
+                <h3 className="text-2xl font-black tracking-tighter uppercase leading-none">New Complaint</h3>
                 <p className="text-xs text-slate-400 font-medium leading-relaxed opacity-80 uppercase tracking-wider">
-                  Initialize a new localized grievance report to municipal authorities.
+                  File a new grievance report regarding local infrastructure or services.
                 </p>
               </div>
               
               <Link 
-                to="/citizen/submit-complaint" 
+                to="/user/submit-complaint" 
                 className="w-full bg-primary-600 text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-xs text-center hover:bg-white hover:text-slate-900 transition-all shadow-2xl shadow-primary-500/20 active:scale-[0.98]"
               >
-                Launch Protocol
+                File Now
               </Link>
             </div>
             
             <div className="absolute bottom-4 left-4 flex items-center gap-2 opacity-30">
                <ShieldCheck size={12} className="text-emerald-400" />
-               <span className="text-[8px] font-black uppercase tracking-[0.3em]">Authorized Session</span>
+               <span className="text-[8px] font-black uppercase tracking-[0.3em]">Secure Session</span>
             </div>
           </motion.div>
 
@@ -235,14 +235,14 @@ const CitizenDashboard = ({ user }) => {
                 <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
                    <MessageSquare size={20} />
                 </div>
-                <div className="flex flex-col">
-                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Status Link</span>
-                   <span className="text-xs font-black text-slate-800 uppercase tracking-tight">Feedback Loop</span>
+                 <div className="flex flex-col">
+                   <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">System Status</span>
+                   <span className="text-xs font-black text-slate-800 uppercase tracking-tight">User Feedback</span>
                 </div>
              </div>
-             <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed">Ensure your localized protocols are resolved at high-fidelity levels.</p>
-             <Link to="/citizen/feedback" className="text-[10px] font-black text-primary-600 uppercase tracking-widest flex items-center gap-1.5 hover:translate-x-1 transition-transform">
-                Initiate Feedback Protocol <ChevronRight size={12} />
+             <p className="text-[10px] font-bold text-slate-400 uppercase leading-relaxed">Ensure your grievances are resolved at high-quality levels.</p>
+             <Link to="/user/feedback" className="text-[10px] font-black text-primary-600 uppercase tracking-widest flex items-center gap-1.5 hover:translate-x-1 transition-transform">
+                Submit Your Feedback <ChevronRight size={12} />
              </Link>
           </div>
         </div>
@@ -253,11 +253,11 @@ const CitizenDashboard = ({ user }) => {
         onClose={() => setSelectedComplaint(null)} 
         complaint={selectedComplaint} 
         user={user}
-        role="CITIZEN"
+        role="USER"
         onUpdate={fetchRecentComplaints}
       />
     </motion.div>
   );
 };
 
-export default CitizenDashboard;
+export default UserDashboard;

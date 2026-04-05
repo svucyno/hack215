@@ -15,7 +15,15 @@ const useSpeechRecognition = (options = {}) => {
   const [error, setError] = useState(null);
   const recognitionRef = useRef(null);
 
-  useEffect(() => {
+    const onResultRef = useRef(onResult);
+    const onErrorRef = useRef(onError);
+    const onEndRef = useRef(onEnd);
+
+    useEffect(() => { onResultRef.current = onResult; }, [onResult]);
+    useEffect(() => { onErrorRef.current = onError; }, [onError]);
+    useEffect(() => { onEndRef.current = onEnd; }, [onEnd]);
+
+    useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setError('Neural Synthesis Protocol: Browser does not support speech recognition.');
@@ -46,7 +54,7 @@ const useSpeechRecognition = (options = {}) => {
 
       const currentTranscript = finalTranscript || interimTranscript;
       setTranscript(currentTranscript);
-      if (onResult) onResult(currentTranscript, event.results[event.results.length - 1].isFinal);
+      if (onResultRef.current) onResultRef.current(currentTranscript, event.results[event.results.length - 1].isFinal);
     };
 
     recognition.onerror = (event) => {
@@ -71,7 +79,7 @@ const useSpeechRecognition = (options = {}) => {
       
       setError(errorMessage);
       setIsListening(false);
-      if (onError) onError(event);
+      if (onErrorRef.current) onErrorRef.current(event);
 
       if (shouldRestart && recognitionRef.current) {
         setTimeout(() => {
@@ -86,7 +94,7 @@ const useSpeechRecognition = (options = {}) => {
 
     recognition.onend = () => {
       setIsListening(false);
-      if (onEnd) onEnd();
+      if (onEndRef.current) onEndRef.current();
     };
 
     recognitionRef.current = recognition;
@@ -96,7 +104,7 @@ const useSpeechRecognition = (options = {}) => {
         recognitionRef.current.stop();
       }
     };
-  }, [lang, continuous, interimResults, onResult, onError, onEnd]);
+  }, [lang, continuous, interimResults]);
 
   const start = useCallback(() => {
     if (recognitionRef.current && !isListening) {

@@ -28,7 +28,7 @@ import {
   Trash2,
   FileText
 } from 'lucide-react';
-import { exportFIR } from '../utils/exportFIR';
+import { exportReport } from '../utils/exportReport';
 import AssignmentModal from '../components/AssignmentModal';
 import ComplaintDetailsModal from '../components/ComplaintDetailsModal';
 import { Pie, Line, Bar } from 'react-chartjs-2';
@@ -71,6 +71,7 @@ const AdminDashboard = ({ user }) => {
   const [loading, setLoading] = useState(false);
   const [assignModal, setAssignModal] = useState({ isOpen: false, complaint: null });
   const [detailsModal, setDetailsModal] = useState({ isOpen: false, complaint: null });
+  const [deptFilter, setDeptFilter] = useState('');
   const [officerDeptModal, setOfficerDeptModal] = useState({ isOpen: false, officer: null });
   const [isDeptModalOpen, setIsDeptModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const AdminDashboard = ({ user }) => {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       const [cRes, oRes, aRes] = await Promise.all([
         axios.get(`${API_BASE}/api/complaints`, config),
-        axios.get(`${API_BASE}/api/admin/officers`, config),
+        axios.get(`${API_BASE}/api/admin/staffs`, config),
         axios.get(`${API_BASE}/api/admin/analytics`, config)
       ]);
       setData({ complaints: cRes.data, officers: oRes.data, analytics: aRes.data });
@@ -94,7 +95,7 @@ const AdminDashboard = ({ user }) => {
   };
 
   const handleExport = () => {
-    console.log('Initiating Intelligence Export protocol...');
+    console.log('Initiating DATA EXPORT protocol...');
     if (!data || !data.complaints || data.complaints.length === 0) {
       alert('NO INTELLIGENCE RECORDS FOUND TO EXPORT.');
       return;
@@ -108,15 +109,15 @@ const AdminDashboard = ({ user }) => {
       // Dossier Header
       doc.setFontSize(22);
       doc.setTextColor(15, 23, 42); 
-      doc.text('POLICE INTELLIGENCE DOSSIER', 14, 22);
+      doc.text('OFFICIAL GRIEVANCE SUMMARY', 14, 22);
       
       doc.setFontSize(10);
       doc.setTextColor(100, 116, 139); 
-      doc.text(`POLICE COMMISSIONER: ${adminId.toUpperCase()}`, 14, 30);
+      doc.text(`ADMINISTRATOR: ${adminId.toUpperCase()}`, 14, 30);
       doc.text(`GENERATION TIMESTAMP: ${timestamp}`, 14, 35);
-      doc.text(`TOTAL INCIDENTS LOGGED: ${data.complaints.length}`, 14, 40);
+      doc.text(`TOTAL GRIEVANCES RECEIVED: ${data.complaints.length}`, 14, 40);
 
-      // Procedural Data Synthesis
+      // Data Compilation Process
       const tableData = data.complaints.map(c => [
         String(c.complaintId || 'N/A'),
         String(c.category || 'N/A'),
@@ -132,7 +133,7 @@ const AdminDashboard = ({ user }) => {
       if (doc.autoTable) {
         doc.autoTable({
           startY: 50,
-          head: [['REF ID', 'CATEGORY', 'PRIORITY', 'STATUS', 'OFFICER', 'DATE']],
+          head: [['REF ID', 'CATEGORY', 'PRIORITY', 'STATUS', 'STAFF', 'DATE']],
           body: tableData,
           headStyles: { 
             fillColor: [15, 23, 42], 
@@ -159,23 +160,23 @@ const AdminDashboard = ({ user }) => {
       }
 
       console.log('Finalizing PDF serialization...');
-      doc.save(`POLICE_INTEL_DOSSIER_${Date.now()}.pdf`);
+      doc.save(`AUTHORITY_INTEL_DOSSIER_${Date.now()}.pdf`);
       console.log('Export Protocol: Successful Compilation.');
     } catch (err) {
       console.error('Export Protocol failure:', err);
-      alert('CRITICAL ERROR DURING INTELLIGENCE EXPORT: ' + err.message);
+      alert('CRITICAL ERROR DURING DATA EXPORT: ' + err.message);
     }
   };
 
   const handleDeleteDepartment = async (deptId) => {
-    if (!window.confirm('CRITICAL: DECOMMISSION THIS SECTOR? All associated infrastructure data will be archived, and officers will be unallocated.')) return;
+    if (!window.confirm('Warning: Remove this department? All associated departmental data will be archived, and officers will be unallocated.')) return;
     
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       await axios.delete(`${API_BASE}/api/departments/${deptId}`, config);
       await fetchAdminData();
     } catch (err) {
-      console.error('Sector Decommission failed:', err);
+      console.error('Department removal failed:', err);
       alert('Error decommission sector: ' + (err.response?.data?.message || err.message));
     }
   };
@@ -190,7 +191,7 @@ const AdminDashboard = ({ user }) => {
     return (
       <div className="p-20 flex flex-col items-center justify-center gap-4">
         <div className="w-8 h-8 border-2 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
-        <p className="text-sm font-medium text-slate-400 font-mono tracking-widest uppercase">Authorizing Executive Access...</p>
+        <p className="text-sm font-medium text-slate-400 font-mono tracking-widest uppercase">Loading Admin Portal...</p>
       </div>
     );
   }
@@ -198,7 +199,7 @@ const AdminDashboard = ({ user }) => {
   const stats = [
     { label: 'Total Volume', count: data.complaints.length, trend: '+12.5%', icon: <ShieldAlert size={20} />, color: 'text-blue-600', bg: 'bg-blue-50' },
     { label: 'Avg. Resolution', count: `${data.analytics?.avgResTime || 24}h`, trend: '-2h', icon: <Clock size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-    { label: 'Citizen Satisfaction', count: `${data.analytics?.globalAvgRating || 0}/5.0`, trend: 'COMMAND OK', icon: <TrendingUp size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
+    { label: 'Citizen Satisfaction', count: `${data.analytics?.globalAvgRating || 0}/5.0`, trend: 'Optimal', icon: <TrendingUp size={20} />, color: 'text-amber-600', bg: 'bg-amber-50' },
     { label: 'Avg Resolution Time', count: `${data.analytics?.avgResTime || 0}h`, trend: '-4.2%', icon: <Zap size={20} />, color: 'text-emerald-600', bg: 'bg-emerald-50' },
   ];
 
@@ -296,8 +297,8 @@ const AdminDashboard = ({ user }) => {
         >
           <div className="flex items-center justify-between px-2">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Operational Velocity</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Intelligence Flow Analysis</p>
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Resolution Velocity</h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Grievance Flow Analysis</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
@@ -335,8 +336,8 @@ const AdminDashboard = ({ user }) => {
           className="flex flex-col gap-5"
         >
           <div className="flex flex-col gap-1 px-2">
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Crime Categorization</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Criminal Activity Density</p>
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Category Analysis</h2>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Report Activity Density</p>
           </div>
           <div className="card-premium p-10 h-[450px] flex items-center justify-center relative overflow-hidden group hover-glow bg-white">
             <div className="absolute inset-0 bg-gradient-to-tr from-slate-50/50 via-white to-blue-50/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -372,8 +373,8 @@ const AdminDashboard = ({ user }) => {
       >
         <div className="flex items-center justify-between px-2">
           <div className="flex flex-col gap-1">
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Personnel Strategy Matrix</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Efficiency KPI Across Sections</p>
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Staff Resolution Matrix</h2>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Performance Across Departments</p>
           </div>
           <div className="flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg">
              <Activity size={12} className="text-slate-500 animate-pulse" />
@@ -407,7 +408,7 @@ const AdminDashboard = ({ user }) => {
                      afterBody: (context) => {
                        const officerIdx = context[0].dataIndex;
                        const rating = data.analytics?.officerPerformance?.[officerIdx]?.avgRating || 0;
-                       return `Sector Integrity: ${rating}/5.0`;
+                       return `Service Rating: ${rating}/5.0`;
                      }
                    }
                  }
@@ -439,11 +440,11 @@ const AdminDashboard = ({ user }) => {
       >
         <div className="flex items-center justify-between px-2">
           <div className="flex flex-col gap-1">
-            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Geospatial Intelligence</h2>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Global Density Visualization</p>
+            <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Regional Analysis</h2>
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Regional Volume Overview</p>
           </div>
           <Link to="/admin/map" className="group flex items-center gap-2 text-[10px] font-black text-primary-600 uppercase tracking-widest bg-primary-50 px-4 py-2 rounded-full hover:bg-primary-600 hover:text-white transition-all">
-            Launch Commander Console <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            Open Map Explorer <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
         <div className="card-premium p-0 overflow-hidden relative group h-[400px]">
@@ -459,12 +460,12 @@ const AdminDashboard = ({ user }) => {
                   <MapIcon size={40} className="text-blue-400" />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <h3 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Precision Surveillance</h3>
+                  <h3 className="text-3xl font-black text-white tracking-tighter uppercase leading-none">Regional Monitoring</h3>
                   <p className="text-slate-400 max-w-sm text-xs font-bold leading-relaxed opacity-80 uppercase tracking-widest">
-                    Real-time visualization of criminal density and tactical officer deployment across precinct sectors.
+                    Real-time visualization of grievance volume and staff member allocation across regional sectors.
                   </p>
                 </div>
-                <Link to="/admin/map" className="btn-primary py-4 px-10 shadow-2xl shadow-blue-500/20 hover:scale-105 active:scale-95">View Commander Map</Link>
+                <Link to="/admin/map" className="btn-primary py-4 px-10 shadow-2xl shadow-blue-500/20 hover:scale-105 active:scale-95">View Regional Map</Link>
               </div>
            </div>
         </div>
@@ -478,10 +479,10 @@ const AdminDashboard = ({ user }) => {
         >
           <div className="flex items-center justify-between px-2">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Personnel Efficiency</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Top Performing Roster</p>
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Staff Performance</h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Resolution Leaders</p>
             </div>
-            <Link to="/admin/officers" className="text-[10px] font-black text-slate-400 hover:text-primary-600 uppercase tracking-widest transition-colors">Full Personnel Roster</Link>
+            <Link to="/admin/staffs" className="text-[10px] font-black text-slate-400 hover:text-primary-600 uppercase tracking-widest transition-colors">Full Personnel Roster</Link>
           </div>
           <div className="card-premium overflow-hidden bg-white">
             <table className="w-full text-left uppercase">
@@ -504,8 +505,8 @@ const AdminDashboard = ({ user }) => {
                       </div>
                     </td>
                     <td className="px-8 py-5 text-[10px] font-bold text-slate-500 flex flex-col">
-                       <span>{o.departmentId?.name || 'FIELD PATROL'}</span>
-                       <span className="text-primary-500 text-[8px] font-black tracking-widest mt-0.5">{o.rank || 'CONSTABLE'}</span>
+                       <span>{o.departmentId?.name || 'GENERAL SERVICES'}</span>
+                       <span className="text-primary-500 text-[8px] font-black tracking-widest mt-0.5">{o.rank || 'Junior Staff'}</span>
                     </td>
                     <td className="px-8 py-5 text-right">
                        <span className="status-badge status-success">HIGH FIDELITY</span>
@@ -524,8 +525,8 @@ const AdminDashboard = ({ user }) => {
         >
           <div className="flex items-center justify-between px-2">
             <div className="flex flex-col gap-1">
-              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">Priority Intercepts</h2>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Critical Protocol Violations</p>
+              <h2 className="text-xl font-black text-slate-900 uppercase tracking-tight">High Priority Cases</h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">Urgent Grievance Alerts</p>
             </div>
             <span className="flex items-center gap-1.5 px-3 py-1 bg-rose-50 text-rose-600 rounded-full text-[9px] font-black uppercase tracking-widest border border-rose-100">
               <ShieldAlert size={10} /> {data.complaints.filter(c => c.priority === 'High' || c.priority === 'Critical').length} ACTIVE
@@ -562,7 +563,7 @@ const AdminDashboard = ({ user }) => {
                    </div>
                    <div className="flex flex-col items-center text-center">
                       <span className="text-xs font-black text-slate-900 uppercase tracking-widest leading-none">Status: Nominal</span>
-                      <span className="text-[10px] font-medium text-slate-400 mt-1 italic uppercase tracking-widest">No Priority Intercepts Detected</span>
+                      <span className="text-[10px] font-medium text-slate-400 mt-1 italic uppercase tracking-widest">No High Priority Cases Detected</span>
                    </div>
                 </div>
              )}
@@ -579,17 +580,17 @@ const AdminDashboard = ({ user }) => {
         <div className="flex flex-col gap-1.5 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_10px_rgba(244,63,94,0.7)]"></div>
-            <span className="text-[9px] font-black text-rose-400 uppercase tracking-[0.3em]">Command Hierarchy: Precinct Commissioner</span>
+            <span className="text-[9px] font-black text-rose-400 uppercase tracking-[0.3em]">Command Hierarchy: Portal Administrator</span>
           </div>
-          <h1 className="text-3xl font-black tracking-tighter leading-none uppercase">Police Control Hub</h1>
-          <p className="text-[11px] font-bold uppercase tracking-widest opacity-70">Synthesizing tactical crime data for strategic enforcement oversight.</p>
+          <h1 className="text-3xl font-black tracking-tighter leading-none uppercase">Admin Management Console</h1>
+          <p className="text-[11px] font-bold uppercase tracking-widest opacity-70">Aggregating grievance data for efficient public service management.</p>
         </div>
         <div className="flex items-center gap-3 relative z-10">
           <button 
             onClick={handleExport}
             className="flex items-center gap-2 px-5 py-3.5 bg-white text-slate-00 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-500 hover:text-white transition-all shadow-xl shadow-white/5 active:scale-95"
           >
-            <Download size={13} className="text-primary-600 group-hover:text-white" /> Export Intelligence
+            <Download size={13} className="text-primary-600 group-hover:text-white" /> Export Summary
           </button>
           <button className="flex items-center gap-2 px-5 py-3.5 bg-slate-800 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95 border border-white/5">
             <Terminal size={13} /> System Protocols
@@ -606,8 +607,8 @@ const AdminDashboard = ({ user }) => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-8">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Surveillance Ledger</h2>
-                    <p className="text-xs text-slate-500 font-medium">Monitoring {data.complaints.length} active grievance protocols across sectors.</p>
+                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Grievance Ledger</h2>
+                    <p className="text-xs text-slate-500 font-medium">Monitoring {data.complaints.length} active grievance records across sectors.</p>
                   </div>
                   <div className="relative group">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={16} />
@@ -621,8 +622,8 @@ const AdminDashboard = ({ user }) => {
                       <tr>
                         <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">CASE ID</th>
                         <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">TYPE / CATEGORY</th>
-                        <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">ENFORCEMENT STATUS</th>
-                        <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">ASSIGNED OFFICER</th>
+                        <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">RESOLUTION STATUS</th>
+                        <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">ASSIGNED STAFF</th>
                         <th className="px-8 py-5 text-right"></th>
                       </tr>
                     </thead>
@@ -662,11 +663,11 @@ const AdminDashboard = ({ user }) => {
                                 </div>
                                  <div className="flex flex-col">
                                    <span className="leading-none">{c.assignedOfficerUserId.name}</span>
-                                   <span className="text-[8px] font-black tracking-widest text-primary-400 mt-1">{c.assignedOfficerUserId.rank || 'CONSTABLE'}</span>
+                                   <span className="text-[8px] font-black tracking-widest text-primary-400 mt-1">{c.assignedOfficerUserId.rank || 'Junior Staff'}</span>
                                  </div>
                               </div>
                             ) : (
-                              <span className="text-rose-400 bg-rose-50 px-2 py-1 rounded-lg">AWAITING DISPATCH</span>
+                              <span className="text-rose-400 bg-rose-50 px-2 py-1 rounded-lg">AWAITING ASSIGNMENT</span>
                             )}
                           </td>
                           <td className="px-8 py-6 text-right flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -678,7 +679,7 @@ const AdminDashboard = ({ user }) => {
                                 <UserPlus size={16} />
                              </button>
                              <button 
-                               onClick={() => exportFIR(c)}
+                               onClick={() => exportReport(c)}
                                className="p-2.5 bg-blue-50 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all shadow-sm"
                                title="Download PDF Dossier"
                              >
@@ -687,7 +688,7 @@ const AdminDashboard = ({ user }) => {
                              <button 
                                onClick={() => setDetailsModal({ isOpen: true, complaint: c })}
                                className="p-2.5 bg-slate-900 text-white rounded-xl hover:bg-primary-600 transition-all shadow-xl"
-                               title="Audit Record"
+                               title="View Record"
                              >
                                 <Eye size={16} />
                              </button>
@@ -704,14 +705,14 @@ const AdminDashboard = ({ user }) => {
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col gap-10">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Police Divisions</h2>
-                    <p className="text-xs text-slate-500 font-medium uppercase tracking-widest opacity-80 leading-none mt-1">Managing {(data.analytics?.departments?.length || 0)} specialized Law Enforcement units.</p>
+                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Service Departments</h2>
+                    <p className="text-xs text-slate-500 font-medium uppercase tracking-widest opacity-80 leading-none mt-1">Managing {(data.analytics?.departments?.length || 0)} specialized Public Service units.</p>
                   </div>
                   <button 
                     onClick={() => setIsDeptModalOpen(true)} 
                     className="group flex items-center gap-3 px-6 py-3.5 bg-slate-900 text-white rounded-[1.5rem] text-xs font-black uppercase tracking-[0.2em] hover:bg-primary-600 hover:shadow-2xl hover:shadow-primary-500/20 transition-all active:scale-95"
                   >
-                    <Building size={16} /> Commission Unit
+                    <Building size={16} /> Add Department
                   </button>
                </div>
 
@@ -729,7 +730,7 @@ const AdminDashboard = ({ user }) => {
                              <Building size={24} />
                           </div>
                           <div className="flex flex-col items-end">
-                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Force Strength</span>
+                             <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Staff Count</span>
                              <span className="text-2xl font-black text-slate-900 tracking-tighter">{d.officerCount}</span>
                           </div>
                        </div>
@@ -760,7 +761,7 @@ const AdminDashboard = ({ user }) => {
                             <button 
                               onClick={() => handleDeleteDepartment(d._id)}
                               className="w-10 h-10 rounded-xl bg-rose-50 text-rose-400 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-all border border-rose-100/50"
-                              title="Terminate Sector"
+                              title="Remove Department"
                             >
                               <Trash2 size={18} />
                             </button>
@@ -775,23 +776,33 @@ const AdminDashboard = ({ user }) => {
                     <div className="card p-20 lg:col-span-3 flex flex-col items-center justify-center text-slate-400 border-dashed border-2 border-slate-200 rounded-[3rem] bg-slate-50/50">
                        <Building size={48} className="mb-4 opacity-20" />
                        <span className="text-xs font-black uppercase tracking-[0.3em]">No Deployment Records</span>
-                       <p className="text-[10px] font-medium text-slate-400 mt-2 italic">Precinct divisions are currently uninitialized.</p>
+                       <p className="text-[10px] font-medium text-slate-400 mt-2 italic">regional divisions are currently uninitialized.</p>
                     </div>
                   )}
                </div>
             </motion.div>
           } />
-          <Route path="officers" element={
+          <Route path="staffs" element={
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col gap-10">
                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="flex flex-col gap-1">
-                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Personnel Hub</h2>
+                    <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tighter">Staff Portal</h2>
                     <p className="text-xs text-slate-500 font-medium uppercase tracking-[0.1em] opacity-70">Managing {data.officers.length} active service personnel across sectors.</p>
                   </div>
                   <div className="flex items-center gap-3">
+                    <select 
+                      className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-primary-500/10 focus:border-primary-500"
+                      value={deptFilter}
+                      onChange={(e) => setDeptFilter(e.target.value)}
+                    >
+                      <option value="">All Departments</option>
+                      {data.analytics?.departments?.map(d => (
+                        <option key={d._id} value={d._id}>{d.name}</option>
+                      ))}
+                    </select>
                     <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 rounded-full border border-emerald-100">
                       <div className="status-pulse" style={{ '--pulse-color': '#10b981' }}></div>
-                      <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">{data.officers.filter(o => o.status === 'Online').length || data.officers.length} Online</span>
+                      <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest">Global Force Active</span>
                     </div>
                   </div>
                </div>
@@ -801,13 +812,14 @@ const AdminDashboard = ({ user }) => {
                      <thead className="bg-[#0f172a] text-white">
                        <tr>
                          <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em]">Personnel ID</th>
-                         <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em]">Precinct Division</th>
+                         <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em]">Authority Branch</th>
+                          <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em]">Operational Status</th>
                          <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em]">Efficiency KPI</th>
                          <th className="px-10 py-6 text-[10px] font-black tracking-[0.2em] text-center">Protocol Actions</th>
                        </tr>
                      </thead>
                      <tbody className="divide-y divide-slate-100">
-                       {data.officers.map((o, idx) => {
+                       {data.officers.filter(o => !deptFilter || o.departmentId?._id === deptFilter).map((o, idx) => {
                          const perf = data.analytics?.officerPerformance?.find(p => String(p._id) === String(o._id));
                          const totalTasks = perf ? ((perf.resolved || 0) + (perf.inProgress || 0) + (perf.assigned || 0)) : 0;
                          const trustScore = totalTasks === 0 ? 0 : Math.round(((perf.resolved || 0) / totalTasks) * 100);
@@ -827,7 +839,7 @@ const AdminDashboard = ({ user }) => {
                                     {o.name.charAt(0)}
                                  </div>
                                  <div className="flex flex-col">
-                                   <span className="text-xs font-black text-slate-900 tracking-tight uppercase">{o.rank || 'CONSTABLE'} {o.name}</span>
+                                   <span className="text-xs font-black text-slate-900 tracking-tight uppercase">{o.rank || 'Junior Staff'} {o.name}</span>
                                    <span className="text-[10px] font-bold text-slate-400 font-mono tracking-widest leading-none mt-1 lowercase">{o.email}</span>
                                  </div>
                               </div>
@@ -840,15 +852,20 @@ const AdminDashboard = ({ user }) => {
                                 </div>
                               ) : (
                                 <div className="flex flex-col gap-1">
-                                  <span className="text-[10px] font-black text-rose-500 tracking-[0.2em]">UNALLOCATED</span>
-                                  <span className="text-[8px] font-black text-rose-300 uppercase italic tracking-tighter">Action Required</span>
+                                  <span className="text-[10px] font-black text-rose-500 tracking-[0.2em] bg-rose-50 px-2 py-1 rounded">UNASSIGNED</span>
+                                  <span className="text-[8px] font-black text-rose-300 uppercase italic tracking-tighter mt-1">Awaiting Allocation</span>
                                 </div>
                               )}
                            </td>
                            <td className="px-10 py-7">
-                              <div className="flex flex-col gap-2 max-w-[140px]">
+                              <span className={`status-badge ${o.status === 'Active' || !o.status ? 'status-success' : 'status-error'} py-1.5 px-3 text-[9px] font-black border-none shadow-sm`}>
+                                 {o.status || 'Active'}
+                               </span>
+                            </td>
+                            <td className="px-10 py-7">
+                               <div className="flex flex-col gap-2 max-w-[140px]">
                                  <div className="flex items-center justify-between mb-1">
-                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Trust Score</span>
+                                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Efficiency KPI Score</span>
                                     <span className="text-[10px] font-black text-slate-900">{displayScore}</span>
                                  </div>
                                  <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">

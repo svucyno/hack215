@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 const FeaturesPage = () => {
   const features = [
     { icon: <Mic size={24} />, title: 'Multilingual Complaint Input', description: 'Log complaints in your native language with real-time translation and voice-to-text processing for truly inclusive civic access.' },
-    { icon: <BrainCircuit size={24} />, title: 'AI Classification & Priority Detection', description: 'Advanced NLP automatically categorizes incidents and predicts priority levels for immediate response dispatching.' },
-    { icon: <FileText size={24} />, title: 'AI FIR Generation', description: 'Transform raw citizen statements into legally structured, ready-to-file First Information Reports instantly using verified legal templates.' },
-    { icon: <UserCheck size={24} />, title: 'Smart Officer Assignment', description: 'Algorithmically match cases to the most suitable officers based on workload, location, specialized expertise, and performance metrics.' },
-    { icon: <Sparkles size={24} />, title: 'AI Case Assistant', description: 'An intelligent copilot for officers to quickly query case details, summarize evidence, and generate automated alerts for critical patterns.' },
-    { icon: <Activity size={24} />, title: 'Real-Time Complaint Tracking', description: 'Transparent, end-to-end visibility for citizens to monitor their case status and investigation updates with blockchain-style immutability.' }
+    { icon: <BrainCircuit size={24} />, title: 'AI Classification & Priority Detection', description: 'Advanced NLP automatically categorizes incidents and predicts priority levels for immediate response routing.' },
+    { icon: <FileText size={24} />, title: 'AI Grievance Analysis', description: 'Transform raw citizen statements into structured, ready-to-process civic grievance summaries instantly.' },
+    { icon: <UserCheck size={24} />, title: 'Smart Staff Assignment', description: 'Algorithmically match cases to the most suitable staff based on workload, location, specialized expertise, and performance metrics.' },
+    { icon: <Sparkles size={24} />, title: 'AI Case Assistant', description: 'An intelligent copilot for staff to quickly query case details, summarize history, and generate automated alerts for critical patterns.' },
+    { icon: <Activity size={24} />, title: 'Real-Time Complaint Tracking', description: 'Transparent, end-to-end visibility for citizens to monitor their case status and resolution updates with full immutability.' }
   ];
 
   return (
@@ -28,13 +28,13 @@ const FeaturesPage = () => {
             className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight"
           >
             Breaking Traditional <br />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">Police Boundaries</span>
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">Authority Boundaries</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
             className="text-xl text-slate-500 font-medium leading-relaxed"
           >
-            Equipping citizens and law enforcement with next-generation analytical power to build a safer, more responsive community.
+            Equipping citizens and civic authorities with next-generation analytical power to build a better, more responsive community.
           </motion.p>
         </div>
 

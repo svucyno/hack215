@@ -12,9 +12,8 @@ const RegisterPage = ({ setUser }) => {
     phone: '',
     password: '',
     confirmPassword: '',
-    role: 'CITIZEN',
-    dob: '',
-    rank: ''
+    role: 'USER',
+    dob: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -39,8 +38,8 @@ const RegisterPage = ({ setUser }) => {
       sessionStorage.setItem('userInfo', JSON.stringify(data));
       setUser(data);
       
-      if (data.role === 'CITIZEN') navigate('/citizen/dashboard');
-      else if (data.role === 'OFFICER') navigate('/officer/dashboard');
+      if (data.role === 'USER') navigate('/user/dashboard');
+      else if (data.role === 'STAFF') navigate('/staff/dashboard');
       else if (data.role === 'ADMIN') navigate('/admin/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to register account. Please try again.');
@@ -55,7 +54,7 @@ const RegisterPage = ({ setUser }) => {
       <div className="hidden lg:flex flex-1 flex-col justify-between bg-slate-900 p-20 text-white relative overflow-hidden">
         {/* Background Graphics */}
         <img 
-          src="/images/citizen_network_induction_1774208467342.png" 
+          src="/images/user_network_induction_1774208467342.png" 
           alt="Citizen Network Induction" 
           className="absolute inset-0 w-full h-full object-cover opacity-30 pointer-events-none mix-blend-overlay" 
         />
@@ -64,19 +63,19 @@ const RegisterPage = ({ setUser }) => {
         <div className="relative z-10">
            <div className="flex items-center gap-3 mb-10">
               <Shield size={32} className="text-violet-500" />
-              <span className="text-2xl font-black tracking-tight">Citizen Care<span className="text-violet-500">.</span>AI</span>
+              <span className="text-2xl font-black tracking-tight">Smart Grievance<span className="text-violet-500">.</span>AI</span>
            </div>
            
            <h2 className="text-5xl font-black leading-tight tracking-tight mb-8">
              Your Identity, <br /> 
-             <span className="text-violet-500">Modernized.</span>
+             <span className="text-violet-500">Simplified.</span>
            </h2>
            
            <div className="flex flex-col gap-8 max-w-md">
               {[
-                { title: 'Seamless Citizen Node', desc: 'Securely link your identity to the most advanced civic protection system available.' },
-                { title: 'Proactive Alert Logic', desc: 'Receive real-time intelligence feeds customized for your local precinct.' },
-                { title: 'Privacy First Architecture', desc: 'Your data is encrypted end-to-end, accessible only via secure cryptographic tokens.' }
+                { title: 'Easy Account Setup', desc: 'Securely link your identity to the most advanced civic support system available.' },
+                { title: 'Real-time Updates', desc: 'Receive real-time updates and status notifications for your grievances.' },
+                { title: 'Secure & Private', desc: 'Your data is encrypted end-to-end, keeping your information safe and private.' }
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm">
                    <div className="mt-1">
@@ -92,8 +91,8 @@ const RegisterPage = ({ setUser }) => {
         </div>
 
         <div className="relative z-10 flex flex-col gap-2">
-           <span className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">Protocol Verifier v9.1.4</span>
-           <span className="text-xs font-medium text-slate-600">&copy; {new Date().getFullYear()} AI Police Intelligence Network. Secure Induction Cluster.</span>
+           <span className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">System Version v9.1.4</span>
+           <span className="text-xs font-medium text-slate-600">&copy; {new Date().getFullYear()} AI Civic Support Network. Secure Management Portal.</span>
         </div>
       </div>
 
@@ -109,8 +108,8 @@ const RegisterPage = ({ setUser }) => {
             <Link to="/" className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-violet-600 text-white shadow-xl shadow-blue-500/30 mb-8 transform hover:scale-105 transition-all">
               <Shield size={28} className="stroke-[2.5]" />
             </Link>
-            <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none">New Account Induction</h1>
-            <p className="text-slate-500 font-medium mt-3">Register your unique profile protocol within the intelligence network.</p>
+            <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none">Create New Account</h1>
+            <p className="text-slate-500 font-medium mt-3">Register your secure profile within the civic grievance portal.</p>
           </div>
 
           {error && (
@@ -125,7 +124,7 @@ const RegisterPage = ({ setUser }) => {
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
             <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Full Legal Name</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Full Name</label>
               <div className="relative group">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                 <input
@@ -141,7 +140,7 @@ const RegisterPage = ({ setUser }) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Email Authority</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                 <input
@@ -157,7 +156,7 @@ const RegisterPage = ({ setUser }) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Contact Reference</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Contact Number</label>
               <div className="relative group">
                 <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                 <input
@@ -173,7 +172,7 @@ const RegisterPage = ({ setUser }) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Vital Chronology</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Date of Birth</label>
               <div className="relative group">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                 <input
@@ -220,7 +219,7 @@ const RegisterPage = ({ setUser }) => {
             </div>
 
             <div className="flex flex-col gap-2 md:col-span-2 mt-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Active Network Role</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Account Type</label>
               <div className="relative group">
                 <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-focus-within:text-blue-600 transition-colors" size={20} />
                 <select
@@ -229,42 +228,14 @@ const RegisterPage = ({ setUser }) => {
                   value={formData.role}
                   onChange={handleChange}
                 >
-                  <option value="CITIZEN">Standard Citizen Node</option>
-                  <option value="OFFICER">Officer Access Protocol</option>
-                  <option value="ADMIN">System Infrastructure Manager</option>
+                  <option value="USER">Citizen / Public</option>
+                  <option value="STAFF">Staff Member</option>
+                  <option value="ADMIN">Portal Administrator</option>
                 </select>
               </div>
             </div>
 
-            {formData.role === 'OFFICER' && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="flex flex-col gap-2 md:col-span-2 mt-2">
-                <label className="text-[11px] font-black text-blue-600 uppercase tracking-widest px-1">Select Official Rank</label>
-                <div className="relative group">
-                  <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-focus-within:text-blue-600 transition-colors" size={20} />
-                  <select
-                    name="rank"
-                    className="w-full pl-6 pr-12 py-3.5 bg-white border border-blue-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-600/20 focus:border-blue-600 focus:bg-white transition-all font-black text-slate-800 appearance-none cursor-pointer"
-                    required={formData.role === 'OFFICER'}
-                    value={formData.rank}
-                    onChange={handleChange}
-                  >
-                    <option value="">Select Rank...</option>
-                    <option value="DGP">DGP (Director General of Police)</option>
-                    <option value="ADGP">ADGP (Additional Director General)</option>
-                    <option value="IG">IG (Inspector General)</option>
-                    <option value="DIG">DIG (Deputy Inspector General)</option>
-                    <option value="SP">SP (Superintendent of Police)</option>
-                    <option value="ASP">ASP (Assistant Superintendent)</option>
-                    <option value="DSP">DSP (Deputy Superintendent)</option>
-                    <option value="Inspector">Inspector</option>
-                    <option value="Sub-Inspector (SI)">Sub-Inspector (SI)</option>
-                    <option value="Assistant Sub-Inspector (ASI)">Assistant Sub-Inspector (ASI)</option>
-                    <option value="Head Constable">Head Constable</option>
-                    <option value="Constable">Constable</option>
-                  </select>
-                </div>
-              </motion.div>
-            )}
+            {/* Rank section removed */}
 
             <div className="md:col-span-2 mt-6">
               <button
@@ -276,7 +247,7 @@ const RegisterPage = ({ setUser }) => {
                   <Loader size={24} className="animate-spin" />
                 ) : (
                   <>
-                    Initiate Security Induction
+                    Create My Account
                     <ArrowRight size={22} strokeWidth={2.5} />
                   </>
                 )}
@@ -285,9 +256,9 @@ const RegisterPage = ({ setUser }) => {
           </form>
 
           <p className="text-center mt-12 text-sm font-bold text-slate-500">
-            Already linked to the cluster?{' '}
+            Already have an account?{' '}
             <Link to="/login" className="text-blue-600 hover:text-blue-700 underline underline-offset-8 transition-all">
-              Login to Terminal
+              Log In
             </Link>
           </p>
         </motion.div>

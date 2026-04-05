@@ -24,22 +24,22 @@ const LandingPage = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100/50 w-fit mx-auto lg:mx-0 shadow-sm"
             >
               <ShieldCheck size={16} className="text-blue-600" />
-              <span className="text-xs font-black text-blue-700 uppercase tracking-widest leading-none pt-0.5">Government-Grade Intelligence</span>
+              <span className="text-xs font-black text-blue-700 uppercase tracking-widest leading-none pt-0.5">Enterprise-Grade System</span>
             </motion.div>
             
             <motion.h1 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 }}
               className="text-5xl md:text-6xl lg:text-[76px] font-black text-slate-900 leading-[1.05] tracking-tight"
             >
-              Transforming <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">Police Intelligence</span>
+              Smart Grievance <br />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-violet-600">Management System</span>
             </motion.h1>
             
             <motion.p 
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}
               className="text-xl md:text-2xl text-slate-500 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed"
             >
-              Experience the billion-dollar startup platform for citizen safety. We build the infrastructure for a smarter, more reliable civic response.
+              Empowering citizens to raise and track complaints efficiently. An AI-powered grievance resolution platform for a smarter, more reliable civic response.
             </motion.p>
             
             <motion.div 
@@ -47,7 +47,7 @@ const LandingPage = () => {
               className="flex flex-col sm:flex-row items-center gap-4 mt-4 lg:justify-start justify-center"
             >
               <Link to="/register" className="w-full sm:w-auto px-10 py-5 bg-slate-900 text-white rounded-2xl font-black text-lg shadow-2xl shadow-slate-900/20 hover:bg-blue-600 hover:shadow-blue-600/30 transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-y-1">
-                Report Incident <ArrowRight size={22} strokeWidth={2.5} />
+                Raise Complaint <ArrowRight size={22} strokeWidth={2.5} />
               </Link>
               <Link to="/features" className="w-full sm:w-auto px-10 py-5 bg-white text-slate-700 border border-slate-200 rounded-2xl font-black text-lg hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 flex items-center justify-center">
                 Explore Features
@@ -61,7 +61,7 @@ const LandingPage = () => {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-violet-50 rounded-[4rem] transform rotate-3 scale-105 -z-10 shadow-lg" />
             <img 
-              src="/images/citizen_ai_reporting_1774207794930.png" 
+              src="/images/user_ai_reporting_1774207794930.png" 
               alt="Citizen reporting complaint to AI" 
               className="w-full h-auto object-cover rounded-[4rem] shadow-2xl shadow-blue-900/20 border border-white/50 bg-white"
             />
@@ -77,7 +77,7 @@ const LandingPage = () => {
                { val: '2s', label: 'Processing Speed' },
                { val: '100%', label: 'Transparency' },
                { val: '24/7', label: 'System Uptime' },
-               { val: 'Encryption', label: 'Military-Grade' }
+               { val: 'Encryption', label: 'Secure & Private' }
              ].map((stat, i) => (
                 <div key={i} className="flex flex-col gap-2">
                    <h4 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">{stat.val}</h4>
@@ -93,14 +93,14 @@ const LandingPage = () => {
         <div className="container mx-auto px-6 max-w-7xl">
           <div className="text-center mb-24 max-w-3xl mx-auto flex flex-col gap-6">
             <h2 className="text-5xl font-black text-slate-900 tracking-tight leading-tight">Navigating the <span className="text-blue-600">Ecosystem</span></h2>
-            <p className="text-xl text-slate-500 font-medium">Dive into the deep technical layers and procedural workflows that power our intelligence engine.</p>
+            <p className="text-xl text-slate-500 font-medium">Dive into the deep technical layers and grievance workflows that power our support portal.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-              { title: 'Capabilities', path: '/features', desc: 'Detailed breakdown of our AI-driven incident classification and priority detection modules.', icon: <Sparkles size={32} /> },
-              { title: 'System Workflow', path: '/how-it-works', desc: 'End-to-end procedural flow from raw citizen input to official legal FIR documentation.', icon: <Activity size={32} /> },
-              { title: 'AI Intelligence', path: '/ai-intelligence', desc: 'The architectural foundation of our neural networks and real-time processing clusters.', icon: <Brain size={32} /> }
+              { title: 'Capabilities', path: '/features', desc: 'Detailed breakdown of our AI-driven grievance classification and priority analysis.', icon: <Sparkles size={32} /> },
+              { title: 'System Workflow', path: '/how-it-works', desc: 'End-to-end flow from raw user input to official grievance documentation.', icon: <Activity size={32} /> },
+              { title: 'AI Intelligence', path: '/ai-intelligence', desc: 'The architectural foundation of our AI support layers and real-time processing infrastructure.', icon: <Brain size={32} /> }
             ].map((card, i) => (
               <Link 
                 key={i} 
@@ -129,14 +129,14 @@ const LandingPage = () => {
         <div className="container mx-auto max-w-7xl bg-slate-900 rounded-[4rem] p-12 md:p-24 relative overflow-hidden shadow-3xl text-center flex flex-col items-center gap-10">
            <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/30 blur-[120px] rounded-full pointer-events-none" />
            <div className="absolute bottom-0 right-0 w-96 h-96 bg-violet-600/30 blur-[120px] rounded-full pointer-events-none" />
-           <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight relative z-10 leading-none">Ready for the modern era of safety?</h2>
-           <p className="text-xl text-slate-400 font-medium max-w-2xl relative z-10 leading-relaxed">Join thousands of citizens and officers in an AI-first public safety infrastructure.</p>
+           <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight relative z-10 leading-none">Ready for efficient civic support?</h2>
+           <p className="text-xl text-slate-400 font-medium max-w-2xl relative z-10 leading-relaxed">Join thousands of users and staff in an AI-first grievance management platform.</p>
            <div className="flex flex-col sm:flex-row items-center gap-6 mt-4 w-full justify-center relative z-10">
               <Link to="/register" className="w-full sm:w-auto px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-2xl shadow-blue-600/30 hover:bg-blue-700 transition-all duration-300">
-                Register Platform ID
+                Create Your Account
               </Link>
               <Link to="/login" className="w-full sm:w-auto px-10 py-5 bg-white text-slate-900 rounded-2xl font-black text-lg hover:bg-slate-50 transition-all duration-300">
-                Log in to Node
+                Log in to Portal
               </Link>
            </div>
         </div>
@@ -146,9 +146,9 @@ const LandingPage = () => {
         <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row justify-between items-center gap-8">
            <div className="flex items-center gap-3">
               <Shield size={24} className="text-blue-600" />
-              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Citizen Care<span className="text-blue-600 font-extrabold pb-0.5">.</span>AI</span>
+              <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Smart Grievance<span className="text-blue-600 font-extrabold pb-0.5">.</span>AI</span>
            </div>
-           <p className="text-sm font-medium text-slate-400">&copy; {new Date().getFullYear()} AI Police Intelligence System. All rights reserved.</p>
+           <p className="text-sm font-medium text-slate-400">&copy; {new Date().getFullYear()} Smart Grievance Management System. All rights reserved.</p>
         </div>
       </footer>
     </div>

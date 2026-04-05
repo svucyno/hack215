@@ -180,7 +180,7 @@ const Feedback = ({ user }) => {
                     </div>
 
                     <div className="flex flex-col gap-4">
-                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">Tactical Factors</label>
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest px-1">service Factors</label>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {factorList.map((f, i) => (
                           <button 

@@ -19,20 +19,20 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
       let targetDivisionName = '';
       const cat = complaint.category || '';
       
-      if (['Theft', 'Missing Person'].includes(cat)) targetDivisionName = 'Crime';
-      else if (cat === 'Cyber Crime') targetDivisionName = 'Cyber';
-      else if (cat.includes('Harassment') || cat === 'Domestic Violence') targetDivisionName = 'Women';
-      else if (cat === 'Accident') targetDivisionName = 'Traffic';
-      else if (cat === 'Suspicious Activity') targetDivisionName = 'Intelligence';
-      else targetDivisionName = 'Patrol';
+      if (['Sanitation', 'Roads'].includes(cat)) targetDivisionName = 'Infrastructure';
+      else if (cat === 'Water Supply') targetDivisionName = 'Water';
+      else if (cat === 'Electricity') targetDivisionName = 'Electricity';
+      else if (cat === 'Public Health') targetDivisionName = 'Health';
+      else if (cat === 'Encroachment') targetDivisionName = 'Encroachment';
+      else targetDivisionName = 'General';
 
       let targetDept = departments.find(d => d.name.toLowerCase().includes(targetDivisionName.toLowerCase()));
-      if (!targetDept) targetDept = departments[0]; // Fallback to primary sector if exact match fails
+      if (!targetDept) targetDept = departments[0]; // Fallback to first department if no match found
       
       if (targetDept) {
          let deptOfficers = officers.filter(o => (o.departmentId?._id || o.departmentId) === targetDept._id);
          
-         // Immediate fallback: If no officers in that specialized department, evaluate entire force
+         // Immediate fallback: If no staff in that department, check all staff
          if (deptOfficers.length === 0) {
             deptOfficers = [...officers];
          }
@@ -47,9 +47,9 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
          // Match priority with rank
          const priority = complaint.priority || 'Medium';
          let preferredRanks = [];
-         if (priority === 'High' || priority === 'Critical') preferredRanks = ['Inspector', 'Sub-Inspector (SI)', 'DSP', 'SP'];
-         else if (priority === 'Medium') preferredRanks = ['Sub-Inspector (SI)', 'Assistant Sub-Inspector (ASI)', 'Inspector'];
-         else preferredRanks = ['Head Constable', 'Constable', 'Assistant Sub-Inspector (ASI)'];
+         if (priority === 'High' || priority === 'Critical') preferredRanks = ['Senior Staff', 'Sub-Senior Staff (SI)', 'DSP', 'SP'];
+         else if (priority === 'Medium') preferredRanks = ['Sub-Senior Staff (SI)', 'Assistant Sub-Senior Staff (ASI)', 'Senior Staff'];
+         else preferredRanks = ['Head Junior Staff', 'Junior Staff', 'Assistant Sub-Senior Staff (ASI)'];
 
          let bestCandidate = deptOfficers.find(o => preferredRanks.includes(o.rank));
          let reasonBullets = [];
@@ -68,7 +68,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
 
          if (bestCandidate) {
             const finalDept = departments.find(d => d._id === (bestCandidate.departmentId?._id || bestCandidate.departmentId)) || targetDept;
-            reasonBullets.push(`Currently marked as AVAILABLE for immediate dispatch`);
+            reasonBullets.push(`Currently available for assignment`);
             setSuggestion({
                department: finalDept,
                officer: bestCandidate,
@@ -93,7 +93,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       const [deptRes, officerRes] = await Promise.all([
         axios.get(`${API_BASE}/api/departments`, config),
-        axios.get(`${API_BASE}/api/admin/officers`, config)
+        axios.get(`${API_BASE}/api/admin/staffs`, config)
       ]);
       setDepartments(deptRes.data);
       setOfficers(officerRes.data);
@@ -106,7 +106,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
 
   const handleAssign = async () => {
     if (!selectedDept || !selectedOfficer) {
-      setError('Command incomplete: Both department and personnel required.');
+      setError('Please select both a department and a staff member.');
       return;
     }
 
@@ -121,7 +121,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
       onAssigned();
       onClose();
     } catch (err) {
-      setError(err.response?.data?.message || 'Authorization error: Failed to commit assignment.');
+      setError(err.response?.data?.message || 'Failed to save assignment. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -139,7 +139,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
       onAssigned();
       onClose();
     } catch (err) {
-      setError(err.response?.data?.message || 'Authorization error: Failed to commit assignment.');
+      setError(err.response?.data?.message || 'Failed to save assignment. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -172,8 +172,8 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
           >
             <div className="flex justify-between items-start p-6 md:p-8 pb-3 shrink-0 bg-white border-b border-slate-50 z-10">
               <div className="flex flex-col gap-1">
-                <span className="text-[9px] font-bold text-primary-600 uppercase tracking-widest bg-primary-50 px-2 py-0.5 rounded w-max">Mission Assignment</span>
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight leading-none">Personnel Allocation</h2>
+                <span className="text-[9px] font-bold text-primary-600 uppercase tracking-widest bg-primary-50 px-2 py-0.5 rounded w-max">Grievance Assignment</span>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight leading-none">Staff Assignment</h2>
               </div>
               <button onClick={onClose} className="p-1.5 bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg transition-colors shrink-0">
                 <X size={16} />
@@ -195,7 +195,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                        <Zap size={14} className="text-primary-600" />
                        <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">AI Intake Summary</span>
                     </div>
-                    <p className="text-[11px] font-bold text-slate-800 leading-relaxed uppercase">{complaint.firData?.fir_description || complaint.description}</p>
+                    <p className="text-[11px] font-bold text-slate-800 leading-relaxed uppercase">{complaint.reportData?.report_description || complaint.description}</p>
                  </div>
               )}
 
@@ -211,12 +211,12 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                         <span className="text-[11px] font-black text-slate-900">{suggestion.department.name}</span>
                      </div>
                      <div className="flex flex-col gap-0.5">
-                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Strategic Asset</span>
+                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Staff Member</span>
                         <span className="text-[11px] font-black text-slate-900">{suggestion.officer.name}</span>
                      </div>
                      <div className="flex flex-col gap-0.5">
                         <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Rank Match</span>
-                        <span className="text-[11px] font-black text-slate-900">{suggestion.officer.rank || 'CONSTABLE'}</span>
+                        <span className="text-[11px] font-black text-slate-900">{suggestion.officer.rank || 'Junior Staff'}</span>
                      </div>
                      <div className="flex flex-col gap-0.5">
                         <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Active Cases</span>
@@ -236,13 +236,13 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                     disabled={submitting}
                     className="w-full bg-slate-900 hover:bg-primary-600 text-white py-2.5 mt-0.5 rounded-lg text-[9px] font-black tracking-[0.2em] uppercase transition-colors active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
-                    <Zap size={12} /> Auto Deployment
+                    <Zap size={12} /> Auto-Assign Suggested
                   </button>
                 </motion.div>
               )}
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Operation Sector</label>
+                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Department</label>
                   <div className="relative group">
                     <Building className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary-500 transition-colors pointer-events-none" size={16} />
                     <select
@@ -250,7 +250,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                       value={selectedDept}
                       onChange={(e) => setSelectedDept(e.target.value)}
                     >
-                      <option value="">Select Precinct Division</option>
+                      <option value="">Select Department</option>
                       {departments.map((dept) => (
                         <option key={dept._id} value={dept._id}>{dept.name}</option>
                       ))}
@@ -259,7 +259,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Designated Personnel</label>
+                  <label className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">Assign Staff Member</label>
                   <div className="relative group">
                     <UserPlus className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-primary-500 transition-colors pointer-events-none" size={16} />
                     <select
@@ -267,15 +267,15 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                       value={selectedOfficer}
                       onChange={(e) => setSelectedOfficer(e.target.value)}
                     >
-                      <option value="">Select Tactical Personnel</option>
+                      <option value="">Select Staff Member</option>
                       {selectedDept && (
-                        <optgroup label="Sector Specialists">
+                        <optgroup label="Department Staff">
                           {officers.filter(o => (o.departmentId?._id || o.departmentId) === selectedDept).map(off => (
-                            <option key={off._id} value={off._id}>{off.rank || 'CONSTABLE'} {off.name}</option>
+                            <option key={off._id} value={off._id}>{off.rank || 'Junior Staff'} {off.name}</option>
                           ))}
                         </optgroup>
                       )}
-                      <optgroup label={selectedDept ? "Cross-Sector Personnel" : "All Personnel"}>
+                      <optgroup label={selectedDept ? "Other Departments" : "All Personnel"}>
                         {officers.filter(o => !selectedDept || (o.departmentId?._id || o.departmentId) !== selectedDept).map(off => (
                           <option key={off._id} value={off._id}>{off.name} [{off.departmentId?.name || 'Unallocated'}]</option>
                         ))}
@@ -295,7 +295,7 @@ const AssignmentModal = ({ isOpen, onClose, complaint, user, onAssigned }) => {
                   ) : (
                     <>
                       <ShieldCheck size={16} />
-                      <span>Commit Deployment</span>
+                      <span>Confirm Assignment</span>
                     </>
                   )}
                 </button>

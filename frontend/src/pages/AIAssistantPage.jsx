@@ -20,7 +20,7 @@ const AIAssistantPage = ({ user }) => {
         const config = { headers: { Authorization: `Bearer ${user.token}` } };
         const { data } = await axios.get(`${API_BASE}/api/complaints`, config);
         // Only show unassigned / pending complaints
-        const pending = data.filter(c => c.status === 'Submitted' || c.status === 'Assigned' || c.status === 'Investigation Ongoing');
+        const pending = data.filter(c => c.status === 'Submitted' || c.status === 'Assigned' || c.status === 'Under Review' || c.status === 'Under Review');
         setComplaints(pending);
       } catch (err) {
         console.error("Failed to load complaints for AI");
@@ -57,25 +57,25 @@ const AIAssistantPage = ({ user }) => {
     }
   };
 
-  const handleAttachFIR = async () => {
+  const handleAttachAnalysis = async () => {
     if (!result || !selectedComplaint) return;
     setAttaching(true);
     setError('');
     try {
        const config = { headers: { Authorization: `Bearer ${user.token}` } };
-       await axios.put(`${API_BASE}/api/admin/fir/${selectedComplaint._id}`, { firData: result }, config);
+       await axios.put(`${API_BASE}/api/admin/attach-analysis/${selectedComplaint._id}`, { reportData: result }, config);
        setAttached(true);
        
        // Update local selected state visually
-       setSelectedComplaint({...selectedComplaint, firData: result});
+       setSelectedComplaint({...selectedComplaint, reportData: result});
 
        // Also update the complaints array so the checkmark stays
        setComplaints(prev => prev.map(c => 
-          c._id === selectedComplaint._id ? { ...c, firData: result } : c
+          c._id === selectedComplaint._id ? { ...c, reportData: result } : c
        ));
 
     } catch (err) {
-       setError(err.response?.data?.message || 'Failed to attach FIR to the database.');
+       setError(err.response?.data?.message || 'Failed to attach analysis to the database.');
     } finally {
        setAttaching(false);
     }
@@ -83,8 +83,8 @@ const AIAssistantPage = ({ user }) => {
 
   const handleCopy = () => {
     if (!result) return;
-    const firText = `FIR DRAFT\n\nCase Type: ${result.case_type}\nPriority: ${result.priority}\nTime: ${result.time}\nLocation: ${result.location}\n\nSummary:\n${result.summary}\n\nFIR Description:\n${result.fir_description || "Complaint indicates a reported incident requiring investigation."}`;
-    navigator.clipboard.writeText(firText);
+    const analysisText = `GRIEVANCE ANALYSIS\n\nCase Type: ${result.case_type}\nPriority: ${result.priority}\nTime: ${result.time}\nLocation: ${result.location}\n\nSummary:\n${result.summary}\n\nDetailed Assessment:\n${result.report_description || "Complaint indicates a reported civic issue requiring attention."}`;
+    navigator.clipboard.writeText(analysisText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -99,9 +99,9 @@ const AIAssistantPage = ({ user }) => {
                <div className="bg-primary-600/10 p-2 rounded-xl border border-primary-500/20">
                  <Bot size={20} className="text-primary-600" />
                </div>
-               <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase leading-none">AI FIR Generator</h1>
+               <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase leading-none">AI Grievance Analyst</h1>
             </div>
-            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1.5 opacity-80">Generate structured procedural FIR drafts natively from unassigned complaint dossiers.</p>
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1.5 opacity-80">Generate structured civic analysis from unassigned complaints.</p>
          </div>
          <div className="hidden md:flex items-center gap-2 px-4 py-1.5 bg-slate-100 rounded-lg">
             <Sparkles size={12} className="text-primary-500 animate-pulse" />
@@ -137,7 +137,7 @@ const AIAssistantPage = ({ user }) => {
                    >
                       <div className="flex items-start justify-between mb-3">
                          <span className="text-[10px] font-black font-mono text-slate-900 tracking-widest">{c.complaintId}</span>
-                         {c.firData ? (
+                         {c.reportData ? (
                             <CheckCircle2 size={14} className="text-emerald-500" />
                          ) : (
                             <ArrowRight size={14} className={`text-slate-300 transition-transform ${selectedComplaint?._id === c._id ? 'translate-x-1 text-primary-500' : 'group-hover:translate-x-1'}`} />
@@ -167,7 +167,7 @@ const AIAssistantPage = ({ user }) => {
                           <FileText size={18} />
                        </div>
                        <div className="flex flex-col">
-                          <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Case Origin Text</h3>
+                          <h3 className="text-sm font-black text-slate-900 uppercase tracking-widest">Grievance Origin Text</h3>
                           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{selectedComplaint.detectedLanguage || 'Original'} Input</span>
                        </div>
                     </div>
@@ -199,7 +199,7 @@ const AIAssistantPage = ({ user }) => {
 
                     <button
                       onClick={handleGenerate}
-                      disabled={loading || attached || selectedComplaint.firData}
+                      disabled={loading || attached || selectedComplaint.reportData}
                       className="w-full py-5 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase tracking-[0.2em] hover:bg-primary-600 hover:shadow-xl hover:shadow-primary-500/20 transition-all flex items-center justify-center gap-3 group active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
                     >
                       {loading ? (
@@ -207,13 +207,13 @@ const AIAssistantPage = ({ user }) => {
                            <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
                            <span className="animate-pulse">Processing Analysis...</span>
                         </div>
-                      ) : (selectedComplaint.firData || attached) ? (
+                      ) : (selectedComplaint.reportData || attached) ? (
                         <>
-                          <CheckCircle2 size={16} className="text-emerald-400" /> FIR Already Generated
+                          <CheckCircle2 size={16} className="text-emerald-400" /> Analysis Generated
                         </>
                       ) : (
                         <>
-                          <Sparkles size={16} className="group-hover:rotate-12 transition-transform" /> Generate FIR from Complaint
+                          <Sparkles size={16} className="group-hover:rotate-12 transition-transform" /> Analyze Complaint
                         </>
                       )}
                     </button>
@@ -226,8 +226,8 @@ const AIAssistantPage = ({ user }) => {
                      <Search size={32} />
                    </div>
                    <div className="flex flex-col items-center gap-1">
-                      <span className="text-sm font-black uppercase tracking-widest text-slate-400">Select a Case</span>
-                      <span className="text-xs font-medium text-slate-400">Choose a pending incident from the left log to begin algorithmic parsing.</span>
+                      <h4 className="text-sm font-black uppercase tracking-widest text-slate-400">Select a Record</h4>
+                      <span className="text-xs font-medium text-slate-400">Choose a pending grievance from the left list to begin AI assessment.</span>
                    </div>
                  </div>
               </div>
@@ -235,7 +235,7 @@ const AIAssistantPage = ({ user }) => {
 
            {/* Output Pane */}
            <AnimatePresence>
-             {(result || selectedComplaint?.firData) && (
+             {(result || selectedComplaint?.reportData) && (
                <motion.div 
                  initial={{ opacity: 0, y: 20 }} 
                  animate={{ opacity: 1, y: 0 }} 
@@ -256,19 +256,19 @@ const AIAssistantPage = ({ user }) => {
                           </div>
                        </div>
                        <p className="text-lg md:text-xl font-bold leading-relaxed tracking-tight text-white/95">
-                          {(result || selectedComplaint.firData).summary}
+                          {(result || selectedComplaint.reportData).summary}
                        </p>
                      </div>
                   </div>
 
-                  {/* FIR Draft section */}
+                  {/* Analysis Detail Section */}
                   <div className="card-premium bg-white p-8 md:p-10 shadow-2xl shadow-slate-200/50 flex flex-col gap-8 border border-slate-100">
                      <div className="flex items-center justify-between border-b border-slate-100 pb-6">
                         <div className="flex items-center gap-3">
                            <div className="bg-slate-900 p-2 rounded-xl text-white">
                               <FileText size={18} />
                            </div>
-                           <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">FIR Draft Generated</h3>
+                           <h3 className="text-sm font-black uppercase tracking-widest text-slate-900">Grievance Analysis Generated</h3>
                         </div>
                         <div className="flex items-center gap-3">
                           <button 
@@ -284,34 +284,34 @@ const AIAssistantPage = ({ user }) => {
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-[2rem] border border-slate-100">
                         <div className="flex flex-col gap-1">
                            <span className="text-[9px] font-black text-slate-400 capitalize px-2 w-max uppercase tracking-widest">Classification</span>
-                           <span className="text-sm font-bold text-slate-900 px-2">{(result || selectedComplaint.firData).case_type}</span>
+                           <span className="text-sm font-bold text-slate-900 px-2">{(result || selectedComplaint.reportData).case_type}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                            <span className="text-[9px] font-black text-rose-400 capitalize px-2 w-max uppercase tracking-widest">Extracted Priority</span>
-                           <span className="text-sm font-bold text-slate-900 px-2">{(result || selectedComplaint.firData).priority}</span>
+                           <span className="text-sm font-bold text-slate-900 px-2">{(result || selectedComplaint.reportData).priority}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                            <span className="text-[9px] font-black text-slate-400 capitalize px-2 w-max flex items-center gap-1 uppercase tracking-widest"><Clock size={10} /> Temporality</span>
-                           <span className="text-sm font-bold text-slate-900 px-2 leading-snug">{(result || selectedComplaint.firData).time}</span>
+                           <span className="text-sm font-bold text-slate-900 px-2 leading-snug">{(result || selectedComplaint.reportData).time}</span>
                         </div>
                         <div className="flex flex-col gap-1">
                            <span className="text-[9px] font-black text-slate-400 capitalize px-2 w-max flex items-center gap-1 uppercase tracking-widest"><MapPin size={10} /> Spatial Vector</span>
-                           <span className="text-sm font-bold text-slate-900 px-2 leading-snug">{(result || selectedComplaint.firData).location}</span>
+                           <span className="text-sm font-bold text-slate-900 px-2 leading-snug">{(result || selectedComplaint.reportData).location}</span>
                         </div>
                      </div>
 
                      <div className="flex flex-col gap-4 pt-2">
-                        <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest">FIR Description</span>
+                        <span className="text-[10px] font-black text-primary-600 uppercase tracking-widest">Analysis Description</span>
                         <p className="text-sm text-slate-700 leading-relaxed font-medium bg-white p-6 rounded-[2rem] border-2 border-dashed border-slate-200">
-                          {(result || selectedComplaint.firData).fir_description || "Complaint indicates a reported incident requiring investigation."}
+                          {(result || selectedComplaint.reportData).report_description || "Complaint indicates a reported issue requiring civil resolution."}
                         </p>
                      </div>
 
                      {/* Attachment Action */}
-                     {result && !selectedComplaint.firData && !attached && (
+                     {result && !selectedComplaint.reportData && !attached && (
                         <div className="pt-6 border-t border-slate-100">
                            <button
-                             onClick={handleAttachFIR}
+                             onClick={handleAttachAnalysis}
                              disabled={attaching}
                              className="w-full py-4 bg-emerald-500 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-emerald-600 hover:shadow-xl hover:shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 group active:scale-95 disabled:opacity-50"
                            >
@@ -319,7 +319,7 @@ const AIAssistantPage = ({ user }) => {
                                <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
                              ) : (
                                <>
-                                 <ShieldCheck size={16} /> Attach FIR to Complaint Dossier
+                                 <ShieldCheck size={16} /> Attach Analysis to Record
                                </>
                              )}
                            </button>
@@ -329,7 +329,7 @@ const AIAssistantPage = ({ user }) => {
                      {attached && (
                        <div className="pt-6 border-t border-slate-100">
                          <div className="bg-emerald-50 p-4 rounded-xl flex items-center justify-center gap-3 text-emerald-600 text-xs font-black uppercase tracking-widest">
-                           <CheckCircle2 size={16} /> FIR Permanently Attached
+                           <CheckCircle2 size={16} /> Analysis Permanently Attached
                          </div>
                        </div>
                      )}

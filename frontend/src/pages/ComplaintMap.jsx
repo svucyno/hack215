@@ -208,7 +208,7 @@ const ComplaintMap = ({ user }) => {
                           <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider line-clamp-2 leading-relaxed opacity-80">{c.description}</p>
                           
                           <div className="pt-2 border-t border-slate-50">
-                            <Link to="/citizen/my-complaints" className="flex items-center gap-1 text-[9px] font-black text-primary-600 hover:text-primary-800 uppercase tracking-[0.2em]">
+                            <Link to="/user/my-complaints" className="flex items-center gap-1 text-[9px] font-black text-primary-600 hover:text-primary-800 uppercase tracking-[0.2em]">
                                Detailed Intelligence <ArrowUpRight size={10} />
                             </Link>
                           </div>

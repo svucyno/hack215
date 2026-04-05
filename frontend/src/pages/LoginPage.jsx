@@ -23,8 +23,8 @@ const LoginPage = ({ setUser }) => {
       sessionStorage.setItem('userInfo', JSON.stringify(data));
       setUser(data);
       
-      if (data.role === 'CITIZEN') navigate('/citizen/dashboard');
-      else if (data.role === 'OFFICER') navigate('/officer/dashboard');
+      if (data.role === 'USER') navigate('/user/dashboard');
+      else if (data.role === 'STAFF') navigate('/staff/dashboard');
       else if (data.role === 'ADMIN') navigate('/admin/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password.');
@@ -49,7 +49,7 @@ const LoginPage = ({ setUser }) => {
               <Shield size={28} className="stroke-[2.5]" />
             </Link>
             <h1 className="text-4xl font-black text-slate-900 tracking-tight leading-none">Welcome Back</h1>
-            <p className="text-slate-500 font-medium mt-3">Access the advanced civic intelligence node.</p>
+            <p className="text-slate-500 font-medium mt-3">Access the secure civic grievance portal.</p>
           </div>
 
           {error && (
@@ -64,12 +64,12 @@ const LoginPage = ({ setUser }) => {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
-              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Institutional Email</label>
+              <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-1">Email Address</label>
               <div className="relative group">
                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
                 <input
                   type="email"
-                  placeholder="name@domain.gov"
+                  placeholder="your.email@example.com"
                   className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:ring-4 focus:ring-blue-600/10 focus:border-blue-600 focus:bg-white transition-all font-bold text-slate-800 placeholder:text-slate-400"
                   required
                   value={email}
@@ -80,7 +80,7 @@ const LoginPage = ({ setUser }) => {
 
             <div className="flex flex-col gap-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Security Pin</label>
+                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Password</label>
                 <Link to="#" className="text-[11px] font-black text-blue-600 hover:text-blue-700">Recovery</Link>
               </div>
               <div className="relative group">
@@ -105,7 +105,7 @@ const LoginPage = ({ setUser }) => {
                 <Loader size={24} className="animate-spin" />
               ) : (
                 <>
-                  Connect Terminal
+                  Log In
                   <ArrowRight size={22} strokeWidth={2.5} />
                 </>
               )}
@@ -113,9 +113,9 @@ const LoginPage = ({ setUser }) => {
           </form>
 
           <p className="text-center mt-12 text-sm font-bold text-slate-500">
-            Internal identification missing?{' '}
+            Need an account?{' '}
             <Link to="/register" className="text-blue-600 hover:text-blue-700 underline underline-offset-8">
-              Register Node
+              Register Here
             </Link>
           </p>
         </motion.div>
@@ -134,18 +134,18 @@ const LoginPage = ({ setUser }) => {
         <div className="relative z-10">
            <div className="flex items-center gap-3 mb-10">
               <Shield size={32} className="text-blue-500" />
-              <span className="text-2xl font-black tracking-tight">Citizen Care<span className="text-blue-500">.</span>AI</span>
+              <span className="text-2xl font-black tracking-tight">Smart Grievance<span className="text-blue-500">.</span>AI</span>
            </div>
            
            <h2 className="text-5xl font-black leading-tight tracking-tight mb-8">
-             Empowering the <br /> 
-             <span className="text-blue-500">Future of Justice.</span>
+             Simplifying Civic <br /> 
+             <span className="text-blue-500">Infrastructure.</span>
            </h2>
            
            <div className="flex flex-col gap-6 max-w-md">
               {[
-                { title: 'Military-Grade Encryption', desc: 'Every data point is hashed and secured across our decentralized node network.' },
-                { title: 'Real-Time Intelligence', desc: 'Officers receive actionable insights faster than any traditional legacy system.' },
+                { title: 'Secure Data Privacy', desc: 'Your information is protected with industry-standard encryption for maximum security.' },
+                { title: 'Real-Time Tracking', desc: 'Track your grievance status with live updates and real-time notifications.' },
                 { title: 'Transparent Progress', desc: 'Citizens can track every step of their complaint with full accountability.' }
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
@@ -163,7 +163,7 @@ const LoginPage = ({ setUser }) => {
 
         <div className="relative z-10 flex flex-col gap-2">
            <span className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">Platform Version 4.0.2</span>
-           <span className="text-xs font-medium text-slate-600">&copy; {new Date().getFullYear()} AI Police Intelligence Network. All data processed on private sovereign clusters.</span>
+           <span className="text-xs font-medium text-slate-600">&copy; {new Date().getFullYear()} AI Civic Support Network. All data processed on secure cloud infrastructure.</span>
         </div>
       </div>
     </div>

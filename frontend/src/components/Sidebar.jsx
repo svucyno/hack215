@@ -41,33 +41,33 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, user, setUser }) => {
 
   const menuItems = (() => {
     const role = user?.role;
-    if (role === 'CITIZEN') {
+    if (role === 'USER') {
       return [
-        { label: 'Overview', icon: <LayoutDashboard size={20} />, path: '/citizen/dashboard', tagline: 'Vitals & Stats' },
-        { label: 'Report with AI', icon: <Zap size={20} />, path: '/citizen/voice-assistant', tagline: 'Neural Protocol' },
-        { label: 'Case History', icon: <List size={20} />, path: '/citizen/my-complaints', tagline: 'Archive' },
-        { label: 'Patrol Map', icon: <MapIcon size={20} />, path: '/citizen/complaint-map', tagline: 'Live Surveillance' },
-        { label: 'Public Feedback', icon: <MessageSquare size={20} />, path: '/citizen/feedback', tagline: 'Feedback' },
-        { label: 'Identity Protocol', icon: <User size={20} />, path: '/citizen/profile', tagline: 'Security Credentials' },
+        { label: 'Overview', icon: <LayoutDashboard size={20} />, path: '/user/dashboard', tagline: 'Vitals & Stats' },
+        { label: 'Grievance AI', icon: <Bot size={20} />, path: '/user/voice-assistant', tagline: 'Civic Support' },
+        { label: 'My Grievances', icon: <List size={20} />, path: '/user/my-complaints', tagline: 'Archive' },
+        { label: 'Zone Map', icon: <MapIcon size={20} />, path: '/user/complaint-map', tagline: 'Local Feed' },
+        { label: 'Public Feedback', icon: <MessageSquare size={20} />, path: '/user/feedback', tagline: 'Feedback' },
+        { label: 'Identity Protocol', icon: <User size={20} />, path: '/user/profile', tagline: 'Profile' },
       ];
     }
-    if (role === 'OFFICER') {
+    if (role === 'STAFF') {
       return [
-        { label: 'Field Dashboard', icon: <LayoutDashboard size={20} />, path: '/officer', tagline: 'Command Center' },
-        { label: 'Task Deployment', icon: <ClipboardList size={20} />, path: '/officer/assigned', tagline: 'Active Missions' },
-        { label: 'Efficiency Matrix', icon: <BarChart3 size={20} />, path: '/officer/workload', tagline: 'KPI Oversight' },
-        { label: 'Identity Protocol', icon: <User size={20} />, path: '/officer/profile', tagline: 'Credentials' },
+        { label: 'Field Dashboard', icon: <LayoutDashboard size={20} />, path: '/staff', tagline: 'Command Center' },
+        { label: 'Task Deployment', icon: <ClipboardList size={20} />, path: '/staff/assigned', tagline: 'Active Missions' },
+        { label: 'Efficiency Matrix', icon: <BarChart3 size={20} />, path: '/staff/workload', tagline: 'KPI Oversight' },
+        { label: 'Identity Protocol', icon: <User size={20} />, path: '/staff/profile', tagline: 'Credentials' },
       ];
     }
     if (role === 'ADMIN') {
       return [
-        { label: 'Police Hub', icon: <LayoutDashboard size={20} />, path: '/admin', tagline: 'Executive Control' },
-        { label: 'AI Case Assistant', icon: <Bot size={20} />, path: '/admin/ai-assistant', tagline: 'Neural Analysis' },
-        { label: 'Crime Registry', icon: <ShieldAlert size={20} />, path: '/admin/complaints', tagline: 'Incident Ledger' },
-        { label: 'Patrol Map', icon: <MapIcon size={20} />, path: '/admin/map', tagline: 'Beat Map' },
-        { label: 'Precinct Mgmt', icon: <Building size={20} />, path: '/admin/departments', tagline: 'Station Oversight' },
-        { label: 'Officer Roster', icon: <Users size={20} />, path: '/admin/officers', tagline: 'Deployment' },
-        { label: 'Identity Protocol', icon: <User size={20} />, path: '/admin/profile', tagline: 'Security Authority' },
+        { label: 'Service Hub', icon: <LayoutDashboard size={20} />, path: '/admin', tagline: 'Executive Control' },
+        { label: 'AI Analyst', icon: <Bot size={20} />, path: '/admin/ai-assistant', tagline: 'Civic Analysis' },
+        { label: 'Grievance Ledger', icon: <ShieldAlert size={20} />, path: '/admin/complaints', tagline: 'Issue Records' },
+        { label: 'Zone Map', icon: <MapIcon size={20} />, path: '/admin/map', tagline: 'City Grid' },
+        { label: 'Department Mgmt', icon: <Building size={20} />, path: '/admin/departments', tagline: 'Office Oversight' },
+        { label: 'Staff Roster', icon: <Users size={20} />, path: '/admin/staffs', tagline: 'Personnel' },
+        { label: 'Identity Protocol', icon: <User size={20} />, path: '/admin/profile', tagline: 'Admin Access' },
       ];
     }
     return [];
@@ -88,8 +88,8 @@ const Sidebar = ({ isCollapsed, setIsCollapsed, user, setUser }) => {
           </div>
           {!isCollapsed && (
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="flex flex-col">
-              <span className="text-lg font-black tracking-tighter text-white whitespace-nowrap uppercase leading-none drop-shadow-md">INTEL<span className="text-primary-500">SYSTEMS</span></span>
-              <span className="text-[8px] font-black text-primary-400 uppercase tracking-[0.5em] mt-1 opacity-80">Advanced Precinct</span>
+              <span className="text-lg font-black tracking-tighter text-white whitespace-nowrap uppercase leading-none drop-shadow-md">CIVIC<span className="text-primary-500">SYSTEMS</span></span>
+              <span className="text-[8px] font-black text-primary-400 uppercase tracking-[0.5em] mt-1 opacity-80">Grievance Portal</span>
             </motion.div>
           )}
         </div>

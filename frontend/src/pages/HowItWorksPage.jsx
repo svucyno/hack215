@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 
 const HowItWorksPage = () => {
   const steps = [
-    { title: 'Submit Complaint', desc: 'Citizen inputs details via text or voice in their native language.', icon: <Mic className="text-blue-500" /> },
+    { title: 'Submit Grievance', desc: 'Citizen inputs details via text or voice in their native language.', icon: <Mic className="text-blue-500" /> },
     { title: 'AI Processes Data', desc: 'System parses, translates, and structures the incoming data stream.', icon: <Brain className="text-violet-500" /> },
-    { title: 'Admin Reviews', desc: 'Automated triage and risk-level classification takes place instantly.', icon: <ShieldCheck className="text-emerald-500" /> },
-    { title: 'Officer Assigned', desc: 'Smart dispatch allocates to the most appropriate precinct and officer.', icon: <UserCheck className="text-amber-500" /> },
-    { title: 'FIR Generated', desc: 'AI drafts official legal documentation ready for officer endorsement.', icon: <FileText className="text-rose-500" /> },
-    { title: 'Investigation', desc: 'Actionable intelligence is sent to the field for rapid response.', icon: <Activity className="text-blue-600" /> }
+    { title: 'Admin Reviews', desc: 'Automated triage and priority classification takes place instantly.', icon: <ShieldCheck className="text-emerald-500" /> },
+    { title: 'Staff Assigned', desc: 'Smart routing allocates to the most appropriate department and staff.', icon: <UserCheck className="text-amber-500" /> },
+    { title: 'Analysis Generated', desc: 'AI drafts official summaries ready for staff endorsement.', icon: <FileText className="text-rose-500" /> },
+    { title: 'Resolution', desc: 'Actionable data is sent to the field for rapid service restoration.', icon: <Activity className="text-blue-600" /> }
   ];
 
   return (
@@ -24,7 +24,7 @@ const HowItWorksPage = () => {
             An End-to-End <br /> <span className="text-blue-600">Workflow Solution</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-xl text-slate-500 font-medium leading-relaxed">
-            Seamlessly bridging the gap between incident occurrence and legal resolution through our intelligent system architecture.
+            Seamlessly bridging the gap between issue occurrence and resolution through our intelligent system architecture.
           </motion.p>
         </div>
 
@@ -56,13 +56,13 @@ const HowItWorksPage = () => {
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-400/10 blur-[100px] rounded-full" />
           <div className="flex-1 flex flex-col gap-6 relative z-10">
             <h2 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Ready to see it in action?</h2>
-            <p className="text-xl text-slate-600 font-medium">Connect with local precincts and experience modern public safety.</p>
+            <p className="text-xl text-slate-600 font-medium">Connect with local departments and experience modern public services.</p>
             <Link to="/register" className="w-fit px-10 py-5 bg-blue-600 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-blue-600/30 hover:bg-blue-700 hover:shadow-blue-600/40 transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-2 mt-4">
               Get Started Now <ArrowRight size={22} />
             </Link>
           </div>
           <div className="flex-1 w-full max-w-lg relative z-10">
-             <img src="/images/officer_ai_dashboard_1774207821043.png" alt="Officer Dashboard" className="w-full h-auto rounded-3xl shadow-2xl border border-white" />
+             <img src="/images/staff_ai_dashboard_1774207821043.png" alt="Officer Dashboard" className="w-full h-auto rounded-3xl shadow-2xl border border-white" />
           </div>
         </div>
       </div>

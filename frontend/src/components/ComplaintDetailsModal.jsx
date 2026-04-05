@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import API_BASE from '../config/api';
 import { ShieldCheck, Send, Clock, CheckCircle2, AlertCircle, X, ArrowUpRight, ShieldAlert, Activity, Command, Zap, Download } from 'lucide-react';
-import { exportFIR } from '../utils/exportFIR';
+import { exportReport } from '../utils/exportReport';
 
 const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdate }) => {
   const [newStatus, setNewStatus] = useState('');
@@ -37,7 +37,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
       
       let finalResolutionUrl = null;
-      if (completionImage && (newStatus === 'Resolved' || newStatus === 'Evidence Secured')) {
+      if (completionImage && (newStatus === 'Resolved' || newStatus === 'Action Initiated')) {
           setVerificationLoading(true);
           try {
             const base64 = await fileToBase64(completionImage);
@@ -122,15 +122,15 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             className="relative bg-white w-full max-w-4xl rounded-[2rem] shadow-4xl flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-slate-100 overflow-hidden max-h-[92vh]"
           >
-            {/* Left Column: Dossier Header & Content */}
+            {/* Left Column: Grievance Header & Content */}
             <div className="flex-1 p-8 md:p-10 overflow-y-auto no-scrollbar flex flex-col gap-8">
               <div className="flex justify-between items-start">
                 <div className="flex flex-col gap-1.5">
                   <div className="flex items-center gap-2">
-                    <ShieldAlert size={13} className="text-primary-500" />
-                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Case Memo: {complaint.complaintId}</span>
+                    <ShieldCheck size={13} className="text-emerald-500" />
+                    <span className="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em]">Reference ID: {complaint.complaintId}</span>
                   </div>
-                  <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">Investigation Dossier</h2>
+                  <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase leading-none">Grievance Summary</h2>
                   <div className="flex items-center gap-3 mt-1.5">
                      <span className={`text-[9px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest border ${
                         complaint.status === 'Resolved' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
@@ -143,11 +143,11 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                 </div>
                 <div className="flex items-center gap-2">
                   <button 
-                    onClick={() => exportFIR(complaint)}
+                    onClick={() => exportReport(complaint)}
                     className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-900 text-white rounded-[1rem] hover:bg-primary-600 transition-all shadow-lg shadow-slate-900/10 text-[10px] font-black uppercase tracking-widest active:scale-95 border border-transparent"
-                    title="Export FIR to PDF"
+                    title="Export Grievance to PDF"
                   >
-                    <Download size={14} /> FIR PDF
+                    <Download size={14} /> Export PDF
                   </button>
                   <button 
                     onClick={onClose} 
@@ -161,12 +161,12 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
               <div className="flex flex-col gap-3 bg-slate-50 p-6 rounded-[1.5rem] border border-slate-100 shadow-inner group">
                 <div className="flex items-center gap-2">
                    <Activity size={12} className="text-primary-500 opacity-50" />
-                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Tactical Brief / AI Intake Summary</span>
+                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Description & AI Analysis</span>
                 </div>
-                <p className="text-base text-slate-800 font-bold leading-relaxed uppercase tracking-tight group-hover:text-slate-900 transition-colors">{complaint.firData?.fir_description || complaint.description}</p>
+                <p className="text-base text-slate-800 font-bold leading-relaxed uppercase tracking-tight group-hover:text-slate-900 transition-colors">{complaint.reportData?.report_description || complaint.description}</p>
                 {complaint.voiceTranscript && (
                   <div className="mt-4 pt-4 border-t border-slate-200">
-                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Original Neural Transcript</span>
+                     <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-2">Original Voice Input</span>
                      <p className="text-xs text-slate-600 font-bold leading-relaxed uppercase italic">{complaint.voiceTranscript}</p>
                   </div>
                 )}
@@ -175,7 +175,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
               <div className="flex flex-col gap-6">
                 <div className="flex items-center gap-2 px-1">
                    <Clock size={14} className="text-primary-500" />
-                   <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">Investigation Log</h3>
+                   <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">Work Log / History</h3>
                 </div>
                 <div className="flex flex-col gap-6 relative pl-6">
                   <div className="absolute left-1.5 top-0 bottom-0 w-px bg-slate-100"></div>
@@ -207,9 +207,9 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                <div className="flex flex-col gap-1 px-1">
                   <div className="flex items-center gap-2 text-primary-600">
                      <Command size={16} />
-                     <h3 className="text-xs font-black uppercase tracking-[0.2em]">Command Console</h3>
+                     <h3 className="text-xs font-black uppercase tracking-[0.2em]">Action Console</h3>
                   </div>
-                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Syncing with Central Intelligence</p>
+                  <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-tight">Civic Grievance Management Hub</p>
                </div>
 
                {error && (
@@ -220,12 +220,12 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
 
                <AnimatePresence mode="wait">
                   {/* Officer Controls */}
-                  {role === 'OFFICER' && !['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && (
+                  {role === 'STAFF' && !['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
                        <div className="flex flex-col gap-3">
                           <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">State Transition</label>
                           <div className="flex flex-col gap-1.5">
-                             {['Submitted', 'Investigation Ongoing', 'Evidence Secured', 'Resolved'].map(status => (
+                             {['Submitted', 'Under Review', 'Action Initiated', 'Resolved'].map(status => (
                                 <button 
                                   key={status}
                                   onClick={() => setNewStatus(status)}
@@ -240,17 +240,17 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                        </div>
                        
                        <div className="flex flex-col gap-3">
-                          <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">Operational Log</label>
+                          <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest px-1">Resolution Notes</label>
                           <textarea 
                             className="w-full p-5 bg-white border border-slate-100 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest focus:ring-4 focus:ring-primary-500/5 outline-none min-h-[100px] transition-all placeholder:text-slate-300"
-                            placeholder="INITIALIZE REMARKS..."
+                            placeholder="ADD RESOLUTION NOTES..."
                             value={remarks}
                             onChange={(e) => setRemarks(e.target.value)}
                           />
                        </div>
 
                        
-                        {(newStatus === 'Resolved' || newStatus === 'Evidence Secured') && (
+                        {(newStatus === 'Resolved' || newStatus === 'Action Initiated') && (
                            <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} className="flex flex-col gap-3">
                               <label className="text-[9px] font-black text-rose-500 uppercase tracking-widest px-1 flex items-center gap-2">
                                  <Zap size={9} /> Resources (Optional)
@@ -290,7 +290,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                   )}
 
                   {/* Citizen Review Area */}
-                  {role === 'CITIZEN' && ['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && !complaint.rating && (
+                  {role === 'USER' && ['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && !complaint.rating && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-6">
                        <div className="flex flex-col gap-4">
                           <label className="text-[9px] font-black text-slate-500 uppercase tracking-widest px-1 text-center">Satisfaction Matrix</label>
@@ -352,7 +352,7 @@ const ComplaintDetailsModal = ({ isOpen, onClose, complaint, role, user, onUpdat
                   )}
 
                   {/* Default State / Info */}
-                  {!((role === 'OFFICER' && !['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status)) || (['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && !complaint.rating)) && !complaint.rating && (
+                  {!((role === 'STAFF' && !['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status)) || (['Completed', 'Feedback Pending', 'Resolved', 'Closed'].includes(complaint.status) && !complaint.rating)) && !complaint.rating && (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-5 py-8">
                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-slate-100 text-slate-200 mx-auto opacity-50">
                           <Zap size={24} />

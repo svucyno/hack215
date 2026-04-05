@@ -1,7 +1,7 @@
 import { jsPDF } from 'jspdf';
-import { policeEmblemBase64 } from '../assets/policeEmblemBase64';
+import { authorityEmblemBase64 } from '../assets/authorityEmblemBase64';
 
-export const exportFIR = (complaint) => {
+export const exportReport = (complaint) => {
   if (!complaint) return;
   const doc = new jsPDF('p', 'mm', 'a4');
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -25,14 +25,14 @@ export const exportFIR = (complaint) => {
 
   // 1. EMBLEM (AI Generated Premium Logo)
   try {
-     doc.addImage(policeEmblemBase64, 'PNG', pageWidth / 2 - 12, 12, 24, 24);
+     // Emblem removed
   } catch (err) {
      console.error("Failed to load AI Emblem:", err);
   }
   
   // 2. HEADER
-  centerText('OFFICIAL FIRST INFORMATION REPORT DOSSIER', 45, 16, true);
-  centerText('AI-Powered Crime Intelligence System', 52, 10, false, secondaryGray);
+  centerText('OFFICIAL CIVIC GRIEVANCE SUMMARY', 45, 16, true);
+  centerText('AI-Powered Civic Support & Management System', 52, 10, false, secondaryGray);
   
   // Horizontal Line
   doc.setDrawColor(226, 232, 240); // Slate 200
@@ -99,29 +99,25 @@ export const exportFIR = (complaint) => {
   };
 
   const getVal = (val) => val ? val : 'Not Provided';
-  const getAiVal = Object.keys(complaint.firData || {}).length > 0;
+  const getAiVal = Object.keys(complaint.reportData || {}).length > 0;
 
-  // Extract variables with intelligent fallback for both AI_FIR and REGULAR complaints
-  const complainantName = complaint.firData?.complainant_details?.name || complaint.citizenUserId?.name || 'Not Provided';
-  const complainantPhone = complaint.firData?.complainant_details?.mobile || complaint.citizenUserId?.phone || 'Not Provided';
-  const complainantAddress = complaint.firData?.complainant_details?.address || complaint.address || 'Not Provided';
+  // Extract variables with intelligent fallback for both AI_REPORT and REGULAR complaints
+  const complainantName = complaint.reportData?.complainant_details?.name || complaint.citizenUserId?.name || 'Not Provided';
+  const complainantPhone = complaint.reportData?.complainant_details?.mobile || complaint.citizenUserId?.phone || 'Not Provided';
+  const complainantAddress = complaint.reportData?.complainant_details?.address || complaint.address || 'Not Provided';
   
-  const caseType = getVal(complaint.category || complaint.firData?.case_type);
+  const caseType = getVal(complaint.category || complaint.reportData?.case_type);
   const severity = getVal(complaint.priority);
-  const infoType = getVal(complaint.firData?.info_type || (complaint.complaintType === 'AI_FIR' ? 'Voice / Digital Entry' : 'Manual Portal Entry'));
+  const infoType = getVal(complaint.reportData?.info_type || (complaint.complaintType === 'AI_REPORT' ? 'Voice / Digital Entry' : 'Manual Portal Entry'));
   
-  const occTime = getVal(complaint.firData?.occurrence_details || complaint.firData?.time);
+  const occTime = getVal(complaint.reportData?.occurrence_details || complaint.reportData?.time);
   
-  const locAddress = getVal(complaint.address || complaint.firData?.occurrence_place || complaint.firData?.location);
+  const locAddress = getVal(complaint.address || complaint.reportData?.occurrence_place || complaint.reportData?.location);
   const locCoords = complaint.latitude ? `Lat: ${complaint.latitude}, Lng: ${complaint.longitude}` : 'Not Provided';
 
-  const actSection = getVal(complaint.firData?.act_and_section);
-  const aiSummary = getVal(complaint.firData?.summary || complaint.firData?.observations);
-  const missingAlert = complaint.firData?.missingFields?.length > 0 ? complaint.firData.missingFields.join(', ') : 'None';
-
-  const accusedDet = getAiVal && complaint.firData?.accused_details ? complaint.firData.accused_details : 'Unknown / Not Identified';
-  const propDet = getAiVal && complaint.firData?.property_details ? complaint.firData.property_details : 'None specified';
-  const propVal = getAiVal && complaint.firData?.property_value ? complaint.firData.property_value : 'Unknown';
+  const actSection = getVal(complaint.reportData?.act_and_section);
+  const aiSummary = getVal(complaint.reportData?.summary || complaint.reportData?.observations);
+  const missingAlert = complaint.reportData?.missingFields?.length > 0 ? complaint.reportData.missingFields.join(', ') : 'None';
 
   // 1. COMPLAINANT PROFILE
   startY = createSection('1. Complainant Profile', [
@@ -137,9 +133,9 @@ export const exportFIR = (complaint) => {
     { label: 'Nature of Report', value: infoType }
   ], startY);
 
-  // 3. INCIDENT TIMELINE
-  startY = createSection('3. Incident Timeline', [
-    { label: 'Date & Time of occurrence', value: `${occTime} (Approximate)` },
+  // 3. GRIEVANCE TIMELINE
+  startY = createSection('3. Grievance Timeline', [
+    { label: 'Occurrence Details', value: `${occTime}` },
     { label: 'Reported Timestamp', value: timestamp }
   ], startY);
 
@@ -150,32 +146,24 @@ export const exportFIR = (complaint) => {
     { label: 'Intel Source', value: 'Location intelligence derived using AI-assisted geospatial analysis' }
   ], startY);
 
-  // 5. DETAILED INCIDENT NARRATIVE
-  let rawNarrative = complaint.firData?.narrative || complaint.firData?.fir_description || complaint.description || complaint.voiceTranscript || 'Not Provided';
-  if (rawNarrative.length > 5 && rawNarrative.length < 50 && rawNarrative !== 'Not Provided') {
-      rawNarrative = `The complainant states that the incident occurred as documented: "${rawNarrative}". The context implies a sudden occurrence that requires immediate investigative attention to determine the full sequence of events. Local enforcement units are advised to initiate tracking protocols based on the provided brief.`;
-  }
+  // 5. DETAILED GRIEVANCE STATEMENT
+  let rawNarrative = complaint.reportData?.description || complaint.reportData?.report_description || complaint.description || complaint.voiceTranscript || 'Not Provided';
   
-  startY = createSection('5. Detailed Incident Narrative', [
-    { label: 'Statement', value: rawNarrative }
+  startY = createSection('5. Detailed Grievance Statement', [
+    { label: 'Citizen Statement', value: rawNarrative }
   ], startY);
 
-  // 6. AI ANALYTICAL SUMMARY
-  startY = createSection('6. AI Analytical Summary', [
-    { label: 'Act and Section', value: actSection },
-    { label: 'Observations', value: aiSummary },
+  // 6. AI GRIEVANCE ANALYSIS
+  startY = createSection('6. AI Grievance Analysis', [
+    { label: 'Issue Category', value: complaint.category || 'General' },
+    { label: 'AI Observations', value: aiSummary },
     { label: 'Missing Info Alert', value: missingAlert }
   ], startY);
 
-  // 7. SUSPECT INFORMATION
-  startY = createSection('7. Suspect Information', [
-    { label: 'Identified Suspects', value: accusedDet }
-  ], startY);
-
-  // 8. PROPERTY / LOSS DETAILS
-  startY = createSection('8. Property / Loss Details', [
-    { label: 'Item Details', value: propDet },
-    { label: 'Estimated Value', value: propVal }
+  // 7. INFRASTRUCTURE & IMPACT DETAILS
+  startY = createSection('7. Infrastructure & Impact Details', [
+    { label: 'Severity Level', value: severity },
+    { label: 'Current Status', value: complaint.status }
   ], startY);
   
   if (startY > 230) {

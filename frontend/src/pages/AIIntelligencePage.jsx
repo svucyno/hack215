@@ -21,8 +21,8 @@ const AIIntelligencePage = () => {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col gap-6 mt-4">
               {[
                 { title: 'Natural Language Processing', desc: 'Understands vernacular phrasing and colloquial terminology out-of-the-box in multiple languages.' },
-                { title: 'Real-Time Data Processing', desc: 'Instantly identifies critical threat vectors hidden within citizen statements using semantic analysis.' },
-                { title: 'Smart Decision Making', desc: 'Assists officers with intelligent recommendations for rapid dispatch based on historical severity.' }
+                { title: 'Real-Time Data Processing', desc: 'Instantly identifies critical issues within citizen statements using semantic analysis.' },
+                { title: 'Smart Decision Making', desc: 'Assists staff with intelligent recommendations for rapid complaint routing based on historical data.' }
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4 p-6 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-300">
                   <div className="mt-1 bg-blue-50 p-2 rounded-xl text-blue-600">
@@ -40,7 +40,7 @@ const AIIntelligencePage = () => {
             <div className="relative group">
               <div className="absolute inset-0 bg-gradient-to-tr from-violet-100 to-blue-50 rounded-[4rem] transform -rotate-3 scale-105 -z-10 shadow-lg transition-transform duration-500 group-hover:rotate-0" />
               <img 
-                src="/images/ai_fir_transformation_1774207849035.png" 
+                src="/images/ai_report_transformation_1774207849035.png" 
                 alt="AI Intelligence transforming data" 
                 className="w-full h-auto object-cover rounded-[4rem] shadow-2xl border border-white/60 bg-white relative z-10"
               />

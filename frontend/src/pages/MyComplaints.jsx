@@ -69,14 +69,14 @@ const MyComplaints = ({ user }) => {
         <div className="flex flex-col gap-2 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-primary-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.8)]"></div>
-            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">Civic Archive: Personal History</span>
+            <span className="text-[10px] font-black text-primary-400 uppercase tracking-[0.3em]">My Complaints: Tracking History</span>
           </div>
-          <h1 className="text-4xl font-black text-white tracking-tighter leading-none uppercase">Protocol Archive</h1>
-          <p className="text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">Synthesizing reporting protocols for personalized oversight.</p>
+          <h1 className="text-4xl font-black text-white tracking-tighter leading-none uppercase">Complaints History</h1>
+          <p className="text-sm font-medium text-slate-400 uppercase tracking-widest leading-relaxed">Review and track your previously submitted grievances.</p>
         </div>
         <div className="flex items-center gap-3 relative z-10">
           <span className="flex items-center gap-1.5 px-6 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10 shadow-xl backdrop-blur-md">
-            <Archive size={12} className="text-primary-400" /> Total Records: {complaints.length}
+            <Archive size={12} className="text-primary-400" /> Total Complaints: {complaints.length}
           </span>
         </div>
       </header>
@@ -87,7 +87,7 @@ const MyComplaints = ({ user }) => {
           <SearchIcon className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary-500 transition-colors" size={16} />
           <input 
             type="text" 
-            placeholder="SEARCH BY PROTOCOL ID OR CATEGORY..."
+            placeholder="SEARCH BY COMPLAINT ID OR CATEGORY..."
             className="w-full pl-13 pr-5 py-4 bg-white border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-primary-500/10 focus:border-primary-500 transition-all text-[10px] font-black uppercase tracking-widest shadow-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -118,18 +118,18 @@ const MyComplaints = ({ user }) => {
                     <Activity size={40} className="text-slate-300" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-xs font-black text-slate-900 uppercase tracking-widest leading-none">Status: Zero Records</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">No active protocols detected within specified filters.</span>
+                  <span className="text-xs font-black text-slate-900 uppercase tracking-widest leading-none">Status: No Complaints Found</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">No grievances matching your filters were found.</span>
                 </div>
              </div>
           ) : (
             <table className="w-full text-left uppercase">
               <thead className="bg-slate-900 text-white">
                 <tr>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Protocol ID</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Categorization</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Operational State</th>
-                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Deployment Date</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Complaint ID</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Category</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Current Status</th>
+                  <th className="px-8 py-5 text-[10px] font-black tracking-[0.2em]">Date Submitted</th>
                   <th className="px-8 py-5 text-right"></th>
                 </tr>
               </thead>
@@ -152,7 +152,7 @@ const MyComplaints = ({ user }) => {
                          </div>
                          <div className="flex flex-col">
                             <span className="text-xs font-black text-slate-800 tracking-tight">{c.category}</span>
-                            <span className="text-[9px] font-bold text-slate-400 tracking-widest">Sector Protocol</span>
+                            <span className="text-[9px] font-bold text-slate-400 tracking-widest">Issue Type</span>
                          </div>
                        </div>
                     </td>
@@ -185,7 +185,7 @@ const MyComplaints = ({ user }) => {
         isOpen={!!selectedComplaint} 
         onClose={() => setSelectedComplaint(null)} 
         complaint={selectedComplaint} 
-        role="CITIZEN"
+        role="USER"
         user={user}
         onUpdate={fetchComplaints}
       />
